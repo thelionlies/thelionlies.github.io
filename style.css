@@ -33,6 +33,8 @@ hr {
   margin: 40px 0;
 }
 
+nav a { margin-right: 15px; }
+
 .mode-toggle {
   float: right;
   cursor: pointer;
