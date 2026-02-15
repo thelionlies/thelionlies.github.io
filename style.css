@@ -35,6 +35,13 @@ hr {
 
 nav a { margin-right: 15px; }
 
+.pdf-viewer {
+  width: 100%;
+  aspect-ratio: 210 / 297;
+  min-height: 900px;
+  border: 1px solid var(--border);
+}
+
 /* ===== Toggle switch styling ===== */
 .switch {
   position: relative;
