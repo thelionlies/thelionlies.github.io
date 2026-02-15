@@ -1,12 +1,11 @@
 function toggleMode() {
-  document.body.classList.toggle("layon");
-  const mode = document.body.classList.contains("layon") ? "layon" : "lion";
-  localStorage.setItem("mode", mode);
-}
+  const currentPath = window.location.pathname;
 
-window.onload = () => {
-  const saved = localStorage.getItem("mode");
-  if (saved === "layon") {
-    document.body.classList.add("layon");
+  if (currentPath.includes("/layon/")) {
+    // switch to Lion equivalent page
+    window.location.pathname = currentPath.replace("/layon/", "/");
+  } else {
+    // switch to Láyon equivalent page
+    window.location.pathname = "/layon/" + currentPath.split("/").pop();
   }
-};
+}
