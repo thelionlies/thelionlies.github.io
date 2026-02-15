@@ -37,9 +37,15 @@ nav a { margin-right: 15px; }
 
 .profile-type {
   margin: 0.2rem 0 0.1rem;
-  font-size: 0.95rem;
+  font-size: 1.1rem;
+  font-weight: 600;
   letter-spacing: 0.04em;
   color: var(--muted);
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  margin-top: 0.1rem;
 }
 
 .pdf-viewer {
