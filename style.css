@@ -1,0 +1,40 @@
+:root {
+  --bg: #fbfbf9;
+  --text: #1a1a1a;
+  --muted: #6a6a6a;
+  --link: #2f5bd3;
+  --border: #e6e6e6;
+}
+
+body.layon {
+  --bg: #0f1115;
+  --text: #e7e7e7;
+  --muted: #9aa0a6;
+  --link: #9ecbff;
+  --border: #2b2f36;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: Georgia, "Times New Roman", serif;
+  max-width: 720px;
+  margin: 70px auto;
+  line-height: 1.75;
+  padding: 0 22px;
+}
+
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 40px 0;
+}
+
+.mode-toggle {
+  float: right;
+  cursor: pointer;
+  color: var(--muted);
+}
