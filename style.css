@@ -35,6 +35,13 @@ hr {
 
 nav a { margin-right: 15px; }
 
+.profile-type {
+  margin: 0.2rem 0 0.1rem;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
 .pdf-viewer {
   width: 100%;
   aspect-ratio: 210 / 297;
