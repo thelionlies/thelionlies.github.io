@@ -23,6 +23,6 @@ window.onload = () => {
       ? (inLayon ? fileName : `layon/${fileName}`)
       : (inLayon ? `../${fileName}` : fileName);
 
-    window.location.href = `${targetPath}${window.location.search}${window.location.hash}`;
+    window.location.replace(`${targetPath}${window.location.search}${window.location.hash}`);
   });
 };
