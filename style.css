@@ -55,6 +55,33 @@ nav a { margin-right: 15px; }
   border: 1px solid var(--border);
 }
 
+.profile-portrait {
+  width: 220px;
+  height: 280px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.profile-portrait-right {
+  float: right;
+  margin: 0 0 16px 24px;
+}
+
+@media (max-width: 700px) {
+  .profile-portrait-right {
+    float: none;
+    display: block;
+    margin: 0 auto 16px;
+  }
+
+  .profile-portrait {
+    width: min(100%, 220px);
+    height: auto;
+    aspect-ratio: 11 / 14;
+  }
+}
+
 /* ===== Toggle switch styling ===== */
 .switch {
   position: relative;
