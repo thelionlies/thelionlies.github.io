@@ -54,6 +54,26 @@ header nav {
   text-decoration: underline;
 }
 
+.summary-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.summary-layout .profile-portrait-right {
+  float: none;
+  margin: 0;
+  flex: 0 0 220px;
+}
+
+.summary-layout .quick-summary {
+  flex: 1;
+}
+
+.summary-layout .quick-summary h2 {
+  margin-top: 0;
+}
+
 .pdf-viewer {
   width: 100%;
   aspect-ratio: 210 / 297;
@@ -75,6 +95,16 @@ header nav {
 }
 
 @media (max-width: 700px) {
+  .summary-layout {
+    display: block;
+  }
+
+  .summary-layout .profile-portrait-right {
+    float: none;
+    display: block;
+    margin: 0 auto 16px;
+  }
+
   .profile-portrait-right {
     float: none;
     display: block;
