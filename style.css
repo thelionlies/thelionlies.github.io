@@ -54,6 +54,18 @@ header nav {
   text-decoration: underline;
 }
 
+.quick-summary p {
+  margin: 0 0 0.2rem;
+}
+
+.quick-summary ul {
+  margin: 0 0 0.85rem 1.2rem;
+}
+
+.quick-summary ul:last-child {
+  margin-bottom: 0;
+}
+
 .summary-layout {
   display: flex;
   flex-direction: row-reverse;
@@ -69,10 +81,6 @@ header nav {
 
 .summary-layout .quick-summary {
   flex: 1;
-}
-
-.summary-layout .quick-summary h2 {
-  margin-top: 0;
 }
 
 .pdf-viewer {
