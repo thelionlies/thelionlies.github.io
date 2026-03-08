@@ -47,6 +47,13 @@ header nav {
   color: var(--muted);
 }
 
+.quick-summary a,
+.quick-summary a:visited,
+.quick-summary a:hover {
+  color: var(--text);
+  text-decoration: underline;
+}
+
 .pdf-viewer {
   width: 100%;
   aspect-ratio: 210 / 297;
