@@ -56,6 +56,7 @@ header nav {
 
 .summary-layout {
   display: flex;
+  flex-direction: row-reverse;
   align-items: flex-start;
   gap: 24px;
 }
