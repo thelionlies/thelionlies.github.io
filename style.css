@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap");
+
 :root {
   --bg: #fbfbf9;
   --text: #1a1a1a;
@@ -33,10 +35,23 @@ hr {
   margin: 20px 0;
 }
 
-nav a { margin-right: 15px; }
+nav a {
+  margin-right: 15px;
+  color: black;
+}
+
+nav a:visited,
+nav a:hover {
+  color: black;
+}
 
 header nav {
   margin: 0.35rem 0 0;
+}
+
+header h1 {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
 }
 
 .profile-type {
@@ -130,7 +145,6 @@ header nav {
 /* ===== Toggle switch styling ===== */
 .switch {
   position: relative;
-  display: inline-block;
   width: 50px;
   height: 26px;
   float: right;
