@@ -37,12 +37,12 @@ hr {
 
 nav a {
   margin-right: 15px;
-  color: black;
+  color: var(--text);
 }
 
 nav a:visited,
 nav a:hover {
-  color: black;
+  color: var(--text);
 }
 
 header nav {
