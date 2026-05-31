@@ -249,6 +249,14 @@ input:checked + .slider:before {
   margin: 0 0 0.1rem;
 }
 
+.writing-entry h3 a,
+.writing-entry h3 a:visited,
+.writing-entry h3 a:hover {
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 .writing-meta {
   font-size: 0.85rem;
   color: var(--muted);

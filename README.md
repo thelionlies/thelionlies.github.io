@@ -18,12 +18,12 @@ Personal site for Ivan Yuri "Lion" De Leon. Two identities, one person.
 /style.css                     All styles; body.layon switches theme via CSS vars
 /_config.yml                   Jekyll config: collections, permalinks, defaults
 /_layouts/writing.html         Layout for individual writing entry pages
-/_lion_writings/               Lion writing .md files (rendered by Jekyll on GitHub Pages)
-/_layon_writings/              Láyon writing .md files (rendered by Jekyll on GitHub Pages)
+/writings/lion/<name>/          Individual Lion writing pages (index.html per entry)
+/writings/layon/<name>/        Individual Láyon writing pages (index.html per entry)
 /data/lion-writings.json       Index of Lion writings — update when adding entries
 /data/layon-writings.json      Index of Láyon writings — update when adding entries
-/resources/lion/               PDFs and assets referenced by Lion writing entries
-/resources/layon/              PDFs and assets referenced by Láyon writing entries
+/resources/lion/               PDFs referenced by Lion writing entries
+/resources/layon/              PDFs referenced by Láyon writing entries
 /cv/                           lion_cv.pdf, layon_cv.pdf
 /images/                       lion.jpg, layon.png
 ```
@@ -57,12 +57,10 @@ The flash colors match the identity backgrounds (`#fbfbf9` Lion, `#0f1115` Láyo
 - **Update Lion bio/content:** edit the relevant page under `/` (root).
 - **Update Láyon bio/content:** edit the relevant page under `/layon/`.
 - **About pages** (`about.html` and `layon/about.html`) share the same narrative about being both identities. Keep them in sync.
-- **Add a Lion writing:** do both steps:
-  1. Create a `.md` file in `_lion_writings/` with front matter `title`, `date`, `tags`. No `identity` or `layout` — set by `_config.yml` defaults.
-  2. Add an entry to `data/lion-writings.json` with the same `title`, `date`, `tags`, and `url` (format: `/writings/lion/your-filename/`).
-- **Add a Láyon writing:** same process using `_layon_writings/` and `data/layon-writings.json`.
-- **PDF-backed writing:** put the PDF in `resources/lion/` (or `resources/layon/`) and embed in the `.md` with `<iframe src="/resources/lion/yourfile.pdf" class="pdf-viewer" title="..."></iframe>`.
-- **Why two steps:** The list pages (`writings.html`, `layon/writings.html`) are plain HTML that fetch the JSON index — this means they work locally without running Jekyll. Individual writing pages are Jekyll-rendered and only work on GitHub Pages.
+- **Add a writing:** two steps:
+  1. Create `writings/lion/your-slug/index.html` (or `writings/layon/`) using an existing page as template. Use `/style.css` and `/nav.js` (absolute paths).
+  2. Add an entry to `data/lion-writings.json` (or `data/layon-writings.json`) with `title`, `date`, `tags`, and `url` matching the folder path.
+- **PDF-backed writing:** put the PDF in `resources/lion/` and embed with `<iframe src="/resources/lion/yourfile.pdf" class="pdf-viewer" title="..."></iframe>` in the page HTML.
 - **Add a Láyon writing:** same, but in `_layon_writings/`.
 - **Tags:** free-form strings in front matter `tags: [tag1, tag2]`. The writings list page builds filter buttons from them automatically.
 - **Writings pages** (`writings.html`, `layon/writings.html`) are currently placeholders.

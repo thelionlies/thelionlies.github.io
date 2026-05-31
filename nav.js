@@ -1,6 +1,7 @@
 (async function () {
   const parts = window.location.pathname.split('/').filter(Boolean);
   const isLayon = parts.includes('layon');
+  const inWritings = parts.includes('writings');
   const rawFile = parts[parts.length - 1] || '';
   const fileName = rawFile.includes('.') ? rawFile : 'index.html';
 
@@ -11,26 +12,22 @@
     'writings.html': 'writings',
     'about.html': 'about',
   };
-  const currentPage = pageMap[fileName]
-    || (parts.includes('writings') ? 'writings' : 'home');
+  const currentPage = pageMap[fileName] || (inWritings ? 'writings' : 'home');
 
-  // Flash overlay
   const flash = document.createElement('div');
   flash.id = 'flash';
   document.body.appendChild(flash);
 
-  const base = isLayon ? '../' : '';
   const headerFile = isLayon ? 'layon-header.html' : 'lion-header.html';
 
-  // Fetch header and nav in parallel
   let headerHtml = '', navHtml = '';
   try {
     [headerHtml, navHtml] = await Promise.all([
-      fetch(base + 'components/' + headerFile).then(r => r.text()),
-      fetch(base + 'components/nav.html').then(r => r.text()),
+      fetch('/components/' + headerFile).then(r => r.text()),
+      fetch('/components/nav.html').then(r => r.text()),
     ]);
   } catch {
-    // fail silently; page is still readable without injected components
+    // fail silently
   }
 
   const headerContainer = document.getElementById('header-container');
@@ -40,6 +37,13 @@
     const navContainer = document.getElementById('nav-container');
     if (navContainer && navHtml) {
       navContainer.innerHTML = navHtml;
+
+      // Set absolute hrefs so links work at any folder depth
+      const navBase = isLayon ? '/layon/' : '/';
+      navContainer.querySelectorAll('a[data-page]').forEach(link => {
+        const page = link.dataset.page;
+        link.href = navBase + (page === 'home' ? 'index.html' : page + '.html');
+      });
 
       const active = navContainer.querySelector(`[data-page="${currentPage}"]`);
       if (active) active.classList.add('active');
@@ -53,7 +57,13 @@
           flash.style.background = goingToLayon ? '#0f1115' : '#fbfbf9';
           flash.classList.add('active');
 
-          const targetUrl = isLayon ? `../${fileName}` : `layon/${fileName}`;
+          let targetUrl;
+          if (inWritings) {
+            targetUrl = goingToLayon ? '/layon/writings.html' : '/writings.html';
+          } else {
+            targetUrl = isLayon ? `../${fileName}` : `layon/${fileName}`;
+          }
+
           setTimeout(() => { window.location.href = targetUrl; }, 260);
         });
       }

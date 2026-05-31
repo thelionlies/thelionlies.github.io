@@ -1,13 +1,13 @@
 [
   {
     "title": "Sample Course Notes",
-    "url": "/writings/lion/sample-notes/",
+    "url": "/writings/lion/sample-notes",
     "date": "2026-01-01",
     "tags": ["notes"]
   },
   {
     "title": "Sample Journal Entry",
-    "url": "/writings/lion/sample-journal/",
+    "url": "/writings/lion/sample-journal",
     "date": "2026-01-01",
     "tags": ["journal"]
   }
