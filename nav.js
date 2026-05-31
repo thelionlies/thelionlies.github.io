@@ -12,7 +12,7 @@
     'writings.html': 'writings',
     'about.html': 'about',
   };
-  const currentPage = pageMap[fileName] || (inWritings ? 'writings' : 'home');
+  const currentPage = inWritings ? 'writings' : (pageMap[fileName] || 'home');
 
   const flash = document.createElement('div');
   flash.id = 'flash';
