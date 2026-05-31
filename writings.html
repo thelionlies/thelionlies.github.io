@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Writings — Lion De Leon</title>
+<link rel="stylesheet" href="style.css">
+<script defer src="nav.js"></script>
+</head>
+<body>
+
+<header id="header-container"></header>
+
+<hr>
+
+<h2>Writings</h2>
+
+<div id="tag-filters"></div>
+<div id="writings-list"></div>
+
+<script>
+(async function () {
+  const list = document.getElementById('writings-list');
+  const bar = document.getElementById('tag-filters');
+
+  let entries = [];
+  try {
+    const res = await fetch('/data/lion-writings.json');
+    entries = await res.json();
+  } catch {
+    list.innerHTML = '<p>Could not load entries. Make sure the site is served over HTTP.</p>';
+    return;
+  }
+
+  entries.forEach(entry => {
+    const tags = Array.isArray(entry.tags) ? entry.tags : [];
+    const d = new Date(entry.date + 'T00:00:00');
+    const dateStr = d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const tagsHtml = tags.length ? ' — ' + tags.map(t => `<span class="tag">${t}</span>`).join(' ') : '';
+
+    const article = document.createElement('article');
+    article.className = 'writing-entry';
+    article.dataset.tags = tags.join(' ');
+    article.innerHTML =
+      `<h3><a href="${entry.url}">${entry.title}</a></h3>` +
+      `<p class="writing-meta">${dateStr}${tagsHtml}</p>`;
+    list.appendChild(article);
+  });
+
+  const tagSet = new Set(entries.flatMap(e => Array.isArray(e.tags) ? e.tags : []));
+  if (tagSet.size === 0) return;
+
+  const articles = list.querySelectorAll('.writing-entry');
+
+  function makeBtn(label, onClick) {
+    const btn = document.createElement('button');
+    btn.textContent = label;
+    btn.className = 'tag-btn';
+    btn.addEventListener('click', () => {
+      bar.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      onClick();
+    });
+    return btn;
+  }
+
+  const allBtn = makeBtn('All', () => articles.forEach(a => a.style.display = ''));
+  allBtn.classList.add('active');
+  bar.appendChild(allBtn);
+
+  tagSet.forEach(tag => {
+    bar.appendChild(makeBtn(tag, () => {
+      articles.forEach(a => {
+        a.style.display = a.dataset.tags.split(' ').includes(tag) ? '' : 'none';
+      });
+    }));
+  });
+})();
+</script>
+
+</body>
+</html>

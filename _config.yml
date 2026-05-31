@@ -1,0 +1,21 @@
+title: thelionlies.github.io
+
+collections:
+  lion_writings:
+    output: true
+    permalink: /writings/lion/:name/
+  layon_writings:
+    output: true
+    permalink: /writings/layon/:name/
+
+defaults:
+  - scope:
+      type: lion_writings
+    values:
+      layout: writing
+      identity: lion
+  - scope:
+      type: layon_writings
+    values:
+      layout: writing
+      identity: layon

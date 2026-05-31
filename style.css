@@ -33,8 +33,16 @@ hr {
   margin: 20px 0;
 }
 
+header nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 0;
+  margin: 0.35rem 0 0;
+}
+
 nav a {
-  margin-right: 15px;
+  margin-right: 18px;
   color: var(--text);
 }
 
@@ -43,8 +51,9 @@ nav a:hover {
   color: var(--text);
 }
 
-header nav {
-  margin: 0.35rem 0 0;
+nav a.active {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .profile-type {
@@ -111,6 +120,23 @@ header nav {
   margin: 0 0 16px 24px;
 }
 
+.download-btn {
+  display: inline-block;
+  margin: 0 0 20px;
+  padding: 8px 18px;
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.9rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.download-btn:hover {
+  background: var(--border);
+  text-decoration: none;
+}
+
 @media (max-width: 700px) {
   .summary-layout {
     display: block;
@@ -135,16 +161,17 @@ header nav {
   }
 }
 
-/* ===== Toggle switch styling ===== */
+/* Toggle switch */
 .switch {
   position: relative;
+  display: inline-block;
   width: 50px;
   height: 26px;
-  float: right;
-  margin-top: -5px;
+  margin-left: auto;
+  flex-shrink: 0;
 }
 
-.switch input { 
+.switch input {
   opacity: 0;
   width: 0;
   height: 0;
@@ -153,10 +180,7 @@ header nav {
 .slider {
   position: absolute;
   cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background-color: #ccc;
   transition: 0.4s;
   border-radius: 26px;
@@ -175,9 +199,73 @@ header nav {
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: #555;
 }
 
 input:checked + .slider:before {
   transform: translateX(24px);
+}
+
+/* Tags and writing entry styles */
+.tag {
+  display: inline-block;
+  font-size: 0.78rem;
+  padding: 1px 7px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--muted);
+  margin-right: 3px;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.tag-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.85rem;
+  padding: 3px 12px;
+  cursor: pointer;
+  margin: 0 6px 10px 0;
+  border-radius: 3px;
+}
+
+.tag-btn:hover,
+.tag-btn.active {
+  background: var(--text);
+  color: var(--bg);
+  border-color: var(--text);
+}
+
+#tag-filters {
+  margin: 0 0 1rem;
+}
+
+.writing-entry {
+  margin: 0 0 1.6rem;
+}
+
+.writing-entry h3 {
+  margin: 0 0 0.1rem;
+}
+
+.writing-meta {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* Full-page flash overlay for identity switch */
+#flash {
+  position: fixed;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: opacity 0.18s ease;
+}
+
+#flash.active {
+  opacity: 1;
+  pointer-events: all;
 }
