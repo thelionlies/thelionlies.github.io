@@ -54,7 +54,7 @@
 
         toggle.addEventListener('change', () => {
           const goingToLayon = toggle.checked;
-          flash.style.background = goingToLayon ? '#0f1115' : '#fbfbf9';
+          flash.style.background = goingToLayon ? '#14131a' : '#fbfaf7';
           flash.classList.add('active');
 
           let targetUrl;

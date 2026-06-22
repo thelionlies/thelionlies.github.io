@@ -16,14 +16,10 @@ Personal site for Ivan Yuri "Lion" De Leon. Two identities, one person.
 /components/layon-header.html  Láyon header: h1 + subtitle + nav slot
 /nav.js                        Fetches header + nav, handles toggle + flash
 /style.css                     All styles; body.layon switches theme via CSS vars
-/_config.yml                   Jekyll config: collections, permalinks, defaults
-/_layouts/writing.html         Layout for individual writing entry pages
-/writings/lion/<name>/          Individual Lion writing pages (index.html per entry)
-/writings/layon/<name>/        Individual Láyon writing pages (index.html per entry)
-/data/lion-writings.json       Index of Lion writings — update when adding entries
-/data/layon-writings.json      Index of Láyon writings — update when adding entries
-/resources/lion/               PDFs referenced by Lion writing entries
-/resources/layon/              PDFs referenced by Láyon writing entries
+/portfolio.js                  Fetches data/portfolio.json, renders portfolio.html (both identities)
+/writings.js                   Fetches data/writings.json, renders writings.html (both identities)
+/data/portfolio.json           All portfolio entries (Lion + Láyon) — edit this to change the Portfolio page
+/data/writings.json            All writing entries (Lion + Láyon) — edit this to change the Writings page
 /cv/                           lion_cv.pdf, layon_cv.pdf
 /images/                       lion.jpg, layon.png
 ```
@@ -45,7 +41,7 @@ Both identities have the same five tabs. Only content changes.
 `nav.js` fetches `components/nav.html` and injects it into `<div id="nav-container">`.
 On toggle change: a full-page flash div fades in (white → Lion, black → Láyon), then navigates to the equivalent page in the other identity's folder.
 
-The flash colors match the identity backgrounds (`#fbfbf9` Lion, `#0f1115` Láyon).
+The flash colors match the identity backgrounds (`#fbfaf7` Lion, `#14131a` Láyon) and must stay in sync with `--bg` in `style.css`.
 
 ## Editing guidelines
 
@@ -57,13 +53,8 @@ The flash colors match the identity backgrounds (`#fbfbf9` Lion, `#0f1115` Láyo
 - **Update Lion bio/content:** edit the relevant page under `/` (root).
 - **Update Láyon bio/content:** edit the relevant page under `/layon/`.
 - **About pages** (`about.html` and `layon/about.html`) share the same narrative about being both identities. Keep them in sync.
-- **Add a writing:** two steps:
-  1. Create `writings/lion/your-slug/index.html` (or `writings/layon/`) using an existing page as template. Use `/style.css` and `/nav.js` (absolute paths).
-  2. Add an entry to `data/lion-writings.json` (or `data/layon-writings.json`) with `title`, `date`, `tags`, and `url` matching the folder path.
-- **PDF-backed writing:** put the PDF in `resources/lion/` and embed with `<iframe src="/resources/lion/yourfile.pdf" class="pdf-viewer" title="..."></iframe>` in the page HTML.
-- **Add a Láyon writing:** same, but in `_layon_writings/`.
-- **Tags:** free-form strings in front matter `tags: [tag1, tag2]`. The writings list page builds filter buttons from them automatically.
-- **Writings pages** (`writings.html`, `layon/writings.html`) are currently placeholders.
+- **Add/edit a portfolio entry:** edit `data/portfolio.json`. Each entry has `title`, `category` (groups entries under a heading), `persona` (`lion`, `layon`, or `both`), `summary`, and `links` (`repo`/`paper`/`slides`/`site`, set unused ones to `null`). `portfolio.js` renders both `portfolio.html` and `layon/portfolio.html` from this one file — no HTML editing needed.
+- **Add/edit a writing entry:** edit `data/writings.json`. Each entry has `title`, `date` (`YYYY-MM-DD`), `persona` (`lion`, `layon`, or `both`), `tags` (array of free-form strings — the tag filter buttons are built from these automatically), `summary`, and `pdf` (a URL to a PDF, or `null` if there's nothing to link to yet). `writings.js` renders both `writings.html` and `layon/writings.html` from this one file.
 - **No SEO:** no robots.txt, no sitemap, no canonical tags, no OG/Twitter meta, no JSON-LD. Keep it that way.
 - **Update this README** whenever you add, remove, or rename pages or change how the nav/toggle/flash works.
 
