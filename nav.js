@@ -14,6 +14,16 @@
   };
   const currentPage = inWritings ? 'writings' : (pageMap[fileName] || 'home');
 
+  const accent = isLayon ? '%238a9bb8' : '%233d4f66';
+  const square = isLayon
+    ? `<rect x='4' y='4' width='16' height='16' fill='none' stroke='${accent}' stroke-width='2'/>`
+    : `<rect x='4' y='4' width='16' height='16' fill='${accent}'/>`;
+  const favicon = document.createElement('link');
+  favicon.rel = 'icon';
+  favicon.type = 'image/svg+xml';
+  favicon.href = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>${square}</svg>`;
+  document.head.appendChild(favicon);
+
   const flash = document.createElement('div');
   flash.id = 'flash';
   document.body.appendChild(flash);
