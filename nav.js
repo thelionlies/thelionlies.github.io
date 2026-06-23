@@ -67,6 +67,7 @@
           const goingToLayon = toggle.checked;
           flash.style.background = goingToLayon ? '#14131a' : '#fbfaf7';
           flash.classList.add('active');
+          sessionStorage.setItem('personaToggled', '1');
 
           let targetUrl;
           if (inWritings) {
@@ -82,4 +83,30 @@
   }
 
   if (isLayon) document.body.classList.add('layon');
+
+  if (sessionStorage.getItem('personaToggled')) {
+    sessionStorage.removeItem('personaToggled');
+
+    const message = isLayon
+      ? "You're now viewing the artist profile. Switch back to light mode anytime to explore Lion's research and professional background."
+      : "You're now viewing the professional profile. Switch back to dark mode anytime to explore Láyon's artist profile.";
+
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+
+    requestAnimationFrame(() => toast.classList.add('show'));
+
+    let dismissed = false;
+    const dismiss = () => {
+      if (dismissed) return;
+      dismissed = true;
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 300);
+    };
+
+    toast.addEventListener('click', dismiss);
+    setTimeout(dismiss, 4000);
+  }
 })();
