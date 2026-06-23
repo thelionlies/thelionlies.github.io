@@ -1,0 +1,56 @@
+[
+  {
+    "title": "Mga Kuwentong Pambata",
+    "translation": "Children's Stories",
+    "type": "online",
+    "tags": ["poetry"],
+    "summary": "A poem about children's stories. Published in TLDTD Journal.",
+    "links": { "repo": null, "paper": null, "slides": null, "site": "https://tldtd.org/poet/layon/" }
+  },
+  {
+    "title": "Ang Pagtupad ng mga Robot sa Tatlong Batas ng Robotics",
+    "translation": "Robots Obeying the Three Laws of Robotics",
+    "type": "print",
+    "tags": ["poetry", "series"],
+    "summary": "Three poems exploring goal misalignment through Asimov's laws of robotics. Published in Heights 70(2), 2023; reprinted in Metro Meka Mega, Bente-Bente Zine, 2024.",
+    "links": { "repo": null, "paper": null, "slides": null, "site": null }
+  },
+  {
+    "title": "René",
+    "type": "print",
+    "tags": ["poetry", "series"],
+    "summary": "A collection of digitally manipulated self-portraits parodying works by Magritte, each paired with a poem meditating on the act of editing the accompanying artwork. Published in Heights 71(1), 2023.",
+    "links": { "repo": null, "paper": null, "slides": null, "site": null }
+  },
+  {
+    "title": "Ang Hindi Sinasabi ng mga Makina Hinggil sa Hindi Natin Maunawaan",
+    "translation": "What the Machines Don't Say About What We Cannot Understand",
+    "type": "print",
+    "tags": ["poetry", "series"],
+    "summary": "Three poems on singularity: initial, gravitational, technological. Published in Metro Meka Mega, Bente-Bente Zine, 2024.",
+    "links": { "repo": null, "paper": null, "slides": null, "site": null }
+  },
+  {
+    "title": "Mga Talâ Mula sa Klase ng Etika",
+    "translation": "Some Notes from Ethics Class",
+    "type": "print",
+    "tags": ["poetry", "series"],
+    "summary": "Three satirical poems written from the vantage point of philosophical ethics. Published in Metro Meka Mega, Bente-Bente Zine, 2024.",
+    "links": { "repo": null, "paper": null, "slides": null, "site": null }
+  },
+  {
+    "title": "Ilang Paraan ng Pagkagunaw",
+    "translation": "Some Ways the World Ends",
+    "type": "print",
+    "tags": ["poetry", "series"],
+    "summary": "A few poems on doomsday. Glacier, Sinkhole, Missile. Published in Metro Meka Mega, Bente-Bente Zine, 2024.",
+    "links": { "repo": null, "paper": null, "slides": null, "site": null }
+  },
+  {
+    "title": "21st Century Maligno",
+    "type": "print",
+    "tags": ["poetry", "series"],
+    "summary": "Three poems on Filipino mythological creatures reimagined in the digital age. Published in Kalat: Palihang LIRA Batch 37, 2022; reprinted in Metro Meka Mega, Bente-Bente Zine, 2024.",
+    "links": { "repo": null, "paper": null, "slides": null, "site": null }
+  }
+]

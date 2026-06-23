@@ -31,10 +31,12 @@ It's a static site: plain HTML, CSS, and vanilla JavaScript. No build step, no f
 /components/layon-header.html  Láyon header: h1 + subtitle + nav slot
 /nav.js                        Fetches header + nav, handles toggle + flash
 /style.css                     All styles; body.layon switches theme via CSS vars
-/portfolio.js                  Fetches data/portfolio.json, renders portfolio.html (both identities)
-/writings.js                   Fetches data/writings.json, renders writings.html (both identities)
-/data/portfolio.json           All portfolio entries (Lion + Láyon) — edit this to change the Portfolio page
-/data/writings.json            All writing entries (Lion + Láyon) — edit this to change the Writings page
+/portfolio.js                  Fetches data/portfolio-{lion,layon}.json, renders portfolio.html for each identity
+/writings.js                   Fetches data/writings-{lion,layon}.json, renders writings.html for each identity
+/data/portfolio-lion.json      Lion's portfolio entries — edit this to change Lion's Portfolio page
+/data/portfolio-layon.json     Láyon's portfolio entries — edit this to change Láyon's Portfolio page
+/data/writings-lion.json       Lion's writing entries — edit this to change Lion's Writings page
+/data/writings-layon.json      Láyon's writing entries — edit this to change Láyon's Writings page
 /cv/                           lion_cv.pdf, layon_cv.pdf
 /images/                       lion.jpg, layon.png
 ```
@@ -68,8 +70,11 @@ The flash colors match the identity backgrounds (`#fbfaf7` Lion, `#14131a` Láyo
 - **Update Lion bio/content:** edit the relevant page under `/` (root).
 - **Update Láyon bio/content:** edit the relevant page under `/layon/`.
 - **About pages** (`about.html` and `layon/about.html`) share the same narrative about being both identities, plus an FAQ section. Keep the FAQ questions mirrored across both pages — Lion answers straight, Láyon can be cheekier — and keep answers wrapped in `<ul class="dot-list"><li>...</li></ul>` to match the site's bullet style.
-- **Add/edit a portfolio entry:** edit `data/portfolio.json`. Each entry has `title`, `category` (groups entries under a heading), `persona` (`lion`, `layon`, or `both`), `summary`, and `links` (`repo`/`paper`/`slides`/`site`, set unused ones to `null`). `portfolio.js` renders both `portfolio.html` and `layon/portfolio.html` from this one file — no HTML editing needed.
-- **Add/edit a writing entry:** edit `data/writings.json`. Each entry has `title`, `date` (`YYYY-MM-DD`), `persona` (`lion`, `layon`, or `both`), `tags` (array of free-form strings — the tag filter buttons are built from these automatically), `summary`, and `pdf` (a URL to a PDF or a doc like a Google Drive link, or `null` if there's nothing to link to yet). `writings.js` renders both `writings.html` and `layon/writings.html` from this one file.
+- **Add/edit a portfolio entry:** edit `data/portfolio-lion.json` or `data/portfolio-layon.json` — each file is just that persona's entries, no `persona` field needed. Each entry has `title`, `type`, `tags`, `summary`, and `links` (`repo`/`paper`/`slides`/`site`, set unused ones to `null`). Entries are grouped on the page by `type` and filterable across groups by `tags`. `portfolio.js` reads the matching file for whichever persona's `portfolio.html` is loaded — no HTML editing needed.
+  - Lion's `type` is `"research"` or `"software"`. Tags are drawn from: `nlp`, `filipino`, `ai-safety`, `web`, `simulation`, `ai-engineering`.
+  - Láyon's `type` is `"online"` or `"print"`. Tags are drawn from: `poetry` (every entry gets this) and `series` (add it if the entry is a named series).
+  - `translation` is optional on any entry (either persona) — an English rendering of the title, shown in italics under it. Mainly used for Láyon's Filipino titles; omit the field entirely if there's nothing to translate.
+- **Add/edit a writing entry:** edit `data/writings-lion.json` or `data/writings-layon.json` — each file is just that persona's entries. Each entry has `title`, `date` (`YYYY-MM-DD`), `tags` (array of free-form strings — the tag filter buttons are built from these automatically), `summary`, and `pdf` (a URL to a PDF or a doc like a Google Drive link, or `null` if there's nothing to link to yet). `writings.js` reads the matching file for whichever persona's `writings.html` is loaded.
 - **No SEO:** no robots.txt, no sitemap, no canonical tags, no OG/Twitter meta, no JSON-LD. Keep it that way.
 - **Update this README** whenever you add, remove, or rename pages, or change how the nav/toggle/flash/data files work.
 

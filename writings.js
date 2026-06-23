@@ -4,21 +4,18 @@
 
   const bar = document.getElementById('tag-filters');
   const isLayon = window.location.pathname.includes('/layon/');
-  const persona = isLayon ? 'layon' : 'lion';
-  const dataPath = isLayon ? '../data/writings.json' : 'data/writings.json';
+  const dataPath = isLayon ? '../data/writings-layon.json' : 'data/writings-lion.json';
 
-  let entries = [];
+  let visible = [];
   try {
     const res = await fetch(dataPath);
-    entries = await res.json();
+    visible = await res.json();
   } catch {
     list.innerHTML = '<p>Could not load writings entries. Make sure the site is served over HTTP.</p>';
     return;
   }
 
-  const visible = entries
-    .filter(e => e.persona === persona || e.persona === 'both')
-    .sort((a, b) => b.date.localeCompare(a.date));
+  visible.sort((a, b) => b.date.localeCompare(a.date));
 
   if (!visible.length) {
     list.innerHTML = '<p>Nothing here yet.</p>';

@@ -1,0 +1,51 @@
+[
+  {
+    "title": "TanawPamana",
+    "type": "research",
+    "tags": ["ai-safety", "filipino"],
+    "summary": "A multimodal AI benchmark for recognizing Philippine cultural heritage sites, developed during a research internship at the Nara Institute of Science and Technology (NAIST). Ongoing.",
+    "links": { "repo": null, "paper": null, "slides": null, "site": "https://canva.link/sd656z9651qlfln" }
+  },
+  {
+    "title": "Evaluating LLM Stance-Taking on Philippine Current Affairs: A Case Study on the Impeachment of Sara Duterte",
+    "type": "research",
+    "tags": ["ai-safety", "filipino"],
+    "summary": "A framework for evaluating LLM knowledge on time-sensitive current affairs topics. Final project for AI Safety Diliman's AI Governance Accelerator, in partnership with SIGLA Research Center.",
+    "links": { "repo": null, "paper": null, "slides": "https://canva.link/pi3w4f9p5aspg3x", "site": null }
+  },
+  {
+    "title": "TDR: LSTM-Based Autoencoders",
+    "type": "research",
+    "tags": ["nlp", "filipino"],
+    "summary": "Tagalog Diacritic Restoration using LSTM-based autoencoders on homographs, evaluated on text from Virgilio Almario's Sari-Samot blogs.",
+    "links": { "repo": "https://github.com/thelionlies/TDR-LSTM-based-autoencoders", "paper": null, "slides": null, "site": null }
+  },
+  {
+    "title": "TDR: Transformer-Based Models",
+    "type": "research",
+    "tags": ["nlp", "filipino"],
+    "summary": "Transformer-based Tagalog Diacritic Restoration with corpus expansion, linguistic analysis, and model experimentation.",
+    "links": { "repo": "https://github.com/thelionlies/TDR-transformer-based-models", "paper": null, "slides": null, "site": null }
+  },
+  {
+    "title": "BEA: Blue Eagle Assistant",
+    "type": "software",
+    "tags": ["ai-engineering", "web"],
+    "summary": "AI-powered university chatbot built with Streamlit. It answers Ateneo student questions using handbook references and policy context.",
+    "links": { "repo": "https://github.com/thelionlies/BEA_Blue_Eagle_Assistant", "paper": null, "slides": null, "site": null }
+  },
+  {
+    "title": "FIES Viewer",
+    "type": "software",
+    "tags": ["filipino", "web"],
+    "summary": "Django web application for exploring household economic data from the Family Income and Expenditure Survey in CALABARZON, Philippines.",
+    "links": { "repo": "https://github.com/thelionlies/fies-viewer", "paper": null, "slides": null, "site": null }
+  },
+  {
+    "title": "SIMS: Social Impact Mapping Simulation",
+    "type": "software",
+    "tags": ["simulation"],
+    "summary": "Java two-party election simulation based on Social Impact Theory (Nowak, Szamrej & Latané, 1990), with GUI and dynamic social influence modeling.",
+    "links": { "repo": "https://github.com/thelionlies/SIMS-Social-Impact-Mapping-Simulation", "paper": null, "slides": null, "site": null }
+  }
+]

@@ -15,13 +15,14 @@
   const currentPage = inWritings ? 'writings' : (pageMap[fileName] || 'home');
 
   const accent = isLayon ? '%238a9bb8' : '%233d4f66';
-  const square = isLayon
-    ? `<rect x='4' y='4' width='16' height='16' fill='none' stroke='${accent}' stroke-width='2'/>`
-    : `<rect x='4' y='4' width='16' height='16' fill='${accent}'/>`;
+  const outerSquare = `<rect x='2' y='2' width='20' height='20' fill='none' stroke='${accent}' stroke-width='1.5'/>`;
+  const mark = isLayon
+    ? `<rect x='12' y='2' width='10' height='10' fill='${accent}'/>`
+    : `<path d='M2,2 L12,2 L12,12 L22,12 L22,22 L2,22 Z' fill='${accent}'/>`;
   const favicon = document.createElement('link');
   favicon.rel = 'icon';
   favicon.type = 'image/svg+xml';
-  favicon.href = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>${square}</svg>`;
+  favicon.href = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>${outerSquare}${mark}</svg>`;
   document.head.appendChild(favicon);
 
   const flash = document.createElement('div');
