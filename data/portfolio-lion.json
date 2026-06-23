@@ -92,7 +92,7 @@
     "type": "software",
     "tags": ["ai-engineering", "web", "featured"],
     "summary": "Ateneo students lack a fast, policy-aware assistant for navigating university handbooks and contacts. BEA is an AI-powered chatbot built with Streamlit that answers student questions using handbook references, university policies, and contact information. Shockingly, the agent knows a bit about my background. Probably because I was mentioned on the ADMU website. This project served as my final project for PSI AI Academy, an AI engineering course.",
-    "thoughts": "I built this partly because I kept forgetting university policies myself. I didn’t finish the project in time to graduate from the PSI AI Academy course because I was inexperienced with deployment, so I ended up vibecoding it and using Streamlit. I’m planning to expand it with free models so it stops eating my credits.",
+    "thoughts": "I built this partly because I kept forgetting university policies myself. I didn’t finish the project in time to graduate from the PSI AI Academy course because I was inexperienced with deployment, so I ended up vibecoding deployment and using Streamlit. I’m planning to expand it with free models so it stops eating my credits.",
     "links": { "repo": "https://github.com/thelionlies/BEA_Blue_Eagle_Assistant", "paper": null, "slides": "https://canva.link/azci6f8xwtjyiaz", "site": null, "video": "https://drive.google.com/file/d/15kOYipf600o1dA6JGFFD34jcHX7FaIeK/view?usp=sharing" }
   },
   {
