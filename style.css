@@ -310,6 +310,12 @@ input:checked + .slider:before {
   margin: 0;
 }
 
+.writings-note {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: 1.6rem 0 0;
+}
+
 /* Data-driven portfolio / writings cards */
 .category-label {
   margin: 1.6rem 0 0.5rem;
