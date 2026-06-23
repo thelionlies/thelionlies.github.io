@@ -13,7 +13,7 @@
     "tags": ["nlp", "filipino", "featured"],
     "summary": "Standard tokenizers systematically misalign token boundaries with morpheme boundaries in Filipino, a language with productive infixation, reduplication, and diacritic-driven lexical distinctions. PACUTE is a diagnostic benchmark of 4,600 tasks across six compositional levels that localizes where morphological understanding breaks down. Open-weight models perform near chance on morpheme decomposition regardless of scale; frontier models recover individual affixes but remain far below character-level ceilings on compositional tasks. Submitted to EMNLP 2026.",
     "thoughts": "This was my first time doing research with experienced researchers in the field. I learned a lot of best practices from them. Given their stronger technical backgrounds, my role on the team leaned more toward linguistics, which I enjoyed.",
-    "links": { "repo": null, "paper": "https://arxiv.org/abs/2606.15144", "slides": null, "site": null }
+    "links": { "repo": "https://github.com/raileymontalan/pacute-bench", "paper": "https://arxiv.org/abs/2606.15144", "slides": null, "site": null }
   },
   {
     "title": "We Are Convinced That Persuasion is Linear and Bilingual in LLMs",
@@ -21,7 +21,7 @@
     "tags": ["ai-safety", "nlp", "filipino"],
     "summary": "LLM chatbots now carry substantial persuasive power, yet little is known about whether persuasion is a structured internal property of these models. Using diff-of-means activation analysis on Zeng et al.'s persuasion taxonomy, we find five techniques converge on a single linear direction (minimum pairwise cosine similarity 0.77), causally sufficient to increase judged persuasiveness via activation steering (44.4 → 51.3 mean score). Critically, we test causal cross-lingual transfer: steering with English-derived directions on Tagalog prompts and vice versa, both show increased persuasiveness and high cross-lingual representational similarity (0.66 average cosine similarity). Submitted to the APART Global South AI Safety Hackathon.",
     "thoughts": "I worked on this hackathon even on the day of my graduation. Three of the most stressful days I’ve had. During that time, this project was all I could think about, but I really enjoyed the process. It was my first deep dive into the mechanistic interpretability of LLMs.",
-    "links": { "repo": "https://github.com/thelionlies/apart-global-south-persuasion-project", "paper": "https://drive.google.com/file/d/1d_c-pUMclnYaYc0aI5pYxFazKNuIs67-/view?usp=drive_link", "slides": null, "site": null }
+    "links": { "repo": "https://github.com/arnelMalubay/apart-global-south-persuasion-project", "paper": "https://drive.google.com/file/d/1d_c-pUMclnYaYc0aI5pYxFazKNuIs67-/view?usp=drive_link", "slides": null, "site": null }
   },
   {
     "title": "Is Juan Dela Cruz Better than Johnny in Jailbreaking LLMs?",
