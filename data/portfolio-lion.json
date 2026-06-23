@@ -69,7 +69,7 @@
     "tags": ["nlp", "filipino"],
     "summary": "Tagalog homographs (words with identical spellings but different meanings, disambiguated by diacritical marks) lack sufficient annotated resources for automatic restoration. This project introduces a novel diacritized Tagalog corpus of 40 commonly used homographs, along with a linguistic analysis using collocation graphs and transformer-based model training framed as a sentence-level classification task. A Tagalog RoBERTa-based model achieves at least 90% accuracy on 17 of 19 homographs, with six models surpassing 99%, suggesting that transformers may be overkill for this task. This was completed as my undergraduate thesis.",
     "thoughts": "This was my first real exposure to training and evaluating NLP models end-to-end. It was also my first exposure to deep learning models, starting directly with transformers (pretty hardcore).",
-    "links": { "repo": "https://github.com/thelionlies/TDR-transformer-based-models", "paper": null, "slides": null, "site": null }
+    "links": { "repo": "https://github.com/thelionlies/TDR-transformer-based-models", "paper": "https://drive.google.com/file/d/1a3OTbrWUvXakKE_HFG9BNWfd-UaJ5Lv7/view?usp=sharing", "slides": "https://drive.google.com/file/d/1B4ElYK5Cg_acEgAuuQWtkUNgoRUuFZkH/view?usp=sharing", "site": null }
   },
   {
     "title": "Tagalog Diacritic Restoration using LSTM-Based Autoencoders",
