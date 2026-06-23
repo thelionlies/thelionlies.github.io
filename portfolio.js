@@ -6,8 +6,8 @@ const bar = document.getElementById('tag-filters');
 const isLayon = window.location.pathname.includes('/layon/');
 const dataPath = isLayon ? '../data/portfolio-layon.json' : 'data/portfolio-lion.json';
 
-const linkLabels = { repo: 'Repo', paper: 'Paper', slides: 'Slides', site: 'Site', video: 'Video' };
-const typeLabels = { research: 'Research', software: 'Software', online: 'Online', print: 'Print' };
+const linkLabels = { repo: 'Repo', paper: 'Paper', arxiv: 'arXiv', demo: 'Demo', slides: 'Slides', site: 'Site', video: 'Video' };
+const typeLabels = { research: 'Research', project: 'Project', online: 'Online', print: 'Print' };
 
 let visible = [];
 try {
@@ -25,9 +25,21 @@ const card = document.createElement('article');
 card.className = 'card';
 card.dataset.tags = tags.join(' ');
 
+const header = document.createElement('div');
+header.className = 'card-header';
+
 const title = document.createElement('h3');
 title.textContent = entry.title;
-card.appendChild(title);
+header.appendChild(title);
+
+if (tags.includes('featured')) {
+  const badge = document.createElement('span');
+  badge.className = 'featured-badge';
+  badge.textContent = '★ Featured';
+  header.appendChild(badge);
+}
+
+card.appendChild(header);
 
 const visibleTags = tags.filter(t => t !== 'featured');
 if (visibleTags.length) {
@@ -59,7 +71,7 @@ if (entry.summary) {
 if (entry.thoughts) {
   const thoughtsLabel = document.createElement('p');
   thoughtsLabel.className = 'thoughts-label';
-  thoughtsLabel.textContent = 'Reflection';
+  thoughtsLabel.textContent = 'Brief Reflection';
   card.appendChild(thoughtsLabel);
 
   const thoughtsText = document.createElement('p');
@@ -93,12 +105,21 @@ const featured = visible.filter(
 e => Array.isArray(e.tags) && e.tags.includes('featured')
 );
 
+const featuredOrder = [
+'Graph-Based Analysis of Customer-Merchant Payment Networks',
+'PACUTE: Phonology-, Affix-, and Character-level Understanding of Tokens for Filipino',
+'BEA: Blue Eagle Assistant',
+'We Are Convinced That Persuasion is Linear and Bilingual in LLMs',
+];
+
 featured.sort((a, b) => {
-const order = { software: 0, research: 1 };
-return (order[a.type] ?? 99) - (order[b.type] ?? 99);
+const ai = featuredOrder.indexOf(a.title);
+const bi = featuredOrder.indexOf(b.title);
+return (ai === -1 ? featuredOrder.length : ai) - (bi === -1 ? featuredOrder.length : bi);
 });
 
 let featuredGroup = null;
+let featuredDivider = null;
 if (featured.length) {
 featuredGroup = document.createElement('section');
 featuredGroup.className = 'portfolio-group featured-group';
@@ -111,15 +132,18 @@ featuredGroup.appendChild(label);
 featured.forEach(entry => featuredGroup.appendChild(buildCard(entry)));
 list.appendChild(featuredGroup);
 
+featuredDivider = document.createElement('hr');
+featuredDivider.className = 'featured-divider';
+list.appendChild(featuredDivider);
+
 }
 
-const typeOrder = ['software', 'research', 'online', 'print'];
+const typeOrder = ['research', 'project', 'online', 'print'];
 
 const types = [];
 const byType = new Map();
 
 visible
-.filter(entry => !(Array.isArray(entry.tags) && entry.tags.includes('featured')))
 .forEach(entry => {
 const type = entry.type || '';
 
@@ -166,6 +190,9 @@ function applyFilter(tag) {
 if (featuredGroup) {
 featuredGroup.style.display = tag ? 'none' : '';
 }
+if (featuredDivider) {
+featuredDivider.style.display = tag ? 'none' : '';
+}
 
 groupEls.forEach(group => {
   if (group === featuredGroup) return;
@@ -202,12 +229,18 @@ const allBtn = makeBtn('All', null);
 allBtn.classList.add('active');
 bar.appendChild(allBtn);
 
-if (tagSet.has('featured')) {
-bar.appendChild(makeBtn('Featured', 'featured'));
-}
+const tagPriority = ['featured', 'ai-safety', 'filipino-nlp', 'ai-engineering', 'finance-economics'];
 
-tagSet.forEach(tag => {
-if (tag === 'featured') return;
-bar.appendChild(makeBtn(tag, tag));
+const orderedTags = [...tagSet].sort((a, b) => {
+const ai = tagPriority.indexOf(a);
+const bi = tagPriority.indexOf(b);
+const aRank = ai === -1 ? tagPriority.length : ai;
+const bRank = bi === -1 ? tagPriority.length : bi;
+if (aRank !== bRank) return aRank - bRank;
+return a.localeCompare(b);
+});
+
+orderedTags.forEach(tag => {
+bar.appendChild(makeBtn(tag === 'featured' ? 'Featured' : tag, tag));
 });
 })();

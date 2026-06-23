@@ -67,6 +67,11 @@ hr {
   margin: 20px 0;
 }
 
+.featured-divider {
+  border-top: 2px solid var(--accent);
+  margin: 1.6rem 0;
+}
+
 header nav {
   display: flex;
   align-items: center;
@@ -82,7 +87,6 @@ nav a {
   transition: color 0.15s ease;
 }
 
-nav a:visited,
 nav a:hover {
   color: var(--text);
   text-decoration: none;
@@ -329,6 +333,14 @@ input:checked + .slider:before {
   margin-top: 0.4rem;
 }
 
+#portfolio-list .category-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: var(--accent);
+}
+
 .quick-summary .category-label {
   margin: 0 0 0.4rem;
 }
@@ -379,6 +391,12 @@ input:checked + .slider:before {
   justify-content: space-between;
   align-items: baseline;
   gap: 12px;
+}
+
+.featured-badge {
+  font-size: 0.78rem;
+  color: var(--accent);
+  white-space: nowrap;
 }
 
 .card-date {
