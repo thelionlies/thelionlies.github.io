@@ -347,15 +347,25 @@ input:checked + .slider:before {
   margin: 0 0 0.3rem;
 }
 
-.card-summary,
 .card > p {
   color: var(--muted);
   margin: 0 0 0.5rem;
 }
 
+.card > p.card-summary {
+  color: var(--accent);
+}
+
 .card-translation {
   font-style: italic;
   font-size: 0.85rem;
+}
+
+.thoughts-label {
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0.4rem 0 0.2rem;
 }
 
 .card-header {
@@ -413,7 +423,7 @@ input:checked + .slider:before {
   pointer-events: all;
 }
 
-/* First-visit persona toast */
+/* Persona-switch toast */
 .toast {
   position: fixed;
   bottom: 24px;
