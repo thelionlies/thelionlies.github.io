@@ -218,7 +218,8 @@ groupEls.forEach(group => {
   let anyVisible = false;
 
   group.querySelectorAll('.card').forEach(card => {
-    const match = !tag || card.dataset.tags.split(' ').includes(tag);
+    const cardTags = card.dataset.tags.split(' ');
+    const match = tag ? cardTags.includes(tag) : !cardTags.includes('featured');
     card.style.display = match ? '' : 'none';
     if (match) anyVisible = true;
   });
@@ -253,6 +254,11 @@ const target = document.getElementById('entry-' + slugify(raw));
 if (!target) return;
 
 selectTag(null);
+
+const group = target.closest('.portfolio-group');
+if (group) group.style.display = '';
+target.style.display = '';
+
 target.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
