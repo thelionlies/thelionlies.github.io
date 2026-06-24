@@ -6,7 +6,7 @@ const bar = document.getElementById('tag-filters');
 const isLayon = window.location.pathname.includes('/layon/');
 const dataPath = isLayon ? '../data/portfolio-layon.json' : 'data/portfolio-lion.json';
 
-const linkLabels = { repo: 'Repo', paper: 'Paper', arxiv: 'arXiv', demo: 'Demo', slides: 'Slides', site: 'Site', video: 'Video' };
+const linkLabels = { repo: 'Repo', paper: 'Paper', arxiv: 'arXiv', demo: 'Demo', slides: 'Slides', video: 'Video' };
 const typeLabels = { research: 'Research', project: 'Project', online: 'Online', print: 'Print' };
 
 let visible = [];
@@ -18,12 +18,21 @@ list.innerHTML = '<p>Could not load portfolio entries. Make sure the site is ser
 return;
 }
 
-function buildCard(entry) {
+function slugify(text) {
+return String(text).toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+}
+
+function buildCard(entry, canonical) {
 const tags = Array.isArray(entry.tags) ? entry.tags : [];
 
 const card = document.createElement('article');
 card.className = 'card';
 card.dataset.tags = tags.join(' ');
+
+if (canonical) {
+  const slug = entry.links && entry.links.link ? entry.links.link : entry.title;
+  card.id = 'entry-' + slugify(slug);
+}
 
 const header = document.createElement('div');
 header.className = 'card-header';
@@ -81,7 +90,7 @@ if (entry.thoughts) {
 }
 
 const links = entry.links || {};
-const linkEntries = Object.entries(links).filter(([, url]) => url);
+const linkEntries = Object.entries(links).filter(([key, url]) => key !== 'link' && url);
 if (linkEntries.length) {
   const row = document.createElement('div');
   row.className = 'card-links';
@@ -109,6 +118,7 @@ const featuredOrder = [
 'Graph-Based Analysis of Customer-Merchant Payment Networks',
 'PACUTE: Phonology-, Affix-, and Character-level Understanding of Tokens for Filipino',
 'BEA: Blue Eagle Assistant',
+'Volatility Modeling on the USD-PHP Exchange Rate using ARMA-GARCH Models',
 'We Are Convinced That Persuasion is Linear and Bilingual in LLMs',
 ];
 
@@ -138,7 +148,7 @@ list.appendChild(featuredDivider);
 
 }
 
-const typeOrder = ['research', 'project', 'online', 'print'];
+const typeOrder = ['project', 'research', 'online', 'print'];
 
 const types = [];
 const byType = new Map();
@@ -162,6 +172,14 @@ return i === -1 ? typeOrder.length : i;
 
 types.sort((a, b) => orderOf(a) - orderOf(b));
 
+byType.forEach(entries => {
+entries.sort((a, b) => {
+const af = Array.isArray(a.tags) && a.tags.includes('featured') ? 0 : 1;
+const bf = Array.isArray(b.tags) && b.tags.includes('featured') ? 0 : 1;
+return af - bf;
+});
+});
+
 types.forEach(type => {
 const group = document.createElement('section');
 group.className = 'portfolio-group';
@@ -173,7 +191,7 @@ if (type) {
   group.appendChild(label);
 }
 
-byType.get(type).forEach(entry => group.appendChild(buildCard(entry)));
+byType.get(type).forEach(entry => group.appendChild(buildCard(entry, true)));
 list.appendChild(group);
 
 });
@@ -210,20 +228,35 @@ groupEls.forEach(group => {
 
 }
 
+function selectTag(tag) {
+bar.querySelectorAll('.tag-btn').forEach(b => b.classList.toggle('active', b.dataset.tag === (tag || '')));
+applyFilter(tag);
+}
+
 function makeBtn(label, tag) {
 const btn = document.createElement('button');
 btn.textContent = label;
 btn.className = 'tag-btn';
+btn.dataset.tag = tag || '';
 
-btn.addEventListener('click', () => {
-  bar.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  applyFilter(tag);
-});
+btn.addEventListener('click', () => selectTag(tag));
 
 return btn;
 
 }
+
+function goToHash() {
+const raw = window.location.hash.replace(/^#/, '');
+if (!raw) return;
+
+const target = document.getElementById('entry-' + slugify(raw));
+if (!target) return;
+
+selectTag(null);
+target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+window.addEventListener('hashchange', goToHash);
 
 const allBtn = makeBtn('All', null);
 allBtn.classList.add('active');
@@ -243,4 +276,6 @@ return a.localeCompare(b);
 orderedTags.forEach(tag => {
 bar.appendChild(makeBtn(tag === 'featured' ? 'Featured' : tag, tag));
 });
+
+goToHash();
 })();

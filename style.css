@@ -425,6 +425,9 @@ input:checked + .slider:before {
   color: var(--accent);
   text-decoration: none !important;
   transition: background 0.15s ease, color 0.15s ease;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
 }
 
 .link-btn:hover {
