@@ -338,7 +338,7 @@ input:checked + .slider:before {
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: none;
-  color: var(--accent);
+  color: var(--muted);
 }
 
 .quick-summary .category-label {
