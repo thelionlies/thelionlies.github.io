@@ -4,7 +4,7 @@
     "type": "research",
     "tags": ["ai-safety", "filipino-nlp"],
     "summary": "Philippine cultural heritage sites are underrepresented in multimodal AI benchmarks, leaving VLMs untested on local heritage recognition tasks. This project develops a multimodal AI benchmark for recognizing Philippine cultural heritage sites, created during a research internship at the Nara Institute of Science and Technology (NAIST). On track for submission to O-COCOSDA 2026.",
-    "thoughts": "I started this project in Japan as part of my internship at NAIST, my first time working in an international research environment. It was fun to dedicate an entire month to researching vision-language models, learning from co-interns and adviser Ouchi-Sensei. It was also my first time experiencing winter. I didn't like winter. After that, I definitely appreciated the Philippines' humidity more.",
+    "thoughts": "I started this project during my research internship at NAIST in Japan. It was a great experience spending an entire month focused on research and learning from my adviser, Ouchi-sensei. It was also my first time experiencing winter. I quickly realized it wasn't for me. Coming back home gave me a newfound appreciation for the Philippines' humidity.",
     "links": { "repo": "https://github.com/thelionlies/TanawPamana", "paper": null, "arxiv": null, "demo": null, "slides": "https://canva.link/fc1esnn756xdxld", "link": "tanawpamana" }
   },
   {
@@ -12,7 +12,7 @@
     "type": "research",
     "tags": ["ai-safety", "filipino-nlp", "featured"],
     "summary": "Standard tokenizers systematically misalign token boundaries with morpheme boundaries in Filipino, a language with productive infixation, reduplication, and diacritic-driven lexical distinctions. PACUTE is a diagnostic benchmark of 4,600 tasks across six compositional levels that localizes where morphological understanding breaks down. Open-weight models perform near chance on morpheme decomposition regardless of scale; frontier models recover individual affixes but remain far below character-level ceilings on compositional tasks. Submitted to EMNLP 2026. arXiv preprint available.",
-    "thoughts": "This was my first time doing research with experienced researchers in the field. I learned a lot of best practices from them. Given their stronger technical backgrounds, my role on the team leaned more toward linguistics.",
+    "thoughts": "This was my first opportunity to conduct research alongside experienced researchers in the field, and I learned a great deal from observing their workflow and research practices. Given their strong technical expertise, I naturally took on a more linguistics-focused role within the team.",
     "links": { "repo": "https://github.com/raileymontalan/pacute-bench", "paper": null, "arxiv": "https://arxiv.org/abs/2606.15144", "demo": null, "slides": null, "link": "pacute" }
   },
   {
@@ -20,7 +20,7 @@
     "type": "research",
     "tags": ["ai-safety", "filipino-nlp", "featured"],
     "summary": "LLM chatbots now carry substantial persuasive power, yet little is known about whether persuasion is a structured internal property of these models. Using diff-of-means activation analysis on Zeng et al.'s persuasion taxonomy, we find five techniques converge on a single linear direction (minimum pairwise cosine similarity 0.77), causally sufficient to increase judged persuasiveness via activation steering (44.4 → 51.3 mean score). Critically, we test causal cross-lingual transfer: steering with English-derived directions on Tagalog prompts and vice versa, both show increased persuasiveness and high cross-lingual representational similarity (0.66 average cosine similarity). Submitted to the APART Global South AI Safety Hackathon.",
-    "thoughts": "I worked on this hackathon even on the day of my graduation. Three of the most stressful days I've had. I think this is also one of my most technical projects so far. I did mechanistic interpretability on LLMs, diving into activations and doing linear probing and steering, as well as AI evaluation.",
+    "thoughts": "I worked on this hackathon even on the day of my graduation, making it one of the most intense three-day stretches I've experienced. It was also one of my most technical projects. I’d probably need more than five minutes to fully explain what I did to someone unfamiliar with the area.",
     "links": { "repo": "https://github.com/thelionlies/apart-global-south-persuasion-project", "paper": "https://drive.google.com/file/d/1d_c-pUMclnYaYc0aI5pYxFazKNuIs67-/view?usp=drive_link", "demo": null, "slides": null, "link": "persuasion" }
   },
   {
@@ -28,7 +28,7 @@
     "type": "research",
     "tags": ["ai-safety", "filipino-nlp"],
     "summary": "Persuasive prompts can jailbreak LLMs, and low-resource languages have shown higher jailbreak susceptibility. This project tests whether Filipino persuasive prompts outperform English ones in jailbreaking LLMs. Filipino prompts achieved a 62% jailbreak rate versus 48% for English and were most effective at eliciting harmful content related to physical harm, hate speech, and illegal activities. Done as part of the TARA Program, a technical AI alignment course focused on the APAC region.",
-    "thoughts": "We were only supposed to do one project in TARA, and I already had one with folks from Sydney. But as part of my advocacy, I pursued this independently to test AI safety in Filipino. I learned a lot about model limits under adversarial requests and the nuances of API calls across different providers.",
+    "thoughts": "We were only supposed to do one project in TARA, and I already had one with folks from Sydney, but as part of my advocacy I pursued this independently to explore AI safety in Filipino. Through this work, I learned a lot about model limitations under adversarial requests, as well as the practical nuances of working with APIs across different providers.",
     "links": { "repo": "https://github.com/thelionlies/juan-dela-cruz", "paper": null, "demo": null, "slides": "https://canva.link/ajwe6r3pcixz2ql", "link": "juan-dela-cruz" }
   },
   {
@@ -36,7 +36,7 @@
     "type": "research",
     "tags": ["ai-safety"],
     "summary": "Closed models deployed in multi-agent systems may become misaligned through exposure to other misaligned agents, yet existing evaluations do not reliably predict this drift. This project develops evaluations to detect model drift from the Assistant Axis (Anthropic) when exposed to harmful agents, using real scenarios from Moltbook posts as a sandbox. Drift detection showed limited reliability; the current hypothesis is that the axis itself may need to be redefined. Ongoing independent research in collaboration with researchers from Sydney and Gigascale Labs, done as part of the TARA Program.",
-    "thoughts": "I worked on this with people from Sydney, in partnership with Gigascale Labs (AI safety startup). It was challenging to work across time zones with an international team, but I really enjoyed working with Geoff, Ayush, and Stephen. Such talented people. Admittedly, the project was ambitious for a two-week window — exactly why it's worth continuing. Learned a lot about multi-agent system design.",
+    "thoughts": "I worked on this with a team based in Sydney in partnership with Gigascale Labs, an AI safety startup. It was challenging collaborating across time zones in an international setup, but I really enjoyed working with Geoff, Ayush, and Stephen. The project was quite ambitious for a two-week window, which is exactly why I think it’s worth continuing. I also learned about OpenClaw and Moltbook.",
     "links": { "repo": "https://github.com/GeoffPidcock/pinchguard", "paper": null, "demo": null, "slides": "https://docs.google.com/presentation/d/1sYu7loZMuMsSy-iyPIuUhztEvKcJmX-JrQkrasDbnVk/edit?usp=sharing", "link": "multi-agent-drift" }
   },
   {
@@ -44,7 +44,7 @@
     "type": "research",
     "tags": ["ai-safety", "filipino-nlp"],
     "summary": "LLMs are increasingly consulted on time-sensitive topics, yet their knowledge currency and stance-taking behavior on current affairs remain poorly understood. This project develops a framework for evaluating LLM stance-taking, with a case study on the Sara Duterte impeachment. The main contribution is a three-category taxonomy of current affairs based on epistemic determinacy. Key findings: Claude provided the most confident and expressive responses on stance-requiring questions, and models were generally less detailed in Tagalog than in English. Results are preliminary. Final project for AI Safety Diliman's AI Governance Accelerator, in partnership with SIGLA Research Center. Write-up forthcoming via SIGLA.",
-    "thoughts": "This was my first time using Inspect for evaluations, and it was pretty fun. I also learned a lot about API calling, particularly OpenRouter and tool calling through it. I got to visit the SIGLA office (research center on disinformation) and worked there for a day. Fun people.",
+    "thoughts": "This was my first time using Inspect for evaluations, and it felt pretty straightforward. I also learned a lot about API calling, especially OpenRouter and tool-calling patterns through it. I even got to visit the SIGLA office (a research center focused on disinformation) and spent a day working there.",
     "links": { "repo": "https://github.com/thelionlies/sara-duterte-impeachment-evals", "paper": null, "demo": null, "slides": "https://canva.link/pi3w4f9p5aspg3x", "link": "stance-taking" }
   },
   {
@@ -52,7 +52,7 @@
     "type": "research",
     "tags": ["filipino-nlp", "machine-learning"],
     "summary": "Stopword removal is a routine preprocessing step in NLP pipelines, but its effect on Filipino NLP tasks is untested. This study defines five stopword set variants and evaluates their impact on classical ML models across Filipino NLP tasks. The conclusion is that stopword removal has minimal impact on performance, suggesting that it may often be unnecessary for Filipino NLP, though case-by-case judgment is still important. This was completed as part of a master’s course project.",
-    "thoughts": "Honestly, this was a routine project for me, but I used the opportunity to verify an assumption I had been making. Also released the stopword sets as a standalone repo for the community.",
+    "thoughts": "Turns out stopwords aren’t very useful in Filipino. Depends on the task, of course.",
     "links": { "repo": "https://github.com/thelionlies/filipino-stopwords", "paper": null, "demo": null, "slides": "https://canva.link/1hty2inxcetdkqz", "link": "stopwords-classical", "video": "https://drive.google.com/file/d/1uy9q2Zl6sagkjkDbSDt-u5j80TA_NcyG/view?usp=sharing" }
   },
   {
@@ -60,7 +60,7 @@
     "type": "research",
     "tags": ["filipino-nlp", "big-data", "machine-learning"],
     "summary": "This is an extension of the classical ML stopwords study using big data methods (GCP, BigQuery, and PySpark) across the same five stopword set variants. The results are consistent: stopword removal does not meaningfully affect Filipino NLP task performance at scale either. This was completed as part of a project for a master’s course.",
-    "thoughts": "It was really hard to learn cloud tools on my own. My honest takeaway is that the best way to learn cloud is in an organizational setting, where you use it regularly and have people to ask. Still, I’m glad I pushed through it.",
+    "thoughts": "It was really hard to learn cloud tools on basic projects. My honest takeaway is that the best way to learn cloud is in an organizational setting, where you use it regularly and have people to ask. Still, I’m glad I pushed through it.",
     "links": { "repo": "https://github.com/thelionlies/filipino-stopwords", "paper": null, "demo": null, "slides": "https://canva.link/t6pv3ch7rl0skfs", "link": "stopwords-bigdata", "video": "https://drive.google.com/file/d/19OyWrUTEzCZ0723dkub3xqY5ZLv3E_HB/view" }
   },
   {
@@ -84,7 +84,7 @@
     "type": "research",
     "tags": ["finance-economics"],
     "summary": "Dengue remains a major public health concern in the Philippines, with seasonal surges placing significant strain on healthcare systems. This study models weekly dengue incidence in Iloilo using time series analysis to identify short-term and multi-year seasonal patterns. The best-fit model, SARIMA(0,1,1)×(0,1,1)_156, suggests weekly incidence is influenced by recent case counts and three-year seasonal patterns. Forecasts project surges around mid-2023 and 2024, aligning with known annual patterns. Results may inform the timing of seek-and-destroy operations on mosquito breeding sites and hospital resource allocation.",
-    "thoughts": "Taking time series in master's made me appreciate it more. I appreciated how much you can interpret each part of the method and not only the results. Also, modeling dengue felt meaningful. I missed modeling real-life phenomena outside language and LLMs.",
+    "thoughts": "Taking time series in my master’s made me appreciate it much more. I liked how interpretable each part of the method is and not just the final results.",
     "links": { "repo": "https://github.com/thelionlies/dengue-sarima-forecasting", "paper": "https://drive.google.com/file/d/1FsDm-SHfiT6y19dnadWp0Jtyn68t9FxZ/view?usp=sharing", "demo": null, "slides": null, "link": "dengue-sarima" }
   },
   {
@@ -100,7 +100,7 @@
     "type": "project",
     "tags": ["graph-ml", "machine-learning", "finance-economics", "featured"],
     "summary": "Conventional transaction analysis based on frequency or spending misses distinctive preference signals between customers and merchants. This study models customer-merchant payment data as a bipartite graph and introduces the Merchant Importance Score (MIS), a novel edge-weighting scheme capturing how uniquely important a merchant is to a customer relative to the broader ecosystem. Applied to Private Wealth (PW) customers of BPI, one of the top Philippine banks, as a case study, MIS-based analysis surfaces a strong behavioral signature concentrated in a specific type of upscale dining, which is invisible to baseline methods. The study also feeds MIS-derived similarity profiles into a graph neural network, identifying non-PW customers with high latent PW affinity. This led to actionable insights such as promoting the interests highlighted by MIS and surfacing candidate PW customers from the non-PW pool. This is my master's capstone project in collaboration with BPI.",
-    "thoughts": "I did this capstone project solo in one year and I am incredibly proud of it. Sucks that I am under NDA so I can't share resources, but the partner bank definitely enjoyed the results. This is my favorite project because I applied NLP techniques (my true love) in a finance setting (my mistress?). It is like the culmination of everything I learned from undergraduate to masters: graph theory, NLP techniques, financial modeling, and network analysis. And it is my brain child! I owned every single part of it.",
+    "thoughts": "I spent a year building this capstone project on my own, and I'm incredibly proud of how it turned out. Unfortunately, it's under NDA, so I can't share the code or resources, but I'm grateful that our partner bank was happy with the results. This is probably my favorite project because it brought together my interest in (my first love) with a finance application (my mistress?). It felt like the culmination of everything I learned from undergraduate to masters: graph theory, NLP techniques, financial modeling, and network analysis.",
     "links": { "repo": null, "paper": null, "demo": null, "slides": null, "link": "graph-payment-networks" }
   },
   {
@@ -116,7 +116,7 @@
     "type": "project",
     "tags": ["finance-economics", "web"],
     "summary": "Household economic data from the Family Income and Expenditure Survey (FIES) in CALABARZON is not easily explorable without technical tools. FIES Viewer is a Django web application that makes this data browsable and queryable. Done as a project course requirement for masters.",
-    "thoughts": "I haven't practiced Django since, so I'd struggle to rebuild it from scratch, but I appreciated getting familiar with the framework and working with real government data.",
+    "thoughts": "I haven't practiced Django since, so I'd struggle to rebuild it from scratch, but I appreciated getting familiar with the framework.",
     "links": { "repo": "https://github.com/thelionlies/fies-viewer", "paper": null, "demo": null, "slides": null, "link": "fies-viewer" }
   },
   {
@@ -124,7 +124,7 @@
     "type": "project",
     "tags": ["simulation"],
     "summary": "Two-party elections involve complex social influence dynamics that simple models fail to capture. SIMS is a Java-based election simulation grounded in Social Impact Theory (Nowak, Szamrej & Latané, 1990), with a GUI and dynamic social influence modeling.",
-    "thoughts": "I still don't know why a master's in data science had us writing Java. But I'm kinda glad it did; I'm no longer intimidated by it.",
+    "thoughts": "I still don't know why a master's in data science had us writing Java. But I'm kinda glad it did. I'm no longer intimidated by it.",
     "links": { "repo": "https://github.com/thelionlies/SIMS-Social-Impact-Mapping-Simulation", "paper": null, "demo": null, "slides": null, "link": "sims" }
   }
 ]
