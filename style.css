@@ -379,7 +379,23 @@ input:checked + .slider:before {
   font-size: 0.85rem;
 }
 
-.thoughts-label {
+.more-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  margin: 0;
+  text-decoration: underline;
+}
+
+.more-btn:hover {
+  color: var(--accent);
+}
+
+.card-label {
   font-size: 0.8rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;

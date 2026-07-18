@@ -73,20 +73,50 @@ if (entry.translation) {
 if (entry.summary) {
   const summary = document.createElement('p');
   summary.className = 'card-summary';
-  summary.textContent = entry.summary;
+  summary.appendChild(document.createTextNode(entry.summary + ' '));
   card.appendChild(summary);
+
+  if (entry.description) {
+    const moreBtn = document.createElement('button');
+    moreBtn.type = 'button';
+    moreBtn.className = 'more-btn';
+    moreBtn.textContent = 'More';
+    summary.appendChild(moreBtn);
+
+    const description = document.createElement('p');
+    description.className = 'card-summary';
+    description.hidden = true;
+    description.appendChild(document.createTextNode(entry.description + ' '));
+    card.appendChild(description);
+
+    const lessBtn = document.createElement('button');
+    lessBtn.type = 'button';
+    lessBtn.className = 'more-btn';
+    lessBtn.textContent = 'Less';
+    description.appendChild(lessBtn);
+
+    moreBtn.addEventListener('click', () => {
+      description.hidden = false;
+      moreBtn.hidden = true;
+    });
+
+    lessBtn.addEventListener('click', () => {
+      description.hidden = true;
+      moreBtn.hidden = false;
+    });
+  }
 }
 
-if (entry.thoughts) {
-  const thoughtsLabel = document.createElement('p');
-  thoughtsLabel.className = 'thoughts-label';
-  thoughtsLabel.textContent = 'Brief Reflection';
-  card.appendChild(thoughtsLabel);
+if (entry.reflection) {
+  const reflectionLabel = document.createElement('p');
+  reflectionLabel.className = 'card-label';
+  reflectionLabel.textContent = 'Brief Reflection';
+  card.appendChild(reflectionLabel);
 
-  const thoughtsText = document.createElement('p');
-  thoughtsText.className = 'thoughts-text';
-  thoughtsText.textContent = entry.thoughts;
-  card.appendChild(thoughtsText);
+  const reflectionText = document.createElement('p');
+  reflectionText.className = 'thoughts-text';
+  reflectionText.textContent = entry.reflection;
+  card.appendChild(reflectionText);
 }
 
 const links = entry.links || {};
@@ -129,7 +159,6 @@ return (ai === -1 ? featuredOrder.length : ai) - (bi === -1 ? featuredOrder.leng
 });
 
 let featuredGroup = null;
-let featuredDivider = null;
 if (featured.length) {
 featuredGroup = document.createElement('section');
 featuredGroup.className = 'portfolio-group featured-group';
@@ -141,10 +170,6 @@ featuredGroup.appendChild(label);
 
 featured.forEach(entry => featuredGroup.appendChild(buildCard(entry)));
 list.appendChild(featuredGroup);
-
-featuredDivider = document.createElement('hr');
-featuredDivider.className = 'featured-divider';
-list.appendChild(featuredDivider);
 
 }
 
@@ -172,14 +197,6 @@ return i === -1 ? typeOrder.length : i;
 
 types.sort((a, b) => orderOf(a) - orderOf(b));
 
-byType.forEach(entries => {
-entries.sort((a, b) => {
-const af = Array.isArray(a.tags) && a.tags.includes('featured') ? 0 : 1;
-const bf = Array.isArray(b.tags) && b.tags.includes('featured') ? 0 : 1;
-return af - bf;
-});
-});
-
 types.forEach(type => {
 const group = document.createElement('section');
 group.className = 'portfolio-group';
@@ -199,27 +216,33 @@ list.appendChild(group);
 const tagSet = new Set(
 visible.flatMap(e => Array.isArray(e.tags) ? e.tags : [])
 );
+tagSet.delete('featured');
 
-if (!bar || tagSet.size === 0) return;
+if (!bar) return;
 
 const groupEls = list.querySelectorAll('.portfolio-group');
+const defaultTag = featuredGroup ? 'featured' : 'all';
 
 function applyFilter(tag) {
+const showFeatured = tag === 'featured';
+
 if (featuredGroup) {
-featuredGroup.style.display = tag ? 'none' : '';
-}
-if (featuredDivider) {
-featuredDivider.style.display = tag ? 'none' : '';
+featuredGroup.style.display = showFeatured ? '' : 'none';
 }
 
 groupEls.forEach(group => {
   if (group === featuredGroup) return;
 
+  if (showFeatured) {
+    group.style.display = 'none';
+    return;
+  }
+
   let anyVisible = false;
 
   group.querySelectorAll('.card').forEach(card => {
     const cardTags = card.dataset.tags.split(' ');
-    const match = tag ? cardTags.includes(tag) : !cardTags.includes('featured');
+    const match = tag === 'all' ? true : cardTags.includes(tag);
     card.style.display = match ? '' : 'none';
     if (match) anyVisible = true;
   });
@@ -230,7 +253,7 @@ groupEls.forEach(group => {
 }
 
 function selectTag(tag) {
-bar.querySelectorAll('.tag-btn').forEach(b => b.classList.toggle('active', b.dataset.tag === (tag || '')));
+bar.querySelectorAll('.tag-btn').forEach(b => b.classList.toggle('active', b.dataset.tag === tag));
 applyFilter(tag);
 }
 
@@ -238,37 +261,29 @@ function makeBtn(label, tag) {
 const btn = document.createElement('button');
 btn.textContent = label;
 btn.className = 'tag-btn';
-btn.dataset.tag = tag || '';
+btn.dataset.tag = tag;
 
-btn.addEventListener('click', () => selectTag(tag));
+btn.addEventListener('click', () => {
+  if (window.location.hash === '#' + tag) {
+    selectTag(tag);
+  } else {
+    window.location.hash = tag;
+  }
+});
 
 return btn;
 
 }
 
-function goToHash() {
-const raw = window.location.hash.replace(/^#/, '');
-if (!raw) return;
-
-const target = document.getElementById('entry-' + slugify(raw));
-if (!target) return;
-
-selectTag(null);
-
-const group = target.closest('.portfolio-group');
-if (group) group.style.display = '';
-target.style.display = '';
-
-target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+if (featuredGroup) {
+const featuredBtn = makeBtn('Featured', 'featured');
+bar.appendChild(featuredBtn);
 }
 
-window.addEventListener('hashchange', goToHash);
-
-const allBtn = makeBtn('All', null);
-allBtn.classList.add('active');
+const allBtn = makeBtn('All', 'all');
 bar.appendChild(allBtn);
 
-const tagPriority = ['featured', 'ai-safety', 'filipino-nlp', 'ai-engineering', 'finance-economics'];
+const tagPriority = ['ai-safety', 'filipino-nlp', 'ai-engineering', 'finance-economics'];
 
 const orderedTags = [...tagSet].sort((a, b) => {
 const ai = tagPriority.indexOf(a);
@@ -280,8 +295,41 @@ return a.localeCompare(b);
 });
 
 orderedTags.forEach(tag => {
-bar.appendChild(makeBtn(tag === 'featured' ? 'Featured' : tag, tag));
+bar.appendChild(makeBtn(tag, tag));
 });
 
-goToHash();
+const validTags = new Set(['all', ...orderedTags]);
+if (featuredGroup) validTags.add('featured');
+
+function handleHash() {
+const raw = window.location.hash.replace(/^#/, '');
+
+if (!raw) {
+  selectTag(defaultTag);
+  return;
+}
+
+if (validTags.has(raw)) {
+  selectTag(raw);
+  return;
+}
+
+const target = document.getElementById('entry-' + slugify(raw));
+if (!target) {
+  selectTag(defaultTag);
+  return;
+}
+
+selectTag('all');
+
+const group = target.closest('.portfolio-group');
+if (group) group.style.display = '';
+target.style.display = '';
+
+target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+window.addEventListener('hashchange', handleHash);
+
+handleHash();
 })();
