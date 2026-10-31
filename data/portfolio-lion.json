@@ -14,7 +14,7 @@
     "type": "research",
     "tags": ["filipino-nlp", "featured"],
     "coauthors": "L.R. Fermin, Z.A. Africa, R.I. Flores",
-    "summary": "A dataset and evaluation protocols for automatic restoration of diacritical marks in Tagalog text. Accepted to O-COCOSDA 2026.",
+    "summary": "A dataset for training and evaluating automatic restoration of diacritical marks in Tagalog text. Accepted to O-COCOSDA 2026.",
     "description": "Homographs are words that share identical spelling but differ in meaning and pronunciation. In Tagalog, these distinctions are disambiguated through tuldik (diacritical marks), which are rarely preserved in contemporary text. This scarcity limits diacritic restoration, a capability useful for downstream tasks such as prosody selection in text-to-speech synthesis. TDR is an annotated corpus of 40 frequent Tagalog homographs constructed from news text, alongside a collocation-driven retrieval method to expand the dataset and reduce class imbalance among minor variants. We show that TDR supplies a capability absent from pretrained models, and that this capability can be learned by small, inexpensive models as well as fine-tuned LLMs.",
     "thought": "My undergraduate thesis. I really pushed to get it published because I did not want to live with the what-ifs.",
     "links": { "repo": "https://github.com/thelionlies/tdr-evals", "huggingface": "https://huggingface.co/datasets/tdr-research-team/tdr-dataset", "arxiv": "https://arxiv.org/abs/2610.17597", "link": "tdr" }
