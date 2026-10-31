@@ -87,7 +87,7 @@
 
   const footer = document.createElement('footer');
   footer.className = 'site-footer';
-  footer.innerHTML = `<p class="layon-hint">© 2026 Ivan Yuri De Leon. All rights reserved.</p>`;
+  footer.innerHTML = `<p class="layon-hint">© 2026 ${isLayon ? 'Láyon' : 'Ivan Yuri De Leon'}. All rights reserved.</p>`;
   document.body.appendChild(footer);
 
   if (sessionStorage.getItem('personaToggled')) {
