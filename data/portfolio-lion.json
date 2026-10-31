@@ -1,146 +1,86 @@
 [
   {
-    "title": "TanawPamana: A Multimodal AI Benchmark for Recognizing Philippine Cultural Heritage Sites",
+    "title": "TanawPamana: Benchmarking Vision-Language Models on Philippine Cultural Heritage Sites",
     "type": "research",
-    "tags": ["ai-safety", "filipino-nlp"],
-    "summary": "Evaluating VLMs on their recognition capability and knowledge of Philippine landmarks. Submitted to O-COCOSDA 2026.",
-    "reflection": "This project started during my research internship at NAIST in Japan. I continued it under the advisement of Ouchi-sensei.",
-    "description": "Philippine cultural heritage sites are underrepresented in multimodal AI benchmarks, leaving VLMs untested on local heritage recognition tasks. This project introduces the Tanawpamana Dataset, a repository of Philippine heritage site images with metadata based on the Talapamana registry of the National Commission for Culture and the Arts. It also introduces the Tanawpamana Benchmark, comprising 4,068 tasks designed to evaluate models' recognition and knowledge of heritage sites.",
-    "links": { "repo": "https://github.com/thelionlies/TanawPamana", "paper": null, "arxiv": null, "demo": null, "slides": "https://canva.link/fc1esnn756xdxld", "link": "tanawpamana" }
+    "tags": ["ai-safety", "filipino-nlp", "featured"],
+    "coauthors": "H. Ouchi, S. Sakti",
+    "summary": "A multimodal benchmark for evaluating VLMs on Philippine cultural heritage site recognition and knowledge. Accepted to O-COCOSDA 2026.",
+    "description": "Vision-language models are increasingly used to identify and describe places, yet their recognition and knowledge of specific cultures remain poorly understood, particularly in underrepresented regions such as the Philippines. This study introduces the Tanawpamana Dataset, a repository of Philippine heritage site images with metadata based on the Talapamana registry of the National Commission for Culture and the Arts of the Philippines. We also introduce the Tanawpamana Benchmark, comprising 4,046 tasks designed to evaluate models' recognition and knowledge of heritage sites. Evaluating seven vision-language models, we find that they struggle more with fine-grained visual discrimination among similar heritage sites than with coarse recognition, and that their geographic knowledge is weaker when inferred from image inputs than from text.",
+    "thought": "This started during my research internship at NAIST in Japan, under the thorough advisement of Ouchi-sensei and the support of Sakti-sensei. After the internship, I took it independently and saw it through to publication. Proud solo work.",
+    "links": { "repo": "https://github.com/thelionlies/TanawPamana", "huggingface": "https://huggingface.co/datasets/thelionlies/tanawpamana-dataset", "arxiv": "https://arxiv.org/abs/2610.17596", "link": "tanawpamana" }
+  },
+  {
+    "title": "TDR: Tagalog Diacritic Restoration Dataset",
+    "type": "research",
+    "tags": ["filipino-nlp", "featured"],
+    "coauthors": "L.R. Fermin, Z.A. Africa, R.I. Flores",
+    "summary": "A dataset and evaluation protocols for automatic restoration of diacritical marks in Tagalog text. Accepted to O-COCOSDA 2026.",
+    "description": "Homographs are words that share identical spelling but differ in meaning and pronunciation. In Tagalog, these distinctions are disambiguated through tuldik (diacritical marks), which are rarely preserved in contemporary text. This scarcity limits diacritic restoration, a capability useful for downstream tasks such as prosody selection in text-to-speech synthesis. TDR is an annotated corpus of 40 frequent Tagalog homographs constructed from news text, alongside a collocation-driven retrieval method to expand the dataset and reduce class imbalance among minor variants. We show that TDR supplies a capability absent from pretrained models, and that this capability can be learned by small, inexpensive models as well as fine-tuned LLMs.",
+    "thought": "My undergraduate thesis. I really pushed to get it published because I did not want to live with the what-ifs.",
+    "links": { "repo": "https://github.com/thelionlies/tdr-evals", "huggingface": "https://huggingface.co/datasets/tdr-research-team/tdr-dataset", "arxiv": "https://arxiv.org/abs/2610.17597", "link": "tdr" }
   },
   {
     "title": "PACUTE: Phonology-, Affix-, and Character-level Understanding of Tokens for Filipino",
     "type": "research",
     "tags": ["ai-safety", "filipino-nlp", "featured"],
-    "summary": "Testing whether AI language models can understand word structure in Filipino, with its complex infixes, reduplication, and diacritic marks. Submitted to EMNLP 2026.",
-    "reflection": "This was my first time collaborating as an independent researcher with experienced people in the field. I learned a lot from observing their workflow and research practices.",
-    "description": "Standard tokenizers systematically misalign token boundaries with morpheme boundaries in Filipino, a language with productive infixation, reduplication, and diacritic-driven lexical distinctions. PACUTE is a diagnostic benchmark of 4,600 tasks across six compositional levels that localizes where morphological understanding breaks down. Open-weight models perform near chance on morpheme decomposition regardless of scale; frontier models recover individual affixes but remain far below character-level ceilings on compositional tasks.",
-    "links": { "repo": "https://github.com/raileymontalan/pacute-bench", "paper": null, "arxiv": "https://arxiv.org/abs/2606.15144", "demo": null, "slides": null, "link": "pacute"}
+    "coauthors": "J.R. Montalan, D.D. Africa, J.P. Layacan, R.I. Flores, L.C. Gamboa",
+    "summary": "A diagnostic benchmark that tests whether LLMs understand Filipino word structure: infixes, reduplication, and diacritics.",
+    "description": "Large language models process text as sequences of subword tokens, which can obscure the character-level and morphological structure underlying word formation. This limitation is most acute for languages with non-concatenative morphology, where standard tokenizers systematically misalign token boundaries with morpheme boundaries. PACUTE is a diagnostic benchmark of 4,600 tasks designed to evaluate morphological understanding in Filipino, a language with productive infixation, reduplication, and diacritic-driven lexical distinctions typically absent from written text. It includes a hierarchical diagnostic framework of six compositional levels that localizes where morphological understanding breaks down. Open-weight models perform near chance on morpheme decomposition regardless of scale. Frontier models perform much better, often recovering individual affixes, but remain far below their character-level ceilings on compositional tasks. These results identify productive morphological composition, not character access alone, as the persistent bottleneck for Filipino word-structure understanding.",
+    "thought": "This was my first time collaborating as an independent researcher with more experienced people in the field. I looked up to all of them as mentor figures.",
+    "links": { "repo": "https://github.com/raileymontalan/pacute-bench", "arxiv": "https://arxiv.org/abs/2606.15144", "link": "pacute" }
+  },
+  {
+    "title": "FilSwitch: A Filipino-English Code-Switched Speech Dataset",
+    "type": "research",
+    "tags": ["filipino-nlp", "featured"],
+    "coauthors": "S. Angeles, E. Panugayan, C. Cheng, T. Tiam-Lee",
+    "summary": "A read-speech dataset for evaluating and adapting ASR systems to Filipino-English code-switching. Accepted to O-COCOSDA 2026.",
+    "description": "Filipino-English code-switching (Taglish) is widespread in the Philippines but largely absent from ASR training data. FilSwitch is a read-speech dataset of 3,513 utterances (8.9 hours) recorded by 152 speakers. News-derived sentences were filtered for code-switching, readability, and appropriateness, then manually validated and transcript-normalized. Among tested models, fine-tuning Whisper on the dataset reduced word error rate from 13.62% to 9.24%, demonstrating the value of domain-matched data for Taglish ASR.",
+    "thought": "Worked with Sherwynn, whom I met during my internship at NAIST.",
+    "links": { "huggingface": "https://huggingface.co/datasets/qwerttyuiiop/FilSwitch", "paper": "https://drive.google.com/file/d/1uZfjSsS3U5Ngnpb86Kfh_-t7Hi2GxZdI/view?usp=sharing", "link": "filswitch" }
+  },
+  {
+    "title": "Last Translation Benchmark",
+    "type": "research",
+    "tags": ["ai-safety"],
+    "coauthors": "V. Zouhar, N. Bafna, M. Choudhary, M. Züfle, S. Rajaee, P. Chen, J. Vamvas, et al.",
+    "summary": "A benchmark for evaluating the upper limits of machine translation quality. Dataset contributor.",
+    "description": "Machine translation has improved dramatically, but it remains unclear what the ceiling actually looks like. This benchmark attempts to define and measure that upper bound, drawing on contributed datasets from researchers across multiple languages and contexts.",
+    "thought": "Fun to be a contributor to an open source study like this.",
+    "links": { "arxiv": "https://arxiv.org/abs/2609.04173", "link": "last-translation" }
   },
   {
     "title": "We Are Convinced That Persuasion is Linear and Bilingual in LLMs",
     "type": "research",
     "tags": ["ai-safety", "filipino-nlp", "featured"],
-    "summary": "Study on whether persuasion in LLMs is represented as a single, linear direction inside the model, and whether it works the same way in English and Tagalog.",
-    "reflection": "This was a product of a three-day hackathon, one of the most intense stretches I've experienced. I worked on it even on the day of my Master's graduation.",
-    "description": "LLM chatbots now carry substantial persuasive power, yet little is known about whether persuasion is a structured internal property of these models. Using diff-of-means activation analysis on Zeng et al.'s persuasion taxonomy, we find five techniques converge on a single linear direction (minimum pairwise cosine similarity 0.77), causally sufficient to increase judged persuasiveness via activation steering (44.4 → 51.3 mean score). Critically, we test causal cross-lingual transfer: steering with English-derived directions on Tagalog prompts and vice versa, both show increased persuasiveness and high cross-lingual representational similarity (0.66 average cosine similarity). Submitted to the APART Global South AI Safety Hackathon.",
-    "links": { "repo": "https://github.com/thelionlies/apart-global-south-persuasion-project", "paper": "https://drive.google.com/file/d/1d_c-pUMclnYaYc0aI5pYxFazKNuIs67-/view?usp=drive_link", "demo": null, "slides": null, "link": "persuasion" }
-  },
-  {
-    "title": "Is Juan Dela Cruz Better than Johnny in Jailbreaking LLMs?",
-    "type": "research",
-    "tags": ["ai-safety", "filipino-nlp"],
-    "summary": "Comparing Filipino and English persuasive prompts for jailbreaking LLMs.",
-    "reflection": "This was one of my two projects in the TARA Program. It shows why I am passionate about Filipino-focused studies in AI safety as it highlights the danger of overlooking low-resource languages.",
-    "description": "Persuasive prompts can jailbreak LLMs, and low-resource languages have shown higher jailbreak susceptibility. This project tests whether Filipino persuasive prompts outperform English ones in jailbreaking LLMs. Filipino prompts achieved a 62% jailbreak rate versus 48% for English and were most effective at eliciting harmful content related to physical harm, hate speech, and illegal activities. Done as part of the TARA Program, a technical AI alignment course focused on the APAC region.",
-    "links": { "repo": "https://github.com/thelionlies/juan-dela-cruz", "paper": null, "demo": null, "slides": "https://canva.link/ajwe6r3pcixz2ql", "link": "juan-dela-cruz" }
-  },
-  {
-    "title": "Can Multi-Agent Networks Cause Single-Agent Drift?",
-    "type": "research",
-    "tags": ["ai-safety"],
-    "summary": "Evaluations for detecting misalignment drift in multi-agent LLM systems.",
-    "reflection": "This was one of my two projects in the TARA Program. I worked on it with a team based in Sydney in partnership with Gigascale Labs, an AI safety startup. I really enjoyed working with Geoff, Ayush, and Stephen.",
-    "description": "Closed models deployed in multi-agent systems may become misaligned through exposure to other misaligned agents, yet existing evaluations do not reliably predict this drift. This project develops evaluations to detect model drift from the Assistant Axis (Anthropic) when exposed to harmful agents, using real scenarios from Moltbook posts as a sandbox. Drift detection showed limited reliability; the current hypothesis is that the axis itself may need to be redefined. Ongoing independent research in collaboration with researchers from Sydney and Gigascale Labs, done as part of the TARA Program.",
-    "links": { "repo": "https://github.com/GeoffPidcock/pinchguard", "paper": null, "demo": null, "slides": "https://docs.google.com/presentation/d/1sYu7loZMuMsSy-iyPIuUhztEvKcJmX-JrQkrasDbnVk/edit?usp=sharing", "link": "multi-agent-drift" }
-  },
-  {
-    "title": "Evaluating LLM Stance-Taking on Philippine Current Affairs",
-    "type": "research",
-    "tags": ["ai-safety", "filipino-nlp"],
-    "summary": "A framework testing how confidently and consistently LLMs take stances on Philippine current affairs in English and Tagalog.",
-    "reflection": "This is my first exposure to Inspect and AI evals.",
-    "description": "LLMs are increasingly consulted on time-sensitive topics, yet their knowledge currency and stance-taking behavior on current affairs remain poorly understood. This project develops a framework for evaluating LLM stance-taking, with a case study on the Sara Duterte impeachment. The main contribution is a three-category taxonomy of current affairs based on epistemic determinacy. Key findings: Claude provided the most confident and expressive responses on stance-requiring questions, and models were generally less detailed in Tagalog than in English. Results are preliminary. Final project for AI Safety Diliman's AI Governance Accelerator, in partnership with SIGLA Research Center. Write-up forthcoming via SIGLA.",
-    "links": { "repo": "https://github.com/thelionlies/sara-duterte-impeachment-evals", "paper": null, "demo": null, "slides": "https://canva.link/pi3w4f9p5aspg3x", "link": "stance-taking" }
-  },
-  {
-    "title": "Do Stopwords Really Matter? A Classical ML Empirical Study on Filipino NLP",
-    "type": "research",
-    "tags": ["filipino-nlp", "machine-learning"],
-    "summary": "Study testing whether removing stopwords actually helps classical machine learning models on Filipino text.",
-    "reflection": "Turns out stopword removal isn't usually useful in Filipino.",
-    "description": "Stopword removal is a routine preprocessing step in NLP pipelines, but its effect on Filipino NLP tasks is untested. This study defines five stopword set variants and evaluates their impact on classical ML models across Filipino NLP tasks. The conclusion is that stopword removal has minimal impact on performance, suggesting that it may often be unnecessary for Filipino NLP, though case-by-case judgment is still important. This was completed as part of a master’s course project.",
-    "links": { "repo": "https://github.com/thelionlies/filipino-stopwords", "paper": null, "demo": null, "slides": "https://canva.link/1hty2inxcetdkqz", "link": "stopwords-classical", "video": "https://drive.google.com/file/d/1uy9q2Zl6sagkjkDbSDt-u5j80TA_NcyG/view?usp=sharing" }
-  },
-  {
-    "title": "Do Stopwords Still Matter? A Big Data Empirical Study on Filipino NLP",
-    "type": "research",
-    "tags": ["filipino-nlp", "big-data", "machine-learning"],
-    "summary": "Big data extension of the Filipino stopwords study using GCP and PySpark.",
-    "reflection": "It was really hard to learn cloud tools on basic projects. My honest takeaway is that the best way to learn cloud is in an organizational setting, where you use it regularly.",
-    "description": "This is an extension of the classical ML stopwords study using big data methods (GCP, BigQuery, and PySpark) across the same five stopword set variants. The results are consistent: stopword removal does not meaningfully affect Filipino NLP task performance at scale either. This was completed as part of a project for a master’s course.",
-    "links": { "repo": "https://github.com/thelionlies/filipino-stopwords", "paper": null, "demo": null, "slides": "https://canva.link/t6pv3ch7rl0skfs", "link": "stopwords-bigdata", "video": "https://drive.google.com/file/d/19OyWrUTEzCZ0723dkub3xqY5ZLv3E_HB/view" }
-  },
-  {
-    "title": "Advancing Tagalog Diacritic Restoration: Corpus Expansion, Linguistic Analysis, and Transformer-Based Methods",
-    "type": "research",
-    "tags": ["filipino-nlp", "machine-learning"],
-    "summary": "Training transformer-based models for automatic Tagalog diacritic restoration.",
-    "reflection": "This was my first exposure to deep learning. Starting with transformers right away is pretty hardcore.",
-    "description": "Tagalog homographs (words with identical spellings but different meanings, disambiguated by diacritical marks) lack sufficient annotated resources for automatic restoration. This project introduces a novel diacritized Tagalog corpus of 40 commonly used homographs, along with a linguistic analysis using collocation graphs and transformer-based model training framed as a sentence-level classification task. A Tagalog RoBERTa-based model achieves at least 90% accuracy on 17 of 19 homographs, with six models surpassing 99%, suggesting that transformers may be overkill for this task. This was completed as my undergraduate thesis.",
-    "links": { "repo": "https://github.com/thelionlies/TDR-transformer-based-models", "paper": "https://drive.google.com/file/d/1a3OTbrWUvXakKE_HFG9BNWfd-UaJ5Lv7/view?usp=sharing", "demo": null, "slides": "https://drive.google.com/file/d/1B4ElYK5Cg_acEgAuuQWtkUNgoRUuFZkH/view?usp=sharing", "link": "diacritic-transformer" }
-  },
-  {
-    "title": "Tagalog Diacritic Restoration using LSTM-Based Autoencoders",
-    "type": "research",
-    "tags": ["filipino-nlp", "machine-learning"],
-    "summary": "LSTM autoencoder for automatic retoration of missing Tagalog diacritics.",
-    "reflection": "This was my first exposure to training autoencoders.",
-    "description": "Tagalog homographs require diacritical marks for disambiguation, yet prior work on automatic restoration is scarce. This project implements a character-level LSTM autoencoder that takes raw sentences and outputs the correctly diacritized form, evaluated on text from Virgilio Almario’s Sari-Samot blogs. This was completed as a requirement for a master’s course.",
-    "links": { "repo": "https://github.com/thelionlies/TDR-LSTM-based-autoencoders", "paper": "https://drive.google.com/file/d/1o8ZUdmyN73cthw9Nwb5dDRHaOCRcSzl3/view?usp=sharing", "demo": null, "slides": null, "link": "diacritic-lstm" }
-  },
-  {
-    "title": "Time Series Analysis and Forecasting on Dengue Case Incidence in Iloilo using SARIMA Models",
-    "type": "research",
-    "tags": ["finance-economics"],
-    "summary": "Using SARIMA models to forecast seasonal dengue outbreaks and support public health planning.",
-    "reflection": "I like time series forecasting. I appreciated taking it again in my Master's.",
-    "description": "Dengue remains a major public health concern in the Philippines, with seasonal surges placing significant strain on healthcare systems. This study models weekly dengue incidence in Iloilo using time series analysis to identify short-term and multi-year seasonal patterns. The best-fit model, SARIMA(0,1,1)×(0,1,1)_156, suggests weekly incidence is influenced by recent case counts and three-year seasonal patterns. Forecasts project surges around mid-2023 and 2024, aligning with known annual patterns. Results may inform the timing of seek-and-destroy operations on mosquito breeding sites and hospital resource allocation.",
-    "links": { "repo": "https://github.com/thelionlies/dengue-sarima-forecasting", "paper": "https://drive.google.com/file/d/1FsDm-SHfiT6y19dnadWp0Jtyn68t9FxZ/view?usp=sharing", "demo": null, "slides": null, "link": "dengue-sarima" }
-  },
-  {
-    "title": "Volatility Modeling on the USD-PHP Exchange Rate using ARMA-GARCH Models",
-    "type": "research",
-    "tags": ["finance-economics", "featured"],
-    "summary": "Using ARMA-GARCH models to capture volatility clustering in the USD-PHP exchange rate.",
-    "reflection": "Having worked extensively with deep learning models and read about AI risk stemming from their black-box nature, I have developed a deeper appreciation for mathematically rigorous models like ARIMA-GARCH. Transparent assumptions, interpretable outputs, and all.",
-    "description": "The Philippine peso has fluctuated significantly against the US dollar, reaching a historic low of PHP 59.00/USD in November 2024, its weakest level in over two and a half years. These swings influence inflation, import costs, and purchasing power. This study models daily PHP/USD exchange rates from July 2024 to July 2025 using a joint ARIMA-GARCH approach. An ARIMA(1,2,2) model captures mean dynamics; GARCH(1,1) accounts for time-varying volatility. Forecasts suggest mild continued depreciation with widening volatility bands reflecting short-term uncertainty. Results may support policymakers, investors, and financial analysts in navigating currency risk.",
-    "links": { "repo": "https://github.com/thelionlies/usd-php-arima-garch-forecasting", "paper": "https://drive.google.com/file/d/132Wm2Pn3we3aQ98AA6qhcVqtWlHHaB-Q/view?usp=sharing", "demo": null, "slides": null, "link": "usd-php-garch" }
+    "summary": "Tests whether persuasion is represented as a single linear direction inside LLMs, and whether this transfers cross-lingually between English and Tagalog.",
+    "description": "LLM chatbots now carry substantial persuasive power, yet little is known about whether persuasion is a structured internal property of these models. Using diff-of-means activation analysis on Zeng et al.'s persuasion taxonomy, we find five techniques converge on a single linear direction (minimum pairwise cosine similarity 0.77), causally sufficient to increase judged persuasiveness via activation steering (44.4 to 51.3 mean score). We also test causal cross-lingual transfer: steering with English-derived directions on Tagalog prompts and vice versa, both show increased persuasiveness and high cross-lingual representational similarity (0.66 average cosine similarity). Submitted to the APART Global South AI Safety Hackathon.",
+    "thought": "The title plays on the word: convinced, persuasion. But honestly, I am not convinced anymore. The paper has obvious limitations. Still, it was meaningful work. A three-day hackathon I pushed through even on the day of my graduation, and my first real attempt at mechanistic interpretability.",
+    "links": { "repo": "https://github.com/thelionlies/apart-global-south-persuasion-project", "paper": "https://drive.google.com/file/d/1d_c-pUMclnYaYc0aI5pYxFazKNuIs67-/view?usp=drive_link", "link": "persuasion" }
   },
   {
     "title": "Graph-Based Analysis of Customer-Merchant Payment Networks",
-    "type": "project",
-    "tags": ["graph-ml", "machine-learning", "finance-economics", "featured"],
-    "summary": "I designed an affinity metric that measures how a customer distinctively prefers a merchant. This was done in collaboration with BPI.",
-    "reflection": "This was my capstone project for Master's, and it's probably my favorite work in this portfolio because I got to apply NLP techniques (my first love) in a financial domain.",
-    "description": "Conventional transaction analysis based on transaction frequency or total spending often misses distinctive preference signals between customers and merchants. This study models customer-merchant payment data as a bipartite graph and introduces the Merchant Importance Score (MIS), a novel edge-weighting scheme that captures how uniquely important a merchant is to a customer relative to other customers. Applied to Private Wealth (PW) customers of BPI, one of the Philippines' leading banks, as a case study, MIS-based analysis reveals a strong behavioral signature concentrated in a specific category of upscale dining that is invisible to baseline methods. The study further incorporates MIS-derived similarity profiles into a graph neural network to identify non-PW customers with high latent affinity for the PW segment. This led to actionable insights such as having merchants for targeted PW promotions and surfacing high-potential PW candidates from the non-PW customer pool.",
-    "links": { "repo": null, "paper": null, "demo": null, "slides": null, "link": "graph-payment-networks" }
+    "type": "professional",
+    "tags": ["ai-engineering"],
+    "summary": "Models customer-merchant payment data as a bipartite graph and introduces the Merchant Importance Score to capture distinctive customer preferences.",
+    "description": "Conventional transaction analysis based on frequency or total spending often misses how distinctively a customer prefers a particular merchant. This study models customer-merchant payment data as a bipartite graph and introduces the Merchant Importance Score (MIS), an edge-weighting scheme that captures how uniquely important a merchant is to a customer relative to others. Applied to Private Wealth customers of BPI, MIS-based analysis reveals a behavioral pattern concentrated in upscale dining that simpler methods miss. The study also incorporates MIS-derived similarity profiles into a graph neural network to surface non-PW customers with high affinity for the PW segment.",
+    "thought": "My master's capstone. It was my first experience working long-term with a client, and the closest thing I had to a real professional relationship before entering industry.",
+    "links": { "link": "graph-payment-networks" }
   },
   {
     "title": "BEA: Blue Eagle Assistant",
-    "type": "project",
-    "tags": ["ai-engineering", "web", "featured"],
-    "summary": "Multi-agent chatbot that answers Ateneo-related questions.",
-    "reflection": "I built this because, when I was still at Ateneo, I was usually too lazy to look through multiple sources online whenever I had university-related questions.",
-    "description": "Ateneo students lack a fast, policy-aware assistant for navigating university handbooks and contacts. BEA is an AI-powered chatbot built with Streamlit that answers student questions using handbook references, university policies, and contact information. Shockingly, the agent knows a bit about my background, probably because I was mentioned on the ADMU website. Final project for PSI AI Academy, an AI engineering course.",
-    "links": { "repo": "https://github.com/thelionlies/BEA-Blue-Eagle-Assistant", "paper": null, "demo": null, "slides": "https://canva.link/azci6f8xwtjyiaz", "link": "bea", "video": "https://drive.google.com/file/d/15kOYipf600o1dA6JGFFD34jcHX7FaIeK/view?usp=sharing" }
-  },
-  {
-    "title": "FIES Viewer",
-    "type": "project",
-    "tags": ["finance-economics", "web"],
-    "summary": "Web app for browsing Philippine household income and expenditure survey data.",
-    "reflection": "I haven't practiced Django since.",
-    "description": "Household economic data from the Family Income and Expenditure Survey (FIES) in CALABARZON is not easily explorable without technical tools. FIES Viewer is a Django web application that makes this data browsable and queryable. Done as a project course requirement for masters.",
-    "links": { "repo": "https://github.com/thelionlies/fies-viewer", "paper": null, "demo": null, "slides": null, "link": "fies-viewer" }
+    "type": "software",
+    "tags": [],
+    "summary": "A multi-agent AI chatbot that answers student questions using Ateneo handbook references and university policies.",
+    "description": "Ateneo students lack a fast, policy-aware assistant for navigating university handbooks and contacts. BEA is an AI-powered chatbot built with Streamlit that answers student questions using handbook references, university policies, and contact information. Final project for PSI AI Academy, an AI engineering course.",
+    "links": { "repo": "https://github.com/thelionlies/BEA-Blue-Eagle-Assistant", "slides": "https://canva.link/azci6f8xwtjyiaz", "video": "https://drive.google.com/file/d/15kOYipf600o1dA6JGFFD34jcHX7FaIeK/view?usp=sharing" }
   },
   {
     "title": "SIMS: Social Impact Mapping Simulation",
-    "type": "project",
-    "tags": ["simulation"],
-    "summary": "A gamified simulation of two-party elections, where voters shift their stance over time based on social influence.",
-    "reflection": "I still don't know why a master's in data science had us writing Java. But I'm kinda glad it did. I'm no longer intimidated by it.",
-    "description": "Two-party elections involve complex social influence dynamics that simple models fail to capture. SIMS is a Java-based election simulation with a GUI, where simulated voters are placed on a social network and choose between two political parties. Each voter's stance can shift over time based on the influence of nearby voters, grounded in Social Impact Theory (Nowak, Szamrej & Latané, 1990), letting users visually observe how opinion clusters and shifts emerge across the population.",
-    "links": { "repo": "https://github.com/thelionlies/SIMS-Social-Impact-Mapping-Simulation", "paper": null, "demo": null, "slides": null, "link": "sims" }
+    "type": "software",
+    "tags": [],
+    "summary": "Simulates two-party elections where voters shift stance over time based on social influence.",
+    "description": "Two-party elections involve complex social influence dynamics that simple models fail to capture. SIMS is a Java-based election simulation with a GUI, where simulated voters are placed on a social network and choose between two political parties. Each voter's stance can shift over time based on the influence of nearby voters, grounded in Social Impact Theory (Nowak, Szamrej & Latané, 1990).",
+    "links": { "repo": "https://github.com/thelionlies/SIMS-Social-Impact-Mapping-Simulation" }
   }
 ]

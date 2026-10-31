@@ -8,7 +8,8 @@
   const pageMap = {
     'index.html': 'home',
     'cv.html': 'cv',
-    'portfolio.html': 'portfolio',
+    'work.html': 'work',
+    'explore.html': 'explore',
     'writings.html': 'writings',
     'about.html': 'about',
   };
@@ -83,6 +84,11 @@
   }
 
   if (isLayon) document.body.classList.add('layon');
+
+  const footer = document.createElement('footer');
+  footer.className = 'site-footer';
+  footer.innerHTML = `<p class="layon-hint">© 2026 Ivan Yuri De Leon. All rights reserved.</p>`;
+  document.body.appendChild(footer);
 
   if (sessionStorage.getItem('personaToggled')) {
     sessionStorage.removeItem('personaToggled');

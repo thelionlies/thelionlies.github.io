@@ -1,0 +1,28 @@
+[
+  {
+    "title": "BEA: Blue Eagle Assistant",
+    "type": "project",
+    "summary": "Builds a multi-agent AI chatbot that answers student questions using Ateneo handbook references and university policies.",
+    "description": "Ateneo students lack a fast, policy-aware assistant for navigating university handbooks and contacts. BEA is an AI-powered chatbot built with Streamlit that answers student questions using handbook references, university policies, and contact information. Final project for PSI AI Academy, an AI engineering course.",
+    "links": { "repo": "https://github.com/thelionlies/BEA-Blue-Eagle-Assistant", "slides": "https://canva.link/azci6f8xwtjyiaz", "video": "https://drive.google.com/file/d/15kOYipf600o1dA6JGFFD34jcHX7FaIeK/view?usp=sharing" }
+  },
+  {
+    "title": "SIMS: Social Impact Mapping Simulation",
+    "type": "project",
+    "summary": "Simulates two-party elections where voters shift stance over time based on social influence.",
+    "description": "Two-party elections involve complex social influence dynamics that simple models fail to capture. SIMS is a Java-based election simulation with a GUI, where simulated voters are placed on a social network and choose between two political parties. Each voter's stance can shift over time based on the influence of nearby voters, grounded in Social Impact Theory (Nowak, Szamrej & Latané, 1990).",
+    "links": { "repo": "https://github.com/thelionlies/SIMS-Social-Impact-Mapping-Simulation" }
+  },
+  {
+    "title": "Linear Algebra Short Notes",
+    "type": "notes",
+    "summary": "Short notes for a long test in Linear Algebra during my master's, mainly covering inner products.",
+    "links": { "paper": "https://drive.google.com/file/d/1UR4LQY0edfjAuEi7-nffCH3WFB0WAVUN/view?usp=sharing" }
+  },
+  {
+    "title": "Bayesian Techniques",
+    "type": "notes",
+    "summary": "Notes for a Bayesian techniques class during my master's.",
+    "links": { "paper": "https://drive.google.com/file/d/1xwk1bNLGYZBQkjkDbSDt-u5j80TA_NcyG/view?usp=sharing" }
+  }
+]

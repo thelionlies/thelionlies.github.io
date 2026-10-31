@@ -6,8 +6,8 @@ const bar = document.getElementById('tag-filters');
 const isLayon = window.location.pathname.includes('/layon/');
 const dataPath = isLayon ? '../data/portfolio-layon.json' : 'data/portfolio-lion.json';
 
-const linkLabels = { repo: 'Repo', paper: 'Paper', arxiv: 'arXiv', demo: 'Demo', slides: 'Slides', video: 'Video' };
-const typeLabels = { research: 'Research', project: 'Project', online: 'Online', print: 'Print' };
+const linkLabels = { repo: 'Repo', paper: 'Paper', arxiv: 'arXiv', huggingface: 'HuggingFace', demo: 'Demo', slides: 'Slides', video: 'Video' };
+const typeLabels = { research: 'Academic Research', professional: 'Professional Work', software: 'Software', project: 'Project', online: 'Online', print: 'Print' };
 
 let visible = [];
 try {
@@ -41,27 +41,9 @@ const title = document.createElement('h3');
 title.textContent = entry.title;
 header.appendChild(title);
 
-if (tags.includes('featured')) {
-  const badge = document.createElement('span');
-  badge.className = 'featured-badge';
-  badge.textContent = '★ Featured';
-  header.appendChild(badge);
-}
 
 card.appendChild(header);
 
-const visibleTags = tags.filter(t => t !== 'featured');
-if (visibleTags.length) {
-  const tagRow = document.createElement('p');
-  tagRow.className = 'card-tags';
-  visibleTags.forEach(t => {
-    const span = document.createElement('span');
-    span.className = 'tag';
-    span.textContent = t;
-    tagRow.appendChild(span);
-  });
-  card.appendChild(tagRow);
-}
 
 if (entry.translation) {
   const translation = document.createElement('p');
@@ -83,41 +65,41 @@ if (entry.summary) {
     moreBtn.textContent = 'More';
     summary.appendChild(moreBtn);
 
+    const expanded = document.createElement('div');
+    expanded.hidden = true;
+
     const description = document.createElement('p');
     description.className = 'card-summary';
-    description.hidden = true;
-    description.appendChild(document.createTextNode(entry.description + ' '));
-    card.appendChild(description);
+    description.textContent = entry.description;
+    expanded.appendChild(description);
+
+    if (entry.thought) {
+      const thought = document.createElement('p');
+      thought.className = 'card-summary';
+      thought.textContent = entry.thought;
+      expanded.appendChild(thought);
+    }
 
     const lessBtn = document.createElement('button');
     lessBtn.type = 'button';
     lessBtn.className = 'more-btn';
     lessBtn.textContent = 'Less';
-    description.appendChild(lessBtn);
+    expanded.appendChild(lessBtn);
+
+    card.appendChild(expanded);
 
     moreBtn.addEventListener('click', () => {
-      description.hidden = false;
+      expanded.hidden = false;
       moreBtn.hidden = true;
     });
 
     lessBtn.addEventListener('click', () => {
-      description.hidden = true;
+      expanded.hidden = true;
       moreBtn.hidden = false;
     });
   }
 }
 
-if (entry.reflection) {
-  const reflectionLabel = document.createElement('p');
-  reflectionLabel.className = 'card-label';
-  reflectionLabel.textContent = 'Brief Reflection';
-  card.appendChild(reflectionLabel);
-
-  const reflectionText = document.createElement('p');
-  reflectionText.className = 'thoughts-text';
-  reflectionText.textContent = entry.reflection;
-  card.appendChild(reflectionText);
-}
 
 const links = entry.links || {};
 const linkEntries = Object.entries(links).filter(([key, url]) => key !== 'link' && url);
@@ -145,10 +127,10 @@ e => Array.isArray(e.tags) && e.tags.includes('featured')
 );
 
 const featuredOrder = [
-'Graph-Based Analysis of Customer-Merchant Payment Networks',
+'TanawPamana: Benchmarking Vision-Language Models on Philippine Cultural Heritage Sites',
+'TDR: Tagalog Diacritic Restoration Dataset',
+'FilSwitch: A Filipino-English Code-Switched Speech Dataset',
 'PACUTE: Phonology-, Affix-, and Character-level Understanding of Tokens for Filipino',
-'BEA: Blue Eagle Assistant',
-'Volatility Modeling on the USD-PHP Exchange Rate using ARMA-GARCH Models',
 'We Are Convinced That Persuasion is Linear and Bilingual in LLMs',
 ];
 
@@ -165,7 +147,7 @@ featuredGroup.className = 'portfolio-group featured-group';
 
 const label = document.createElement('p');
 label.className = 'category-label';
-label.textContent = 'Featured';
+label.textContent = 'Highlights';
 featuredGroup.appendChild(label);
 
 featured.forEach(entry => featuredGroup.appendChild(buildCard(entry)));
@@ -173,7 +155,7 @@ list.appendChild(featuredGroup);
 
 }
 
-const typeOrder = ['project', 'research', 'online', 'print'];
+const typeOrder = ['research', 'professional', 'software', 'project', 'online', 'print'];
 
 const types = [];
 const byType = new Map();
@@ -276,29 +258,14 @@ return btn;
 }
 
 if (featuredGroup) {
-const featuredBtn = makeBtn('Featured', 'featured');
+const featuredBtn = makeBtn('Highlights', 'featured');
 bar.appendChild(featuredBtn);
 }
 
 const allBtn = makeBtn('All', 'all');
 bar.appendChild(allBtn);
 
-const tagPriority = ['ai-safety', 'filipino-nlp', 'ai-engineering', 'finance-economics'];
-
-const orderedTags = [...tagSet].sort((a, b) => {
-const ai = tagPriority.indexOf(a);
-const bi = tagPriority.indexOf(b);
-const aRank = ai === -1 ? tagPriority.length : ai;
-const bRank = bi === -1 ? tagPriority.length : bi;
-if (aRank !== bRank) return aRank - bRank;
-return a.localeCompare(b);
-});
-
-orderedTags.forEach(tag => {
-bar.appendChild(makeBtn(tag, tag));
-});
-
-const validTags = new Set(['all', ...orderedTags]);
+const validTags = new Set(['all']);
 if (featuredGroup) validTags.add('featured');
 
 function handleHash() {

@@ -1,5 +1,12 @@
 [
   {
+    "title": "Inference on Panatang Makabayan",
+    "type": "online",
+    "tags": ["poetry"],
+    "summary": "An experiment in large language model inference. The Panatang Makabayan is cut after each of its words, and four language models are asked to finish it. Selected as a winning entry for Day 9 of the Santelmo Pambansang Hámon sa Pagtula 2026.",
+    "links": { "site": "https://thelionlies.github.io/panatang-makabayan/" }
+  },
+  {
     "title": "Mga Kuwentong Pambata",
     "translation": "Children's Stories",
     "type": "online",
