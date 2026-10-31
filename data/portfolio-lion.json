@@ -64,7 +64,7 @@
     "tags": ["ai-engineering"],
     "summary": "Models customer-merchant payment data as a bipartite graph and introduces the Merchant Importance Score to capture distinctive customer preferences.",
     "description": "Conventional transaction analysis based on frequency or total spending often misses how distinctively a customer prefers a particular merchant. This study models customer-merchant payment data as a bipartite graph and introduces the Merchant Importance Score (MIS), an edge-weighting scheme that captures how uniquely important a merchant is to a customer relative to others. Applied to Private Wealth customers of BPI, MIS-based analysis reveals a behavioral pattern concentrated in upscale dining that simpler methods miss. The study also incorporates MIS-derived similarity profiles into a graph neural network to surface non-PW customers with high affinity for the PW segment.",
-    "thought": "My master's capstone. It was my first experience working long-term with a client, and the closest thing I had to a real professional relationship before entering industry.",
+    "thought": "My master's capstone. It was my first experience working long-term with a client, and the closest thing I had to a real professional relationship before entering industry. Sucks that I cannot share results due to NDA.",
     "links": { "link": "graph-payment-networks" }
   },
   {
@@ -73,7 +73,8 @@
     "tags": [],
     "summary": "A multi-agent AI chatbot that answers student questions using Ateneo handbook references and university policies.",
     "description": "Ateneo students lack a fast, policy-aware assistant for navigating university handbooks and contacts. BEA is an AI-powered chatbot built with Streamlit that answers student questions using handbook references, university policies, and contact information. Final project for PSI AI Academy, an AI engineering course.",
-    "links": { "repo": "https://github.com/thelionlies/BEA-Blue-Eagle-Assistant", "slides": "https://canva.link/azci6f8xwtjyiaz", "video": "https://drive.google.com/file/d/15kOYipf600o1dA6JGFFD34jcHX7FaIeK/view?usp=sharing" }
+    "thought": "I mainly built this in my last year at ADMU as a lazy person. I personally used BEA for 4 months until graduation.",
+    "links": { "repo": "https://github.com/thelionlies/BEA-Blue-Eagle-Assistant", "slides": "https://canva.link/azci6f8xwtjyiaz" }
   },
   {
     "title": "SIMS: Social Impact Mapping Simulation",
@@ -81,6 +82,7 @@
     "tags": [],
     "summary": "Simulates two-party elections where voters shift stance over time based on social influence.",
     "description": "Two-party elections involve complex social influence dynamics that simple models fail to capture. SIMS is a Java-based election simulation with a GUI, where simulated voters are placed on a social network and choose between two political parties. Each voter's stance can shift over time based on the influence of nearby voters, grounded in Social Impact Theory (Nowak, Szamrej & Latané, 1990).",
-    "links": { "repo": "https://github.com/thelionlies/SIMS-Social-Impact-Mapping-Simulation" }
+    "thought": "Built as a final project for a course in my master's.",
+    "links": { "repo": "https://github.com/thelionlies/SIMS-Social-Impact-Mapping-Simulation", "demo": "https://thelionlies.github.io/sims/" }
   }
 ]
