@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Page Not Found</title>
+<link rel="stylesheet" href="/style.css">
+<script defer src="/nav.js"></script>
+</head>
+<body>
+
+<header id="header-container">
+  <noscript><nav><a href="/index.html">Home</a> <a href="/work.html">Work</a> <a href="/explore.html">Explore</a> <a href="/cv.html">Bio</a></nav></noscript>
+</header>
+
+<hr>
+
+<h2>Page not found</h2>
+
+<p>This page doesn't exist, or it has moved.</p>
+
+<p><a id="home-link" href="/index.html">Go to the homepage</a></p>
+
+<script>
+  if (location.pathname.includes('/layon/')) {
+    document.getElementById('home-link').href = '/layon/index.html';
+  }
+</script>
+
+</body>
+</html>

@@ -20,6 +20,7 @@ entries.forEach(entry => {
 
   const title = document.createElement('h3');
   title.textContent = entry.title;
+  if (entry.lang) title.lang = entry.lang;
   card.appendChild(title);
 
   if (entry.summary) {

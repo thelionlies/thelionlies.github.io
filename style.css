@@ -173,12 +173,47 @@ nav a.active {
   border: 1px solid var(--border);
 }
 
+/* Artist statement: Lion left, Láyon right, both full width */
+.statement p {
+  margin: 0 0 1.1rem;
+  text-align: justify;
+  hyphens: auto;
+}
+
+.statement .lion-voice,
+.statement .layon-voice {
+  width: 48%;
+}
+
+.statement .layon-voice {
+  margin-left: auto;
+}
+
+.statement .both {
+  margin-top: 1.6rem;
+}
+
+.statement .pair {
+  display: flex;
+  justify-content: space-between;
+}
+
+.statement .pair .layon-voice {
+  margin-left: 0;
+}
+
+@media (max-width: 700px) {
+  .statement p {
+    text-align: left;
+  }
+}
+
 .profile-portrait {
   width: 220px;
   height: 280px;
   object-fit: cover;
   object-position: center top;
-  border-radius: 0;
+  border-radius: 10px;
 }
 
 .profile-portrait-right {

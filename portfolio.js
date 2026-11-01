@@ -39,6 +39,8 @@ header.className = 'card-header';
 
 const title = document.createElement('h3');
 title.textContent = entry.title;
+// Entries with a translation have a Filipino title
+if (entry.lang || entry.translation) title.lang = entry.lang || 'fil';
 header.appendChild(title);
 
 

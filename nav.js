@@ -3,7 +3,9 @@
   const isLayon = parts.includes('layon');
   const inWritings = parts.includes('writings');
   const rawFile = parts[parts.length - 1] || '';
-  const fileName = rawFile.includes('.') ? rawFile : 'index.html';
+  const fileName = rawFile.includes('.') ? rawFile
+    : (!rawFile || rawFile === 'layon') ? 'index.html'
+    : rawFile + '.html';
 
   const pageMap = {
     'index.html': 'home',
@@ -13,7 +15,7 @@
     'writings.html': 'writings',
     'about.html': 'about',
   };
-  const currentPage = inWritings ? 'writings' : (pageMap[fileName] || 'home');
+  const currentPage = inWritings ? 'writings' : pageMap[fileName];
 
   const accent = isLayon ? '%238a9bb8' : '%233d4f66';
   const outerSquare = `<rect x='2' y='2' width='20' height='20' fill='none' stroke='${accent}' stroke-width='1.5'/>`;
