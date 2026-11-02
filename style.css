@@ -216,6 +216,47 @@ nav a.active {
   border-radius: 10px;
 }
 
+@keyframes hint-shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-4px); }
+  40%       { transform: translateX(4px); }
+  60%       { transform: translateX(-2px); }
+  80%       { transform: translateX(2px); }
+}
+
+
+.portrait-switch {
+  position: relative;
+  width: 220px;
+  height: 280px;
+  cursor: pointer;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.portrait-switch img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.portrait-switch .portrait-reveal {
+  opacity: 0;
+}
+
+.portrait-switch .portrait-cover {
+  transition: opacity 0.08s ease;
+  z-index: 1;
+}
+
+.switch.half .slider:before {
+  transform: translateX(12px);
+  transition: transform 0.3s ease;
+}
+
 .profile-portrait-right {
   float: right;
   margin: 0 0 16px 24px;
@@ -242,6 +283,15 @@ nav a.active {
     width: min(100%, 220px);
     height: auto;
     aspect-ratio: 11 / 14;
+  }
+
+  .portrait-switch {
+    width: min(100%, 220px);
+    height: auto;
+    aspect-ratio: 11 / 14;
+    margin: 0 auto 16px;
+    float: none;
+    display: block;
   }
 }
 
@@ -504,6 +554,7 @@ input:checked + .slider:before {
   font-size: 0.85rem;
   color: var(--muted);
   margin: 1rem 0;
+  text-align: center;
 }
 
 .layon-callout {
@@ -532,6 +583,14 @@ input:checked + .slider:before {
   opacity: 1;
   pointer-events: all;
 }
+
+
+
+body.shaking {
+  animation: hint-shake 0.45s ease 1;
+}
+
+
 
 /* Persona-switch toast */
 .toast {

@@ -129,7 +129,7 @@ e => Array.isArray(e.tags) && e.tags.includes('featured')
 );
 
 const featuredOrder = [
-'TanawPamana: Benchmarking Vision-Language Models on Philippine Cultural Heritage Sites',
+'Tanawpamana: Benchmarking Vision-Language Models on Philippine Cultural Heritage Sites',
 'TDR: Tagalog Diacritic Restoration Dataset',
 'FilSwitch: A Filipino-English Code-Switched Speech Dataset',
 'PACUTE: Phonology-, Affix-, and Character-level Understanding of Tokens for Filipino',

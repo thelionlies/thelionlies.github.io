@@ -92,6 +92,37 @@
   footer.innerHTML = `<p class="layon-hint">© 2026 ${isLayon ? 'Láyon' : 'Ivan Yuri De Leon'}. All rights reserved.</p>`;
   document.body.appendChild(footer);
 
+  const portraitSwitch = document.querySelector('.portrait-switch');
+  const switchLabel = document.querySelector('.switch');
+  if (portraitSwitch && switchLabel) {
+    const cover = portraitSwitch.querySelector('.portrait-cover');
+    const reveal = portraitSwitch.querySelector('.portrait-reveal');
+    let active = false;
+
+    const triggerHint = () => {
+      if (active) return;
+      active = true;
+      switchLabel.classList.add('half');
+      document.body.classList.add('shaking');
+      setTimeout(() => document.body.classList.remove('shaking'), 500);
+      reveal.style.opacity = 1;
+      cover.style.opacity = 0;
+      setTimeout(() => { cover.style.opacity = 1; }, 140);
+      setTimeout(() => { reveal.style.opacity = 0; switchLabel.classList.remove('half'); active = false; }, 280);
+    };
+
+    portraitSwitch.addEventListener('mouseenter', triggerHint);
+    portraitSwitch.addEventListener('touchstart', (e) => { e.preventDefault(); triggerHint(); }, { passive: false });
+
+    portraitSwitch.addEventListener('mouseleave', () => {
+      active = false;
+      cover.style.opacity = 1;
+      reveal.style.opacity = 0;
+      switchLabel.classList.remove('half');
+    });
+  }
+
+
   if (sessionStorage.getItem('personaToggled')) {
     sessionStorage.removeItem('personaToggled');
 
