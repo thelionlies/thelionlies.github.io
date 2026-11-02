@@ -288,10 +288,15 @@ nav a.active {
   .portrait-switch {
     width: min(100%, 220px);
     height: auto;
-    aspect-ratio: 11 / 14;
     margin: 0 auto 16px;
     float: none;
     display: block;
+  }
+
+  .portrait-switch::after {
+    content: '';
+    display: block;
+    padding-bottom: calc(14 / 11 * 100%);
   }
 }
 
