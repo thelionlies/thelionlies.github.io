@@ -112,7 +112,6 @@
     };
 
     portraitSwitch.addEventListener('mouseenter', triggerHint);
-    portraitSwitch.addEventListener('touchstart', (e) => { e.preventDefault(); triggerHint(); }, { passive: false });
 
     portraitSwitch.addEventListener('mouseleave', () => {
       active = false;
