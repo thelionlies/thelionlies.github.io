@@ -114,6 +114,37 @@
   footer.innerHTML = `<p class="layon-hint">© 2026 ${isLayon ? 'Láyon' : 'Ivan Yuri De Leon'}. All rights reserved.</p>`;
   document.body.appendChild(footer);
 
+  // Easter egg: hovering the portrait shakes the page, flashes the other
+  // persona's portrait and nudges the toggle halfway, a hint at the alter ego
+  const portraitSwitch = document.querySelector('.portrait-switch');
+  const switchLabel = document.querySelector('.switch');
+  if (portraitSwitch && switchLabel) {
+    const cover = portraitSwitch.querySelector('.portrait-cover');
+    const reveal = portraitSwitch.querySelector('.portrait-reveal');
+    let active = false;
+
+    const triggerHint = () => {
+      if (active) return;
+      active = true;
+      switchLabel.classList.add('half');
+      document.body.classList.add('shaking');
+      setTimeout(() => document.body.classList.remove('shaking'), 500);
+      reveal.style.opacity = 1;
+      cover.style.opacity = 0;
+      setTimeout(() => { cover.style.opacity = 1; }, 140);
+      setTimeout(() => { reveal.style.opacity = 0; switchLabel.classList.remove('half'); active = false; }, 280);
+    };
+
+    portraitSwitch.addEventListener('mouseenter', triggerHint);
+
+    portraitSwitch.addEventListener('mouseleave', () => {
+      active = false;
+      cover.style.opacity = 1;
+      reveal.style.opacity = 0;
+      switchLabel.classList.remove('half');
+    });
+  }
+
   let toggled = false;
   try {
     toggled = !!sessionStorage.getItem('personaToggled');
@@ -141,33 +172,6 @@
       else el._transform = null;
     };
     el._transform = requestAnimationFrame(tick);
-  }
-
-  // Easter egg: hovering the portrait glitches it, and for an instant the other
-  // persona shows through (portrait, name and role), a hint that there's someone else
-  const portrait = document.querySelector('.profile-portrait');
-  if (portrait && !reduceMotion) {
-    const ownSrc = portrait.getAttribute('src');
-    const otherSrc = isLayon ? '/images/lion.jpg' : '/images/layon.png';
-    new Image().src = otherSrc;  // preload, so the flash is instant
-    const nameEl = document.querySelector('#header-container h1');
-    const roleEl = document.querySelector('#header-container .profile-type');
-    const showOther = on => {
-      portrait.src = on ? otherSrc : ownSrc;
-      if (nameEl) nameEl.textContent = on ? other.name : persona.name;
-      if (roleEl) roleEl.textContent = on ? other.role : persona.role;
-    };
-    let busy = false;
-    portrait.addEventListener('mouseenter', () => {
-      if (busy) return;
-      busy = true;
-      portrait.classList.add('glitch');
-      setTimeout(() => showOther(true), 140);
-      setTimeout(() => showOther(false), 230);
-      setTimeout(() => showOther(true), 300);
-      setTimeout(() => showOther(false), 340);
-      setTimeout(() => { portrait.classList.remove('glitch'); busy = false; }, 480);
-    });
   }
 
   if (toggled) {

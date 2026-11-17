@@ -1,5 +1,10 @@
 [
   {
+    "title": "Moltbook Drift",
+    "summary": "Studies whether exposure to a social-media-style feed shifts an assistant model's immediate forced-choice preferences. TARA round 1 capstone with Ayush Kumar and Geoff Pidcock, in collaboration with Gigascale Laboratories.",
+    "url": "https://thelionlies.github.io/moltbook-drift/"
+  },
+  {
     "title": "SIMS: Social Impact Mapping Simulation",
     "summary": "A browser simulation of two-party elections where voters shift stance over time based on social influence. Grounded in Social Impact Theory (Nowak, Szamrej & Latané, 1990).",
     "url": "https://thelionlies.github.io/sims/"
