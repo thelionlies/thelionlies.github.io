@@ -1,34 +1,68 @@
+/* Softened palettes: neither extreme is pure, so text doesn't glare and the
+   switch between personas is a smaller jump. Both stay above WCAG AA. */
 :root {
-  --bg: #fbfaf7;
-  --text: #1d1a16;
+  --bg: #f3efe7;
+  --text: #2b2722;
   --muted: #6b6358;
-  --border: #e6e1d8;
+  --border: #dfd9ce;
   --accent: #3d4f66;
   --accent-soft: #e1e5ea;
-  --accent-contrast: #fbfaf7;
+  --accent-contrast: #f3efe7;
   --link: var(--accent);
 }
 
 body.layon {
-  --bg: #14131a;
-  --text: #ece8e2;
-  --muted: #9b9489;
-  --border: #2c2a33;
+  --bg: #1f1e25;
+  --text: #d6d1c8;
+  --muted: #98928a;
+  --border: #36343d;
   --accent: #8a9bb8;
   --accent-soft: #232a33;
-  --accent-contrast: #14131a;
+  --accent-contrast: #1f1e25;
   --link: var(--accent);
+}
+
+/* Always reserve the scrollbar's space, so the layout doesn't shift
+   between pages that scroll and pages that don't */
+html { scrollbar-gutter: stable; }
+
+/* Layout unit: everything spaces in multiples of the 28px background grid */
+:root {
+  --u: 28px;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 body {
   background: var(--bg);
   color: var(--text);
   font-family: Georgia, "Times New Roman", serif;
-  max-width: 720px;
-  margin: 100px auto;
+  max-width: 784px;
+  margin: 0 auto;
   line-height: 1.75;
-  padding: 0 22px;
+  padding: calc(var(--u) * 3) var(--u);
   transition: background 0.2s ease, color 0.2s ease;
+}
+
+/* Desktop header: name and role on the left, nav and toggle on the right,
+   sharing a baseline. Identical for both personas. */
+@media (min-width: 700px) {
+  #header-container {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    column-gap: calc(var(--u) * 2);
+    align-items: end;
+  }
+
+  #header-container .brand { grid-column: 1; grid-row: 1; }
+  #header-container .profile-type { grid-column: 1; grid-row: 2; }
+
+  #header-container #nav-container {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  body #header-container nav { margin: 0; flex-wrap: nowrap; }
+  body #header-container .switch { margin-left: 10px; }
 }
 
 h1, h2, h3 { font-weight: 600; }
@@ -42,6 +76,7 @@ h1, h2, h3 { font-weight: 600; }
 
 .brand h1 {
   margin: 0;
+  line-height: 1.15;
 }
 
 .logo {
@@ -50,8 +85,11 @@ h1, h2, h3 { font-weight: 600; }
 }
 
 h2 {
-  display: inline-block;
-  margin: 0.6rem 0 1.2rem;
+  display: block;
+  margin: 0 0 var(--u);
+  font-weight: 400;
+  font-size: 1.9rem;
+  line-height: 1.2;
 }
 
 a { color: var(--link); text-decoration: underline; text-underline-offset: 2px; }
@@ -90,9 +128,13 @@ nav a:hover {
   text-decoration: none;
 }
 
+/* Underline, not bold: bold text is wider and would shift the other tabs */
 nav a.active {
   color: var(--text);
-  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
 }
 
 .profile-type {
@@ -173,6 +215,32 @@ nav a.active {
   border: 1px solid var(--border);
 }
 
+/* Background dot grid (bg.js), behind content */
+.bg-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Persona toggle morphs between pages (cross-document view transition) */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.5s;
+  animation-timing-function: ease;
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+}
+
 /* Artist statement: Lion left, Láyon right, both full width */
 .statement p {
   margin: 0 0 1.1rem;
@@ -219,6 +287,22 @@ nav a.active {
 .profile-portrait-right {
   float: right;
   margin: 0 0 16px 24px;
+}
+
+/* Portrait easter egg (nav.js): a short shake while the other persona flashes through */
+.profile-portrait.glitch {
+  animation: portrait-glitch 0.48s steps(1, end);
+}
+
+@keyframes portrait-glitch {
+  0%   { transform: translate(0, 0); }
+  12%  { transform: translate(-3px, 1px); }
+  24%  { transform: translate(3px, -2px); filter: contrast(1.3); }
+  36%  { transform: translate(-2px, -1px) skewX(-2deg); }
+  48%  { transform: translate(2px, 2px); filter: none; }
+  60%  { transform: translate(-1px, 0); }
+  72%  { transform: translate(1px, -1px); }
+  100% { transform: translate(0, 0); }
 }
 
 @media (max-width: 700px) {
@@ -302,28 +386,32 @@ input:checked + .slider:before {
   font-family: Georgia, "Times New Roman", serif;
 }
 
+/* Filters: plain text toggles, the active one underlined */
 .tag-btn {
   background: none;
-  border: 1px solid var(--border);
-  color: var(--text);
-  font-family: inherit;
-  font-size: 0.85rem;
-  padding: 3px 12px;
+  border: none;
+  border-bottom: 1px solid transparent;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 2px 0;
+  margin: 0 20px 0 0;
   cursor: pointer;
-  margin: 0 6px 10px 0;
-  border-radius: 3px;
-  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  transition: color 0.15s ease, border-color 0.15s ease;
 }
 
-.tag-btn:hover,
+.tag-btn:hover { color: var(--text); }
+
 .tag-btn.active {
-  background: var(--accent);
-  color: var(--accent-contrast);
-  border-color: var(--accent);
+  color: var(--text);
+  border-bottom-color: var(--accent);
 }
 
 #tag-filters {
-  margin: 0 0 1rem;
+  margin: 0 0 var(--u);
 }
 
 .writing-entry {
@@ -355,23 +443,48 @@ input:checked + .slider:before {
 /* Data-driven portfolio / writings cards */
 .category-label {
   margin: 1.6rem 0 0.5rem;
-  font-size: 0.78rem;
-  letter-spacing: 0.08em;
+  font-family: var(--sans);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--accent);
 }
 
 #portfolio-list > .portfolio-group:first-child > .category-label {
   margin-top: 0.4rem;
 }
 
-#portfolio-list .category-label {
-  font-size: 1.1rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: none;
-  color: var(--muted);
+/* Page titles the nav already shows: kept for screen readers, hidden on screen */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
 }
+
+/* Bio page heading: a step above body text, quiet weight */
+h2.page-title {
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1.3;
+  margin: 0 0 var(--u);
+}
+
+/* One-line intro at the top of a page (Explore) */
+.page-intro {
+  margin: 0 0 var(--u);
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* The filter already says "Highlights"; don't repeat it as a heading */
+.featured-group > .category-label { display: none; }
 
 .quick-summary .category-label {
   margin: 0 0 0.4rem;
@@ -381,20 +494,43 @@ input:checked + .slider:before {
   margin-top: 1.2rem;
 }
 
-.card {
-  padding: 4px 0 16px 16px;
-  margin-bottom: 16px;
-  border-left: 3px solid var(--accent);
-  border-bottom: 1px solid var(--border);
+/* Entries: numbered notebook rows on hairlines */
+.portfolio-group,
+#explore-list {
+  counter-reset: entry;
+  margin-bottom: calc(var(--u) * 2);
 }
 
-.card:last-child {
-  border-bottom: none;
-  margin-bottom: 0;
+.card {
+  counter-increment: entry;
+  display: grid;
+  grid-template-columns: calc(var(--u) * 2) minmax(0, 1fr);
+  padding: var(--u) 0;
+  border-top: 1px solid var(--border);
+}
+
+.card::before {
+  content: counter(entry, decimal-leading-zero);
+  grid-column: 1;
+  grid-row: 1 / span 20;
+  padding-top: 0.35em;
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+
+.card > * { grid-column: 2; }
+
+@media (max-width: 700px) {
+  .card { grid-template-columns: calc(var(--u) * 1.25) minmax(0, 1fr); }
 }
 
 .card h3 {
   margin: 0 0 0.3rem;
+  font-size: 1.15rem;
+  line-height: 1.4;
 }
 
 .card > p {
@@ -477,28 +613,24 @@ input:checked + .slider:before {
 .card-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 8px;
+  gap: 4px 20px;
+  margin-top: 6px;
 }
 
 .link-btn {
-  display: inline-block;
-  font-size: 0.78rem;
-  padding: 3px 12px;
-  border-radius: 999px;
-  background: var(--accent-soft);
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--accent);
   text-decoration: none !important;
-  transition: background 0.15s ease, color 0.15s ease;
-  border: none;
-  font-family: inherit;
-  cursor: pointer;
+  transition: color 0.15s ease;
 }
 
-.link-btn:hover {
-  background: var(--accent);
-  color: var(--accent-contrast);
-}
+.link-btn::after { content: " \2197"; }
+
+.link-btn:hover { color: var(--text); }
 
 .layon-hint {
   font-size: 0.85rem;

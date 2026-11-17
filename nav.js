@@ -1,4 +1,6 @@
-(async function () {
+// Builds the header, nav and footer synchronously (no fetch), so the page
+// paints in its final layout. Pages load this with blocking="render".
+(function () {
   const parts = window.location.pathname.split('/').filter(Boolean);
   const isLayon = parts.includes('layon');
   const inWritings = parts.includes('writings');
@@ -17,84 +19,162 @@
   };
   const currentPage = inWritings ? 'writings' : pageMap[fileName];
 
-  const accent = isLayon ? '%238a9bb8' : '%233d4f66';
-  const outerSquare = `<rect x='2' y='2' width='20' height='20' fill='none' stroke='${accent}' stroke-width='1.5'/>`;
-  const mark = isLayon
-    ? `<rect x='12' y='2' width='10' height='10' fill='${accent}'/>`
-    : `<path d='M2,2 L12,2 L12,12 L22,12 L22,22 L2,22 Z' fill='${accent}'/>`;
+  // The two personas are exact counterparts: same fields, same places on the page
+  const personas = {
+    lion: {
+      name: 'Lion De Leon', role: 'AI Safety Researcher', accent: '#3d4f66',
+      mark: `<path d="M2,2 L12,2 L12,12 L22,12 L22,22 L2,22 Z" fill="currentColor"/>`,
+    },
+    layon: {
+      name: 'Láyon', role: 'Filipino Poet', accent: '#8a9bb8',
+      mark: `<rect x="12" y="2" width="10" height="10" fill="currentColor"/>`,
+    },
+  };
+  const persona = isLayon ? personas.layon : personas.lion;
+  const other = isLayon ? personas.lion : personas.layon;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const tabs = [['home', 'Home'], ['work', 'Work'], ['explore', 'Explore'], ['cv', 'Bio']];
+  const navBase = isLayon ? '/layon/' : '/';
+
+  // Favicon
+  const favMark = persona.mark.replace(/"/g, "'").replace('currentColor', persona.accent.replace('#', '%23'));
   const favicon = document.createElement('link');
   favicon.rel = 'icon';
   favicon.type = 'image/svg+xml';
-  favicon.href = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>${outerSquare}${mark}</svg>`;
+  favicon.href = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect x='2' y='2' width='20' height='20' fill='none' stroke='${persona.accent.replace('#', '%23')}' stroke-width='1.5'/>${favMark}</svg>`;
   document.head.appendChild(favicon);
 
+  // Header + nav
+  const headerContainer = document.getElementById('header-container');
+  if (headerContainer) {
+    const links = tabs.map(([page, label]) => {
+      const href = navBase + (page === 'home' ? 'index.html' : page + '.html');
+      const cls = page === currentPage ? ' class="active"' : '';
+      return `<a data-page="${page}" href="${href}"${cls}>${label}</a>`;
+    }).join('\n    ');
+
+    headerContainer.innerHTML = `
+<div class="brand">
+  <svg class="logo" viewBox="0 0 24 24" width="32" height="32" aria-hidden="true">
+    <rect x="2" y="2" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    ${persona.mark}
+  </svg>
+  <h1>${persona.name}</h1>
+</div>
+<p class="profile-type">${persona.role}</p>
+<div id="nav-container">
+  <nav>
+    ${links}
+    <label class="switch" title="Switch to ${isLayon ? 'Lion' : 'Láyon'}">
+      <input type="checkbox" id="personaToggle"${isLayon ? ' checked' : ''}>
+      <span class="slider round"></span>
+    </label>
+  </nav>
+</div>`;
+  }
+
+  if (isLayon) document.body.classList.add('layon');
+
+  // Persona toggle: pages cross-fade (cross-document view transition, see style.css)
+  // while the text transforms; browsers without view transitions get a flash.
+  const morphs = 'onpagereveal' in window && !reduceMotion;
   const flash = document.createElement('div');
   flash.id = 'flash';
   document.body.appendChild(flash);
 
-  const headerFile = isLayon ? 'layon-header.html' : 'lion-header.html';
+  const toggle = document.getElementById('personaToggle');
+  if (toggle) {
+    toggle.addEventListener('change', () => {
+      const goingToLayon = toggle.checked;
+      try {
+        sessionStorage.setItem('personaToggled', '1');
+        sessionStorage.setItem('bgMorph', goingToLayon ? 'toLayon' : 'toLion');
+      } catch {}
 
-  let headerHtml = '', navHtml = '';
-  try {
-    [headerHtml, navHtml] = await Promise.all([
-      fetch('/components/' + headerFile).then(r => r.text()),
-      fetch('/components/nav.html').then(r => r.text()),
-    ]);
-  } catch {
-    // fail silently
-  }
-
-  const headerContainer = document.getElementById('header-container');
-  if (headerContainer && headerHtml) {
-    headerContainer.innerHTML = headerHtml;
-
-    const navContainer = document.getElementById('nav-container');
-    if (navContainer && navHtml) {
-      navContainer.innerHTML = navHtml;
-
-      // Set absolute hrefs so links work at any folder depth
-      const navBase = isLayon ? '/layon/' : '/';
-      navContainer.querySelectorAll('a[data-page]').forEach(link => {
-        const page = link.dataset.page;
-        link.href = navBase + (page === 'home' ? 'index.html' : page + '.html');
-      });
-
-      const active = navContainer.querySelector(`[data-page="${currentPage}"]`);
-      if (active) active.classList.add('active');
-
-      const toggle = document.getElementById('personaToggle');
-      if (toggle) {
-        toggle.checked = isLayon;
-
-        toggle.addEventListener('change', () => {
-          const goingToLayon = toggle.checked;
-          flash.style.background = goingToLayon ? '#14131a' : '#fbfaf7';
-          flash.classList.add('active');
-          sessionStorage.setItem('personaToggled', '1');
-
-          let targetUrl;
-          if (inWritings) {
-            targetUrl = goingToLayon ? '/layon/writings.html' : '/writings.html';
-          } else {
-            targetUrl = isLayon ? `../${fileName}` : `layon/${fileName}`;
-          }
-
-          setTimeout(() => { window.location.href = targetUrl; }, 260);
-        });
+      let targetUrl;
+      if (inWritings) {
+        targetUrl = goingToLayon ? '/layon/writings.html' : '/writings.html';
+      } else {
+        targetUrl = isLayon ? `../${fileName}` : `layon/${fileName}`;
       }
-    }
-  }
 
-  if (isLayon) document.body.classList.add('layon');
+      if (morphs) {
+        window.location.href = targetUrl;
+      } else {
+        flash.style.background = goingToLayon ? '#1f1e25' : '#f3efe7';
+        flash.classList.add('active');
+        setTimeout(() => { window.location.href = targetUrl; }, 260);
+      }
+    });
+  }
 
   const footer = document.createElement('footer');
   footer.className = 'site-footer';
   footer.innerHTML = `<p class="layon-hint">© 2026 ${isLayon ? 'Láyon' : 'Ivan Yuri De Leon'}. All rights reserved.</p>`;
   document.body.appendChild(footer);
 
-  if (sessionStorage.getItem('personaToggled')) {
+  let toggled = false;
+  try {
+    toggled = !!sessionStorage.getItem('personaToggled');
     sessionStorage.removeItem('personaToggled');
+  } catch {}
 
+  // Transformation: text rewrites itself letter by letter from one version to another
+  const GLYPHS = 'abcdefghijklmnopqrstuvwxyzáéíóú';
+  function transform(el, from, to, duration = 900) {
+    if (reduceMotion) { el.textContent = to; return; }
+    if (el._transform) cancelAnimationFrame(el._transform);
+    const start = performance.now();
+    const tick = now => {
+      const p = Math.min(1, (now - start) / duration);
+      const len = Math.round(from.length + (to.length - from.length) * p);
+      let out = '';
+      for (let i = 0; i < len; i++) {
+        const settle = (i / Math.max(len, 1)) * 0.7 + 0.3;  // letters settle left to right
+        if (p >= settle) out += to[i] || '';
+        else if (p < settle - 0.3) out += from[i] || '';
+        else out += to[i] === ' ' ? ' ' : GLYPHS[(Math.random() * GLYPHS.length) | 0];
+      }
+      el.textContent = p < 1 ? out : to;
+      if (p < 1) el._transform = requestAnimationFrame(tick);
+      else el._transform = null;
+    };
+    el._transform = requestAnimationFrame(tick);
+  }
+
+  // Easter egg: hovering the portrait glitches it, and for an instant the other
+  // persona shows through (portrait, name and role), a hint that there's someone else
+  const portrait = document.querySelector('.profile-portrait');
+  if (portrait && !reduceMotion) {
+    const ownSrc = portrait.getAttribute('src');
+    const otherSrc = isLayon ? '/images/lion.jpg' : '/images/layon.png';
+    new Image().src = otherSrc;  // preload, so the flash is instant
+    const nameEl = document.querySelector('#header-container h1');
+    const roleEl = document.querySelector('#header-container .profile-type');
+    const showOther = on => {
+      portrait.src = on ? otherSrc : ownSrc;
+      if (nameEl) nameEl.textContent = on ? other.name : persona.name;
+      if (roleEl) roleEl.textContent = on ? other.role : persona.role;
+    };
+    let busy = false;
+    portrait.addEventListener('mouseenter', () => {
+      if (busy) return;
+      busy = true;
+      portrait.classList.add('glitch');
+      setTimeout(() => showOther(true), 140);
+      setTimeout(() => showOther(false), 230);
+      setTimeout(() => showOther(true), 300);
+      setTimeout(() => showOther(false), 340);
+      setTimeout(() => { portrait.classList.remove('glitch'); busy = false; }, 480);
+    });
+  }
+
+  if (toggled) {
+    const h1 = document.querySelector('#header-container h1');
+    const role = document.querySelector('#header-container .profile-type');
+    if (h1) transform(h1, other.name, persona.name);
+    if (role) transform(role, other.role, persona.role);
     const message = isLayon
       ? "You're now viewing the artist profile. Switch back to light mode anytime to explore Lion's research and professional background."
       : "You're now viewing the professional profile. Switch back to dark mode anytime to explore Láyon's artist profile.";

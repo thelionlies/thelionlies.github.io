@@ -6,7 +6,7 @@ const bar = document.getElementById('tag-filters');
 const isLayon = window.location.pathname.includes('/layon/');
 const dataPath = isLayon ? '../data/portfolio-layon.json' : 'data/portfolio-lion.json';
 
-const linkLabels = { repo: 'Repo', paper: 'Paper', arxiv: 'arXiv', huggingface: 'HuggingFace', demo: 'Demo', slides: 'Slides', video: 'Video' };
+const linkLabels = { repo: 'Repo', paper: 'Paper', arxiv: 'arXiv', huggingface: 'HuggingFace', demo: 'Demo', slides: 'Slides', video: 'Video', site: 'Site' };
 const typeLabels = { research: 'Academic Research', professional: 'Professional Work', software: 'Software', project: 'Project', online: 'Online', print: 'Print' };
 
 let visible = [];

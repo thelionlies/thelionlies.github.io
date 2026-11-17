@@ -26,10 +26,8 @@ It's a static site: plain HTML, CSS, and vanilla JavaScript. No build step, no f
 ```
 /                              Lion (AI Safety Researcher) — light theme
 /layon/                        Láyon (Filipino Poet) — dark theme
-/components/nav.html           Shared nav fragment (4 tabs + toggle)
-/components/lion-header.html   Lion header: h1 + subtitle + nav slot
-/components/layon-header.html  Láyon header: h1 + subtitle + nav slot
-/nav.js                        Fetches header + nav, handles toggle + flash, adds footer
+/nav.js                        Builds header + nav + footer (both personas), handles the toggle
+/bg.js                         Background dot grid (Lion) / connected dots (Láyon), and the toggle morph
 /style.css                     All styles; body.layon switches theme via CSS vars
 /portfolio.js                  Fetches data/portfolio-{lion,layon}.json, renders work.html for each identity
 /explore.js                    Fetches data/explore-{lion,layon}.json, renders explore.html for each identity
@@ -57,22 +55,31 @@ Both identities have the same four tabs. Only content changes.
 
 The Bio tab is deliberately named "Bio" rather than "CV" because the two pages differ: Lion's `cv.html` embeds a CV PDF, while Láyon's `cv.html` is the artist statement written out as HTML (with the PDF linked below it).
 
-### How the toggle works
+### How the header and toggle work
 
-`nav.js` fetches `components/nav.html` and injects it into `<div id="nav-container">`.
-On toggle change: a full-page flash div fades in (light → Lion, dark → Láyon), then navigates to the equivalent page in the other identity's folder.
+`nav.js` writes the header, nav and footer straight into the page. There is no fetch: every page loads `nav.js` and `bg.js` with `defer blocking="render"`, so the browser waits for them and the first paint is already in its final layout, with nothing shifting. Keep both scripts small and synchronous for that reason.
 
-The flash colors match the identity backgrounds (`#fbfaf7` Lion, `#14131a` Láyon) and must stay in sync with `--bg` in `style.css`.
+On toggle change, `nav.js` navigates to the equivalent page in the other identity's folder. `style.css` turns on cross-document view transitions (`@view-transition { navigation: auto; }`), so every navigation, including the toggle, cross-fades instead of blinking. Browsers without them (currently Firefox) fall back to a full-page flash div (light → Lion, dark → Láyon); its colors (`#f3efe7` Lion, `#1f1e25` Láyon) must stay in sync with `--bg` in `style.css`. Both are off for people who prefer reduced motion.
+
+### Background
+
+`bg.js` draws a fixed canvas behind the content, in the persona's `--accent`:
+
+- **Lion:** a dot grid (graph paper). Dots near the cursor glow.
+- **Láyon:** the same grid, plus a few fixed "constellations" (always in the same place: they're generated from a seeded random number), and the cursor connects nearby dots with thin lines that fade behind it. Lines only run along grid directions, including diagonals, so they form triangles.
+- **Toggle morph:** `nav.js` leaves a `bgMorph` flag in `sessionStorage`; on arrival `bg.js` draws the constellations in (to Láyon) or fades them out (to Lion).
+
+Spacing, cursor radius and opacities are constants at the top of `bg.js`.
 
 The active tab is chosen from the file name. Only `/` and `/layon/` count as Home; an unknown page (like the 404) highlights no tab.
 
 ### Editing guidelines
 
-- **Change Lion header (name, subtitle):** edit `components/lion-header.html` only.
-- **Change Láyon header (name, subtitle):** edit `components/layon-header.html` only.
-- **Add/change nav links:** edit `components/nav.html` — it is shared across all pages. Also update the `<noscript>` nav fallback inside `<header id="header-container">` on each live page, and `sitemap.xml`.
+- **Change a header (name, subtitle, logo mark):** edit the `persona` object near the top of `nav.js`.
+- **Add/change nav links:** edit the `tabs` list in `nav.js` — it is shared across all pages. Also update the `<noscript>` nav fallback inside `<header id="header-container">` on each live page, and `sitemap.xml`.
+- **New page:** load `nav.js` and `bg.js` in its `<head>` with `defer blocking="render"`, like the existing pages.
 - **Change styles:** edit `style.css`. Theme variables (including `--accent`) are in `:root` (Lion) and `body.layon` (Láyon). Keep the two palettes in the same color family but with enough contrast for their own background.
-- **Change toggle/flash behavior:** edit `nav.js`.
+- **Change toggle/flash behavior:** edit `nav.js`; the transition timing is in `style.css`.
 - **Update Lion bio/content:** edit the relevant page under `/` (root).
 - **Update Láyon bio/content:** edit the relevant page under `/layon/`.
 - **Láyon's artist statement** (`layon/cv.html`) is laid out as a dialogue: `p.lion-voice` sits in the left half, `p.layon-voice` in the right half, `p.both` runs full width, and a `div.pair` puts a Lion and a Láyon paragraph side by side. The halves hold on phones too. When the text changes, regenerate `cv/layon_cv.pdf` to match, bump its `?v=` string, and update the "Last updated" line.
