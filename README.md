@@ -61,15 +61,27 @@ The Bio tab is deliberately named "Bio" rather than "CV" because the two pages d
 
 On toggle change, `nav.js` navigates to the equivalent page in the other identity's folder. `style.css` turns on cross-document view transitions (`@view-transition { navigation: auto; }`), so every navigation, including the toggle, cross-fades instead of blinking. Browsers without them (currently Firefox) fall back to a full-page flash div (light → Lion, dark → Láyon); its colors (`#f3efe7` Lion, `#1f1e25` Láyon) must stay in sync with `--bg` in `style.css`. Both are off for people who prefer reduced motion.
 
-### Background
+**Transformation on switch:** before leaving, `nav.js` saves the page's visible text to `sessionStorage` (`prevTexts`). On arrival, the name and role rewrite themselves letter by letter from the other persona's, and every other piece of text that differs from the previous page decodes in from random letters (text shared by both sides, like the nav and section labels, stays still). Work and Explore entries, which load a moment later, are caught by a short-lived `MutationObserver`.
 
-`bg.js` draws a fixed canvas behind the content, in the persona's `--accent`:
+**Portrait hint (homepages):** hovering the portrait shakes the page, flashes the other persona's photo, nudges the toggle halfway, and briefly scrambles the page's text before it settles back. The markup is `.portrait-switch` with a `.portrait-cover` (this persona) and `.portrait-reveal` (the other) image.
 
-- **Lion:** a dot grid (graph paper). Dots near the cursor glow.
-- **Láyon:** the same grid, plus a few fixed "constellations" (always in the same place: they're generated from a seeded random number), and the cursor connects nearby dots with thin lines that fade behind it. Lines only run along grid directions, including diagonals, so they form triangles.
-- **Toggle morph:** `nav.js` leaves a `bgMorph` flag in `sessionStorage`; on arrival `bg.js` draws the constellations in (to Láyon) or fades them out (to Lion).
+### The logo concept: 3/4 and 1/4
 
-Spacing, cursor radius and opacities are constants at the top of `bg.js`.
+Lion's mark is an L covering three quarters of the square; Láyon's is the missing quarter. Together they make the whole square, and the site is built on that:
+
+- **Logo:** each persona's logo also contains the other's part (`.logo-other`, hidden). It shows the whole square for a moment when you flip the toggle (before leaving and on arrival, then the other part fades away) and during the portrait hint. Toggled with the `whole` class in `nav.js`.
+### Background: grid and stars
+
+`bg.js` draws one set of dots, in the persona's `--accent`, that has two homes: a point on a grid and a star position (from a hash of the dot, so it's the same every visit).
+
+- **Lion (order):** the dots are locked on the grid like graph paper. Hovering connects nearby dots at right angles.
+- **Láyon (freedom):** the same dots float free as stars of varied size and brightness, drifting slowly. Hovering joins nearby stars into constellations.
+- **The switch:** `nav.js` leaves a `bgMorph` flag in `sessionStorage`; on arrival, the dots travel from the grid out to their star positions (to Láyon) or back into the grid (to Lion), then Láyon's stars start drifting.
+- **The portrait hint:** `nav.js` fires a `persona-hint` event; the dots go part of the way toward the other form and come back (Lion's grid starts to scatter, Láyon's stars start to line up).
+
+No new lines are made while the dots are transforming, and a line whose dots move apart is dropped, so nothing stretches across the page.
+
+Lines and the cursor glow fade to a trace over the text column so text stays readable. While Láyon's stars are only drifting, the canvas redraws at about 20 fps to spare the battery. Spacing, radius, drift and escape distances are constants at the top of `bg.js`.
 
 The active tab is chosen from the file name. Only `/` and `/layon/` count as Home; an unknown page (like the 404) highlights no tab.
 

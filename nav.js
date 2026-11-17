@@ -34,6 +34,10 @@
   const other = isLayon ? personas.lion : personas.layon;
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // Arriving from the other persona? (cleared further down, after the toast)
+  let arrivedBySwitch = false;
+  try { arrivedBySwitch = !!sessionStorage.getItem('personaToggled'); } catch {}
+
   const tabs = [['home', 'Home'], ['work', 'Work'], ['explore', 'Explore'], ['cv', 'Bio']];
   const navBase = isLayon ? '/layon/' : '/';
 
@@ -54,11 +58,14 @@
       return `<a data-page="${page}" href="${href}"${cls}>${label}</a>`;
     }).join('\n    ');
 
+    // The logo also holds the other persona's part (Lion's L and Láyon's
+    // quarter make one whole square), shown only while switching or hinting
     headerContainer.innerHTML = `
 <div class="brand">
-  <svg class="logo" viewBox="0 0 24 24" width="32" height="32" aria-hidden="true">
+  <svg class="logo${arrivedBySwitch && !reduceMotion ? ' whole' : ''}" viewBox="0 0 24 24" width="32" height="32" aria-hidden="true">
     <rect x="2" y="2" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"/>
     ${persona.mark}
+    <g class="logo-other">${other.mark}</g>
   </svg>
   <h1>${persona.name}</h1>
 </div>
@@ -76,6 +83,23 @@
 
   if (isLayon) document.body.classList.add('layon');
 
+  // Logo: complete the square, or let the other part go again
+  const logo = document.querySelector('#header-container .logo');
+  const setWhole = on => { if (logo) logo.classList.toggle('whole', on); };
+  if (arrivedBySwitch && !reduceMotion) setTimeout(() => setWhole(false), 450);
+
+  // Visible text outside the header (the header's name and role transform separately)
+  function contentTextNodes(root) {
+    const skip = '#header-container, script, style, noscript, .toast, #flash';
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode: n => (!n.nodeValue.trim() || n.parentElement.closest(skip))
+        ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT,
+    });
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    return nodes;
+  }
+
   // Persona toggle: pages cross-fade (cross-document view transition, see style.css)
   // while the text transforms; browsers without view transitions get a flash.
   const morphs = 'onpagereveal' in window && !reduceMotion;
@@ -90,6 +114,9 @@
       try {
         sessionStorage.setItem('personaToggled', '1');
         sessionStorage.setItem('bgMorph', goingToLayon ? 'toLayon' : 'toLion');
+        // Remember this page's text, so the other side can decode only what differs
+        const texts = [...new Set(contentTextNodes(document.body).map(n => n.nodeValue.trim()))];
+        sessionStorage.setItem('prevTexts', JSON.stringify(texts));
       } catch {}
 
       let targetUrl;
@@ -100,8 +127,11 @@
       }
 
       if (morphs) {
-        window.location.href = targetUrl;
+        // The logo completes into the whole square, then the page changes
+        setWhole(true);
+        setTimeout(() => { window.location.href = targetUrl; }, 260);
       } else {
+        setWhole(true);
         flash.style.background = goingToLayon ? '#1f1e25' : '#f3efe7';
         flash.classList.add('active');
         setTimeout(() => { window.location.href = targetUrl; }, 260);
@@ -128,6 +158,13 @@
       active = true;
       switchLabel.classList.add('half');
       document.body.classList.add('shaking');
+      setWhole(true);
+      setTimeout(() => setWhole(false), 280);
+      window.dispatchEvent(new Event('persona-hint'));  // bg.js: brief grid/stars swell
+      // The words flicker toward something else, then settle back
+      const header = document.getElementById('header-container');
+      const headerText = header ? [...header.querySelectorAll('h1, .profile-type')].flatMap(el => [...el.childNodes].filter(n => n.nodeType === 3)) : [];
+      decode([...headerText, ...contentTextNodes(document.body)], { stagger: 0, base: 320, perChar: 0 });
       setTimeout(() => document.body.classList.remove('shaking'), 500);
       reveal.style.opacity = 1;
       cover.style.opacity = 0;
@@ -174,11 +211,67 @@
     el._transform = requestAnimationFrame(tick);
   }
 
+  // Decode: text that differs from the other side starts as random letters and
+  // resolves left to right. One animation loop drives every text node.
+  const decoding = [];
+  const inFlight = new WeakSet();  // never capture half-scrambled text as "final"
+  let decodeFrame = null;
+  function decode(nodes, { stagger = 12, base = 500, perChar = 4 } = {}) {
+    if (reduceMotion) return;
+    const now = performance.now();
+    nodes.forEach((node, i) => {
+      if (inFlight.has(node)) return;
+      inFlight.add(node);
+      const final = node.nodeValue;
+      decoding.push({ node, final, start: now + Math.min(i * stagger, 400), dur: base + Math.min(final.length * perChar, 500) });
+      node.nodeValue = scramble(final, 0);
+    });
+    if (!decodeFrame) decodeFrame = requestAnimationFrame(decodeTick);
+  }
+  function scramble(text, p) {
+    let out = '';
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      out += (/\s/.test(ch) || i / text.length < p) ? ch : GLYPHS[(Math.random() * GLYPHS.length) | 0];
+    }
+    return out;
+  }
+  function decodeTick(now) {
+    for (let i = decoding.length - 1; i >= 0; i--) {
+      const d = decoding[i];
+      const p = Math.max(0, (now - d.start) / d.dur);
+      if (p >= 1) { d.node.nodeValue = d.final; decoding.splice(i, 1); inFlight.delete(d.node); }
+      else d.node.nodeValue = scramble(d.final, p);
+    }
+    decodeFrame = decoding.length ? requestAnimationFrame(decodeTick) : null;
+  }
+
   if (toggled) {
     const h1 = document.querySelector('#header-container h1');
     const role = document.querySelector('#header-container .profile-type');
     if (h1) transform(h1, other.name, persona.name);
     if (role) transform(role, other.role, persona.role);
+
+    if (!reduceMotion) {
+      let prev = new Set();
+      try {
+        prev = new Set(JSON.parse(sessionStorage.getItem('prevTexts') || '[]'));
+        sessionStorage.removeItem('prevTexts');
+      } catch {}
+      const changed = nodes => nodes.filter(n => !prev.has(n.nodeValue.trim()));
+      decode(changed(contentTextNodes(document.body)));
+
+      // Work and Explore entries arrive a moment later; decode those too
+      const observer = new MutationObserver(records => {
+        const added = [];
+        records.forEach(r => r.addedNodes.forEach(n => {
+          if (n.nodeType === 1) added.push(...contentTextNodes(n));
+        }));
+        decode(changed(added));
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+      setTimeout(() => observer.disconnect(), 2000);
+    }
     const message = isLayon
       ? "You're now viewing the artist profile. Switch back to light mode anytime to explore Lion's research and professional background."
       : "You're now viewing the professional profile. Switch back to dark mode anytime to explore Láyon's artist profile.";

@@ -1,8 +1,12 @@
-// Background: a dot grid shared by both personas.
-// Lion: graph paper; dots near the cursor glow.
-// Láyon: the same grid with a few fixed constellations, and the cursor
-// connects nearby dots with lines that fade behind it.
-// Toggling personas draws the constellations in (to Láyon) or out (to Lion).
+// Background: one set of dots with two homes.
+// Lion: the dots are locked on a grid (graph paper); hovering connects them at
+// right angles.
+// Láyon: the same dots float free like stars, drifting slowly; hovering joins
+// nearby stars into constellations.
+// Switching persona is the transformation: the grid loosens into stars (to
+// Láyon), or the stars settle back into the grid (to Lion). The portrait hint
+// (a 'persona-hint' event from nav.js) plays a brief half-transformation and back.
+// Lines and the cursor glow fade to a trace over the text column, so text stays readable.
 (function () {
   const isLayon = location.pathname.includes('/layon/');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -17,10 +21,12 @@
   const RADIUS = 120;
   const DOT_ALPHA = isLayon ? 0.28 : 0.2;
   const GLOW_ALPHA = isLayon ? 0.35 : 0.45;
-  const SEED_ALPHA = 0.22;
   const LINE_ALPHA = 0.55;
-  // Grid directions: right, down, down-right, down-left (lines form triangles)
-  const DIRS = [[1, 0], [0, 1], [1, 1], [-1, 1]];
+  const MORPH_MS = 1400;
+  const STAR_LINK = 80;      // max length of a constellation line, px
+  const DRIFT = 6;           // how far stars wander from home, px
+  const HINT_MS = 700;       // the portrait hint's brief half-transformation
+  const HINT_DEPTH = 0.45;   // how far toward the other form it goes
 
   const canvas = document.createElement('canvas');
   canvas.className = 'bg-canvas';
@@ -31,12 +37,16 @@
 
   let w = 0, h = 0, dpr = 1, cols = 0, rows = 0, ox = 0, oy = 0;
   let colL = 0, colR = 0;  // the text column; effects fade out over it
-  let edges = new Map();   // key -> { a, b, e, target, grow, delay, seed }
+  let dots = [];           // { gx, gy, sx, sy, size, twinkle, phase, x, y }
+  let edges = new Map();   // key -> { a, b (dot indexes), e (opacity), grow (0..1 drawn) }
   let pointer = null;
   let light = null;
   let running = false;
+  let morphStart = 0;      // when the current grid/star transformation began
+  let morphTo = isLayon ? 1 : 0;   // 0 = grid, 1 = stars
+  let morphFrom = morphTo;
 
-  // Deterministic randomness, so constellations sit in the same place every visit
+  // Deterministic randomness, so each dot always has the same star position
   function hash(n) {
     n = (n ^ 61) ^ (n >>> 16);
     n = Math.imul(n, 9);
@@ -45,62 +55,8 @@
     n ^= n >>> 15;
     return (n >>> 0) / 4294967296;
   }
-  function rng(seed) {
-    return () => {
-      seed = (seed + 0x6d2b79f5) | 0;
-      let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
-      t ^= t + Math.imul(t ^ (t >>> 7), 61 | t);
-      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-    };
-  }
 
-  const px = c => ox + c * SPACING;
-  const py = r => oy + r * SPACING;
-
-  // Only some grid edges can ever connect, which keeps the lines sparse and organic
-  function eligible(c, r, d) {
-    return hash((r * 4099 + c) * 4 + d) < 0.55;
-  }
-
-  function key(c, r, d) { return (r * cols + c) * 4 + d; }
-
-  function setEdge(c, r, d, props) {
-    const k = key(c, r, d);
-    let edge = edges.get(k);
-    if (!edge) {
-      const [dc, dr] = DIRS[d];
-      edge = { a: [c, r], b: [c + dc, r + dr], e: 0, target: 0, grow: 0, delay: 0, seed: false };
-      edges.set(k, edge);
-    }
-    Object.assign(edge, props);
-    return edge;
-  }
-
-  function seedConstellations(startAlpha, target, animateIn) {
-    const rand = rng(cols * 7919 + rows);
-    const count = Math.max(4, Math.round((cols * rows) / 70));
-    let order = 0;
-    for (let i = 0; i < count; i++) {
-      let c = Math.floor(rand() * cols), r = Math.floor(rand() * rows);
-      const len = 2 + Math.floor(rand() * 4);
-      for (let s = 0; s < len; s++) {
-        const options = [];
-        for (let d = 0; d < 4; d++) {
-          const [dc, dr] = DIRS[d];
-          if (c + dc >= 0 && c + dc < cols && r + dr < rows && eligible(c, r, d)) options.push([c, r, d, c + dc, r + dr]);
-          if (c - dc >= 0 && c - dc < cols && r - dr >= 0 && eligible(c - dc, r - dr, d)) options.push([c - dc, r - dr, d, c - dc, r - dr]);
-        }
-        if (!options.length) break;
-        const [ec, er, ed, nc, nr] = options[Math.floor(rand() * options.length)];
-        setEdge(ec, er, ed, {
-          seed: true, e: startAlpha, target,
-          grow: animateIn ? 0 : 1,
-          delay: animateIn ? Math.round(order++ * 0.4) : 0,
-        });
-        c = nc; r = nr;
-      }
-    }
-  }
+  const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
   function setup() {
     dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -120,40 +76,65 @@
     oy = SPACING / 2;
     cols = Math.floor((w - ox) / SPACING) + 1;
     rows = Math.floor((h - oy) / SPACING) + 1;
+
+    dots = [];
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const i = r * 4099 + c;
+        dots.push({
+          gx: ox + c * SPACING, gy: oy + r * SPACING,
+          sx: hash(i * 5) * w, sy: hash(i * 5 + 1) * h,
+          size: 0.6 + hash(i * 5 + 2) * 1.3,          // stars vary in size...
+          twinkle: 0.4 + hash(i * 5 + 3) * 0.9,       // ...and brightness
+          phase: hash(i * 5 + 4) * Math.PI * 2,
+          x: 0, y: 0,
+        });
+      }
+    }
     edges = new Map();
 
-    const animate = !reduceMotion && morph;
-    if (isLayon) {
-      seedConstellations(animate ? 0 : SEED_ALPHA, SEED_ALPHA, animate);
-    } else if (animate && morph === 'toLion') {
-      seedConstellations(SEED_ALPHA, 0, false);
+    // Arriving from the other persona: start in its form and transform into ours
+    if (morph && !reduceMotion) {
+      morphFrom = morph === 'toLayon' ? 0 : 1;
+      morphStart = performance.now();
+    } else {
+      morphFrom = morphTo;
     }
     morph = null;
     wake();
   }
 
-  function connectNear(x, y) {
-    const c0 = Math.max(0, Math.floor((x - ox - RADIUS) / SPACING));
-    const c1 = Math.min(cols - 1, Math.ceil((x - ox + RADIUS) / SPACING));
-    const r0 = Math.max(0, Math.floor((y - oy - RADIUS) / SPACING));
-    const r1 = Math.min(rows - 1, Math.ceil((y - oy + RADIUS) / SPACING));
-    for (let r = r0; r <= r1; r++) {
-      for (let c = c0; c <= c1; c++) {
-        for (let d = 0; d < 4; d++) {
-          const [dc, dr] = DIRS[d];
-          const nc = c + dc, nr = r + dr;
-          if (nc < 0 || nc >= cols || nr >= rows || !eligible(c, r, d)) continue;
-          const mx = (px(c) + px(nc)) / 2, my = (py(r) + py(nr)) / 2;
-          const dist = Math.hypot(mx - x, my - y);
-          if (dist > RADIUS) continue;
-          const strength = (1 - dist / RADIUS) * LINE_ALPHA;
-          const edge = setEdge(c, r, d, {});
-          if (strength > edge.e) {
-            edge.e = strength;
-            if (!edge.seed) edge.grow = Math.max(edge.grow, 0.01);
-          }
-        }
-      }
+  // 0 = grid, 1 = stars, eased over the transformation, plus the hint's brief swell
+  let hintStart = -Infinity;
+  function form(now) {
+    let f = morphTo;
+    if (morphFrom !== morphTo) {
+      const t = Math.min(1, (now - morphStart) / MORPH_MS);
+      if (t >= 1) morphFrom = morphTo;
+      else f = morphFrom + (morphTo - morphFrom) * ease(t);
+    }
+    const ht = (now - hintStart) / HINT_MS;
+    if (ht >= 0 && ht < 1) {
+      const swell = Math.sin(Math.PI * ht) * HINT_DEPTH;   // out and back
+      f += isLayon ? -swell : swell;
+    }
+    return f;
+  }
+  const hinting = now => now - hintStart < HINT_MS;
+
+  window.addEventListener('persona-hint', () => {
+    if (reduceMotion) return;
+    hintStart = performance.now();
+    wake();
+  });
+
+  function place(now, f) {
+    const tsec = now / 1000;
+    for (const d of dots) {
+      const driftX = reduceMotion ? 0 : Math.sin(tsec * 0.15 + d.phase) * DRIFT;
+      const driftY = reduceMotion ? 0 : Math.cos(tsec * 0.12 + d.phase * 1.3) * DRIFT;
+      d.x = d.gx + (d.sx + driftX - d.gx) * f;
+      d.y = d.gy + (d.sy + driftY - d.gy) * f;
     }
   }
 
@@ -164,44 +145,98 @@
     return Math.min(1, 0.1 + (d / (SPACING * 2)) * 0.9);
   }
 
-  function draw() {
+  function setEdge(a, b, strength) {
+    const k = a < b ? a * 1e6 + b : b * 1e6 + a;
+    let edge = edges.get(k);
+    if (!edge) { edge = { a, b, e: 0, grow: 0 }; edges.set(k, edge); }
+    if (strength > edge.e) {
+      edge.e = strength;
+      edge.grow = Math.max(edge.grow, 0.01);
+    }
+  }
+
+  // Lion: connect grid neighbors near the cursor at right angles (about half
+  // of them, chosen by hash so the same lines appear every time)
+  function connectGrid(x, y) {
+    const c0 = Math.max(0, Math.floor((x - ox - RADIUS) / SPACING));
+    const c1 = Math.min(cols - 1, Math.ceil((x - ox + RADIUS) / SPACING));
+    const r0 = Math.max(0, Math.floor((y - oy - RADIUS) / SPACING));
+    const r1 = Math.min(rows - 1, Math.ceil((y - oy + RADIUS) / SPACING));
+    for (let r = r0; r <= r1; r++) {
+      for (let c = c0; c <= c1; c++) {
+        const i = r * cols + c;
+        const dist = Math.hypot(dots[i].x - x, dots[i].y - y);
+        if (dist > RADIUS) continue;
+        const strength = (1 - dist / RADIUS) * LINE_ALPHA;
+        const id = r * 4099 + c;
+        if (c + 1 < cols && hash(id * 4) < 0.55) setEdge(i, i + 1, strength);
+        if (r + 1 < rows && hash(id * 4 + 1) < 0.55) setEdge(i, i + cols, strength);
+      }
+    }
+  }
+
+  // Láyon: join each star near the cursor to its two nearest neighbors
+  function connectStars(x, y) {
+    const near = [];
+    dots.forEach((d, i) => { if (Math.hypot(d.x - x, d.y - y) < RADIUS) near.push(i); });
+    for (const i of near) {
+      const d = dots[i];
+      const strength = (1 - Math.hypot(d.x - x, d.y - y) / RADIUS) * LINE_ALPHA;
+      const closest = near
+        .filter(j => j !== i)
+        .map(j => [j, Math.hypot(dots[j].x - d.x, dots[j].y - d.y)])
+        .filter(([, dist]) => dist < STAR_LINK)
+        .sort((p, q) => p[1] - q[1])
+        .slice(0, 2);
+      for (const [j] of closest) setEdge(i, j, strength);
+    }
+  }
+
+  function draw(f) {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, w, h);
     ctx.fillStyle = accent;
     ctx.strokeStyle = accent;
+    const tsec = performance.now() / 1000;
 
-    // Dots
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < cols; c++) {
-        const x = px(c), y = py(r);
-        let a = DOT_ALPHA;
-        if (light) {
-          const dist = Math.hypot(x - light.x, y - light.y);
-          if (dist < RADIUS) a += (1 - dist / RADIUS) * GLOW_ALPHA * clearance(x);
-        }
-        ctx.globalAlpha = a;
-        ctx.fillRect(x - 1, y - 1, 2, 2);
+    // Dots: uniform on the grid; as stars they take on size and a slow twinkle
+    for (const d of dots) {
+      let a = DOT_ALPHA * (1 + (d.twinkle - 1) * f);
+      if (f > 0 && !reduceMotion) a *= 1 - 0.3 * f * (0.5 + 0.5 * Math.sin(tsec * 0.8 + d.phase));
+      if (light) {
+        const dist = Math.hypot(d.x - light.x, d.y - light.y);
+        if (dist < RADIUS) a += (1 - dist / RADIUS) * GLOW_ALPHA * clearance(d.x);
       }
+      const s = 2 + (d.size * 1.4 - 2) * f;
+      ctx.globalAlpha = Math.min(1, a);
+      ctx.fillRect(d.x - s / 2, d.y - s / 2, s, s);
     }
 
-    // Lines
+    // Lines grow from one end, then fade. A line whose dots have moved apart
+    // (during a transformation) is dropped rather than stretched across the page.
     ctx.lineWidth = 1;
-    for (const edge of edges.values()) {
-      if (edge.e < 0.005 || edge.grow <= 0) continue;
-      const ax = px(edge.a[0]), ay = py(edge.a[1]);
-      const bx = px(edge.b[0]), by = py(edge.b[1]);
+    const maxLen = isLayon ? STAR_LINK * 1.25 : SPACING * 1.25;
+    for (const [k, edge] of edges) {
+      if (edge.e < 0.005) continue;
+      const a = dots[edge.a], b = dots[edge.b];
+      if (!a || !b || Math.hypot(b.x - a.x, b.y - a.y) > maxLen) { edges.delete(k); continue; }
       const g = Math.min(1, edge.grow);
-      ctx.globalAlpha = edge.e * clearance((ax + bx) / 2);
+      ctx.globalAlpha = edge.e * clearance((a.x + b.x) / 2);
       ctx.beginPath();
-      ctx.moveTo(ax, ay);
-      ctx.lineTo(ax + (bx - ax) * g, ay + (by - ay) * g);
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(a.x + (b.x - a.x) * g, a.y + (b.y - a.y) * g);
       ctx.stroke();
     }
+
     ctx.globalAlpha = 1;
   }
 
-  function step() {
-    let busy = false;
+  function step(now) {
+    const f = form(now);
+    const drifting = f > 0 && !reduceMotion;   // stars drift continuously
+    let busy = morphFrom !== morphTo || hinting(now);   // full speed only while something changes
+
+    place(now, f);
 
     if (pointer) {
       if (!light) light = { ...pointer };
@@ -209,27 +244,25 @@
       light.x += (pointer.x - light.x) * k;
       light.y += (pointer.y - light.y) * k;
       if (Math.hypot(pointer.x - light.x, pointer.y - light.y) > 0.5) busy = true;
-      if (isLayon) connectNear(light.x, light.y);
-    }
-
-    for (const [k, edge] of edges) {
-      if (edge.delay > 0) { edge.delay--; busy = true; continue; }
-      if (edge.grow < 1) { edge.grow = reduceMotion ? 1 : edge.grow + 0.08; busy = true; }
-      if (edge.seed) {
-        const diff = edge.target - edge.e;
-        if (Math.abs(diff) > 0.003) { edge.e += diff * 0.06; busy = true; }
-        else edge.e = edge.target;
-        if (edge.target === 0 && edge.e < 0.005) edges.delete(k);
-      } else {
-        edge.e *= reduceMotion ? 0.8 : 0.96;
-        if (edge.e < 0.005) edges.delete(k);
-        else busy = true;
+      // No new connections while the dots are transforming
+      if (morphFrom === morphTo && !hinting(now)) {
+        if (isLayon) connectStars(light.x, light.y);
+        else connectGrid(light.x, light.y);
       }
     }
 
-    draw();
+    for (const [k, edge] of edges) {
+      if (edge.grow < 1) edge.grow = reduceMotion ? 1 : edge.grow + 0.08;
+      edge.e *= reduceMotion ? 0.8 : 0.96;
+      if (edge.e < 0.005) edges.delete(k);
+      else busy = true;
+    }
+
+    draw(f);
 
     if (busy) requestAnimationFrame(step);
+    // Just drifting: ~20 fps is plenty for slow motion and spares the battery
+    else if (drifting) setTimeout(() => requestAnimationFrame(step), 50);
     else running = false;
   }
 
@@ -251,6 +284,10 @@
     if (t) onPointer(t.clientX, t.clientY);
   }, { passive: true });
   document.addEventListener('mouseleave', () => { pointer = null; light = null; wake(); });
+  // On touch there's no hover: let the glow go once the finger lifts
+  window.addEventListener('pointerup', e => {
+    if (e.pointerType === 'touch') setTimeout(() => { pointer = null; light = null; wake(); }, 600);
+  }, { passive: true });
 
   let resizeTimer;
   window.addEventListener('resize', () => {
@@ -261,5 +298,6 @@
   });
 
   setup();
-  draw();
+  place(performance.now(), form(performance.now()));
+  draw(form(performance.now()));
 })();
