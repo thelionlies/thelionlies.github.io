@@ -173,6 +173,8 @@
     };
 
     portraitSwitch.addEventListener('mouseenter', triggerHint);
+    // Phones have no hover: a tap plays it too (and clicking replays it on desktop)
+    portraitSwitch.addEventListener('click', triggerHint);
 
     portraitSwitch.addEventListener('mouseleave', () => {
       active = false;

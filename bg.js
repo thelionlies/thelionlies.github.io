@@ -27,6 +27,12 @@
   const DRIFT = 6;           // how far stars wander from home, px
   const HINT_MS = 700;       // the portrait hint's brief half-transformation
   const HINT_DEPTH = 0.45;   // how far toward the other form it goes
+  const AMBIENT_MIN = 600;   // unprompted connections: a new cluster every 0.6-1.5 s...
+  const AMBIENT_MAX = 1500;
+  const AMBIENT_RADIUS = 80; // ...about this big...
+  const AMBIENT_SCALE = 0.8; // ...a little fainter than the cursor's...
+  const AMBIENT_FADE = 0.985; // ...and lingering a few seconds (cursor lines fade at 0.96)
+  const TEXT_FLOOR = 0.4;    // how much of an effect still shows over the text column
 
   const canvas = document.createElement('canvas');
   canvas.className = 'bg-canvas';
@@ -138,36 +144,38 @@
     }
   }
 
-  // 1 in the margins, fading to a trace over the text column, so text stays readable
+  // 1 in the margins, softened over the text column, so text stays readable
   function clearance(x) {
     const d = x < colL ? colL - x : x > colR ? x - colR : -1;
-    if (d < 0) return 0.1;
-    return Math.min(1, 0.1 + (d / (SPACING * 2)) * 0.9);
+    if (d < 0) return TEXT_FLOOR;
+    return Math.min(1, TEXT_FLOOR + (d / (SPACING * 2)) * (1 - TEXT_FLOOR));
   }
 
+  let fadeFor = 0.96;   // decay applied to edges created right now
   function setEdge(a, b, strength) {
     const k = a < b ? a * 1e6 + b : b * 1e6 + a;
     let edge = edges.get(k);
-    if (!edge) { edge = { a, b, e: 0, grow: 0 }; edges.set(k, edge); }
+    if (!edge) { edge = { a, b, e: 0, grow: 0, fade: fadeFor }; edges.set(k, edge); }
     if (strength > edge.e) {
       edge.e = strength;
+      edge.fade = fadeFor;
       edge.grow = Math.max(edge.grow, 0.01);
     }
   }
 
   // Lion: connect grid neighbors near the cursor at right angles (about half
   // of them, chosen by hash so the same lines appear every time)
-  function connectGrid(x, y) {
-    const c0 = Math.max(0, Math.floor((x - ox - RADIUS) / SPACING));
-    const c1 = Math.min(cols - 1, Math.ceil((x - ox + RADIUS) / SPACING));
-    const r0 = Math.max(0, Math.floor((y - oy - RADIUS) / SPACING));
-    const r1 = Math.min(rows - 1, Math.ceil((y - oy + RADIUS) / SPACING));
+  function connectGrid(x, y, radius = RADIUS, scale = 1) {
+    const c0 = Math.max(0, Math.floor((x - ox - radius) / SPACING));
+    const c1 = Math.min(cols - 1, Math.ceil((x - ox + radius) / SPACING));
+    const r0 = Math.max(0, Math.floor((y - oy - radius) / SPACING));
+    const r1 = Math.min(rows - 1, Math.ceil((y - oy + radius) / SPACING));
     for (let r = r0; r <= r1; r++) {
       for (let c = c0; c <= c1; c++) {
         const i = r * cols + c;
         const dist = Math.hypot(dots[i].x - x, dots[i].y - y);
-        if (dist > RADIUS) continue;
-        const strength = (1 - dist / RADIUS) * LINE_ALPHA;
+        if (dist > radius) continue;
+        const strength = (1 - dist / radius) * LINE_ALPHA * scale;
         const id = r * 4099 + c;
         if (c + 1 < cols && hash(id * 4) < 0.55) setEdge(i, i + 1, strength);
         if (r + 1 < rows && hash(id * 4 + 1) < 0.55) setEdge(i, i + cols, strength);
@@ -176,12 +184,12 @@
   }
 
   // Láyon: join each star near the cursor to its two nearest neighbors
-  function connectStars(x, y) {
+  function connectStars(x, y, radius = RADIUS, scale = 1) {
     const near = [];
-    dots.forEach((d, i) => { if (Math.hypot(d.x - x, d.y - y) < RADIUS) near.push(i); });
+    dots.forEach((d, i) => { if (Math.hypot(d.x - x, d.y - y) < radius) near.push(i); });
     for (const i of near) {
       const d = dots[i];
-      const strength = (1 - Math.hypot(d.x - x, d.y - y) / RADIUS) * LINE_ALPHA;
+      const strength = (1 - Math.hypot(d.x - x, d.y - y) / radius) * LINE_ALPHA * scale;
       const closest = near
         .filter(j => j !== i)
         .map(j => [j, Math.hypot(dots[j].x - d.x, dots[j].y - d.y)])
@@ -190,6 +198,18 @@
         .slice(0, 2);
       for (const [j] of closest) setEdge(i, j, strength);
     }
+  }
+
+  // Now and then, a few lines form on their own, anywhere on the page
+  let nextAmbient = performance.now() + 1200;
+  function ambient(now) {
+    if (reduceMotion || now < nextAmbient || morphFrom !== morphTo || hinting(now)) return;
+    nextAmbient = now + AMBIENT_MIN + Math.random() * (AMBIENT_MAX - AMBIENT_MIN);
+    const x = Math.random() * w, y = Math.random() * h;
+    fadeFor = AMBIENT_FADE;
+    if (isLayon) connectStars(x, y, AMBIENT_RADIUS, AMBIENT_SCALE);
+    else connectGrid(x, y, AMBIENT_RADIUS, AMBIENT_SCALE);
+    fadeFor = 0.96;
   }
 
   function draw(f) {
@@ -251,9 +271,11 @@
       }
     }
 
+    ambient(now);
+
     for (const [k, edge] of edges) {
       if (edge.grow < 1) edge.grow = reduceMotion ? 1 : edge.grow + 0.08;
-      edge.e *= reduceMotion ? 0.8 : 0.96;
+      edge.e *= reduceMotion ? 0.8 : edge.fade;
       if (edge.e < 0.005) edges.delete(k);
       else busy = true;
     }
@@ -263,7 +285,11 @@
     if (busy) requestAnimationFrame(step);
     // Just drifting: ~20 fps is plenty for slow motion and spares the battery
     else if (drifting) setTimeout(() => requestAnimationFrame(step), 50);
-    else running = false;
+    else {
+      running = false;
+      // Sleep until the next unprompted connection is due
+      if (!reduceMotion) setTimeout(wake, Math.max(0, nextAmbient - performance.now()));
+    }
   }
 
   function wake() {
