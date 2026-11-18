@@ -41,13 +41,7 @@
   const tabs = [['home', 'Home'], ['work', 'Work'], ['explore', 'Explore'], ['cv', 'Bio']];
   const navBase = isLayon ? '/layon/' : '/';
 
-  // Favicon
-  const favMark = persona.mark.replace(/"/g, "'").replace('currentColor', persona.accent.replace('#', '%23'));
-  const favicon = document.createElement('link');
-  favicon.rel = 'icon';
-  favicon.type = 'image/svg+xml';
-  favicon.href = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect x='2' y='2' width='20' height='20' fill='none' stroke='${persona.accent.replace('#', '%23')}' stroke-width='1.5'/>${favMark}</svg>`;
-  document.head.appendChild(favicon);
+  // Favicon: static <link rel="icon"> in each page (crawlable, so search results show it)
 
   // Header + nav
   const headerContainer = document.getElementById('header-container');
