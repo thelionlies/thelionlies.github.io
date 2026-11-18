@@ -20,18 +20,13 @@
   const SPACING = 28;
   const RADIUS = 120;
   const DOT_ALPHA = isLayon ? 0.28 : 0.2;
-  const GLOW_ALPHA = isLayon ? 0.35 : 0.45;
-  const LINE_ALPHA = 0.55;
+  const GLOW_ALPHA = isLayon ? 0.25 : 0.3;
+  const LINE_ALPHA = 0.4;
   const MORPH_MS = 1400;
   const STAR_LINK = 80;      // max length of a constellation line, px
   const DRIFT = 6;           // how far stars wander from home, px
   const HINT_MS = 700;       // the portrait hint's brief half-transformation
   const HINT_DEPTH = 0.45;   // how far toward the other form it goes
-  const AMBIENT_MIN = 600;   // unprompted connections: a new cluster every 0.6-1.5 s...
-  const AMBIENT_MAX = 1500;
-  const AMBIENT_RADIUS = 80; // ...about this big...
-  const AMBIENT_SCALE = 0.8; // ...a little fainter than the cursor's...
-  const AMBIENT_FADE = 0.985; // ...and lingering a few seconds (cursor lines fade at 0.96)
   const TEXT_FLOOR = 0.4;    // how much of an effect still shows over the text column
 
   const canvas = document.createElement('canvas');
@@ -151,14 +146,12 @@
     return Math.min(1, TEXT_FLOOR + (d / (SPACING * 2)) * (1 - TEXT_FLOOR));
   }
 
-  let fadeFor = 0.96;   // decay applied to edges created right now
   function setEdge(a, b, strength) {
     const k = a < b ? a * 1e6 + b : b * 1e6 + a;
     let edge = edges.get(k);
-    if (!edge) { edge = { a, b, e: 0, grow: 0, fade: fadeFor }; edges.set(k, edge); }
+    if (!edge) { edge = { a, b, e: 0, grow: 0 }; edges.set(k, edge); }
     if (strength > edge.e) {
       edge.e = strength;
-      edge.fade = fadeFor;
       edge.grow = Math.max(edge.grow, 0.01);
     }
   }
@@ -198,18 +191,6 @@
         .slice(0, 2);
       for (const [j] of closest) setEdge(i, j, strength);
     }
-  }
-
-  // Now and then, a few lines form on their own, anywhere on the page
-  let nextAmbient = performance.now() + 1200;
-  function ambient(now) {
-    if (reduceMotion || now < nextAmbient || morphFrom !== morphTo || hinting(now)) return;
-    nextAmbient = now + AMBIENT_MIN + Math.random() * (AMBIENT_MAX - AMBIENT_MIN);
-    const x = Math.random() * w, y = Math.random() * h;
-    fadeFor = AMBIENT_FADE;
-    if (isLayon) connectStars(x, y, AMBIENT_RADIUS, AMBIENT_SCALE);
-    else connectGrid(x, y, AMBIENT_RADIUS, AMBIENT_SCALE);
-    fadeFor = 0.96;
   }
 
   function draw(f) {
@@ -271,11 +252,9 @@
       }
     }
 
-    ambient(now);
-
     for (const [k, edge] of edges) {
       if (edge.grow < 1) edge.grow = reduceMotion ? 1 : edge.grow + 0.08;
-      edge.e *= reduceMotion ? 0.8 : edge.fade;
+      edge.e *= reduceMotion ? 0.8 : 0.96;
       if (edge.e < 0.005) edges.delete(k);
       else busy = true;
     }
@@ -285,11 +264,7 @@
     if (busy) requestAnimationFrame(step);
     // Just drifting: ~20 fps is plenty for slow motion and spares the battery
     else if (drifting) setTimeout(() => requestAnimationFrame(step), 50);
-    else {
-      running = false;
-      // Sleep until the next unprompted connection is due
-      if (!reduceMotion) setTimeout(wake, Math.max(0, nextAmbient - performance.now()));
-    }
+    else running = false;
   }
 
   function wake() {

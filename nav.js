@@ -22,7 +22,7 @@
   // The two personas are exact counterparts: same fields, same places on the page
   const personas = {
     lion: {
-      name: 'Lion De Leon', role: 'AI Safety Researcher', accent: '#3d4f66',
+      name: 'Ivan Yuri De Leon (Lion)', role: 'AI Safety Researcher', accent: '#3d4f66',
       mark: `<path d="M2,2 L12,2 L12,12 L22,12 L22,22 L2,22 Z" fill="currentColor"/>`,
     },
     layon: {
@@ -34,7 +34,7 @@
   const other = isLayon ? personas.lion : personas.layon;
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Arriving from the other persona? (cleared further down, after the toast)
+  // Arriving from the other persona? (cleared further down)
   let arrivedBySwitch = false;
   try { arrivedBySwitch = !!sessionStorage.getItem('personaToggled'); } catch {}
 
@@ -90,7 +90,7 @@
 
   // Visible text outside the header (the header's name and role transform separately)
   function contentTextNodes(root) {
-    const skip = '#header-container, script, style, noscript, .toast, #flash';
+    const skip = '#header-container, script, style, noscript, #flash';
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
       acceptNode: n => (!n.nodeValue.trim() || n.parentElement.closest(skip))
         ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT,
@@ -274,26 +274,5 @@
       observer.observe(document.body, { childList: true, subtree: true });
       setTimeout(() => observer.disconnect(), 2000);
     }
-    const message = isLayon
-      ? "You're now viewing the artist profile. Switch back to light mode anytime to explore Lion's research and professional background."
-      : "You're now viewing the professional profile. Switch back to dark mode anytime to explore Láyon's artist profile.";
-
-    const toast = document.createElement('div');
-    toast.className = 'toast';
-    toast.textContent = message;
-    document.body.appendChild(toast);
-
-    requestAnimationFrame(() => toast.classList.add('show'));
-
-    let dismissed = false;
-    const dismiss = () => {
-      if (dismissed) return;
-      dismissed = true;
-      toast.classList.remove('show');
-      setTimeout(() => toast.remove(), 300);
-    };
-
-    toast.addEventListener('click', dismiss);
-    setTimeout(dismiss, 4000);
   }
 })();
