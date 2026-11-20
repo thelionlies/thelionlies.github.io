@@ -8,7 +8,7 @@
   --accent: #2e4a6b;
   --accent-soft: #e7ecf2;
   --accent-contrast: #f6f4ee;
-  --link: var(--accent);
+  --link: var(--text);
   /* Shape follows the background: Lion's grid is all right angles, Láyon's
      stars are soft, so small corners and bullets change with the persona
      (the portrait stays soft for both) */
@@ -24,7 +24,7 @@ body.layon {
   --accent: #a9b8d4;
   --accent-soft: #1d2130;
   --accent-contrast: #0e0f15;
-  --link: var(--accent);
+  --link: var(--text);
   --radius-sm: 3px;
   --bullet-radius: 50%;
 }
@@ -90,7 +90,7 @@ h1, h2, h3 { font-weight: 600; }
 }
 
 .logo {
-  color: var(--accent);
+  color: var(--text);
   flex-shrink: 0;
 }
 
@@ -117,7 +117,8 @@ h2 {
   letter-spacing: -0.01em;
 }
 
-a { color: var(--link); text-decoration: underline; text-underline-offset: 2px; }
+a { color: var(--link); text-decoration: underline; text-decoration-color: var(--muted); text-underline-offset: 2px; }
+a:hover { text-decoration-color: var(--text); }
 a:hover { color: var(--text); }
 
 strong { color: var(--text); }
@@ -201,7 +202,8 @@ nav a.active {
 }
 
 .quick-summary .role {
-  color: var(--accent);
+  color: var(--text);
+  font-weight: 600;
 }
 
 .quick-summary li::before,
@@ -213,7 +215,7 @@ nav a.active {
   width: 5px;
   height: 5px;
   border-radius: var(--bullet-radius);
-  background: var(--accent);
+  background: var(--muted);
 }
 
 .summary-layout {
@@ -507,7 +509,7 @@ input:checked + .slider:before {
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--muted);
 }
 
 #portfolio-list > .portfolio-group:first-child > .category-label {
@@ -561,7 +563,7 @@ input:checked + .slider:before {
   padding-top: 0.1em;
   font-size: 0.95rem;
   letter-spacing: 0.04em;
-  color: var(--accent);
+  color: var(--muted);
 }
 
 .card > * { grid-column: 2; }
@@ -666,7 +668,7 @@ input:checked + .slider:before {
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--muted);
   text-decoration: none !important;
   transition: color 0.15s ease;
 }
