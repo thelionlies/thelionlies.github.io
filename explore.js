@@ -17,6 +17,8 @@ try {
 entries.forEach(entry => {
   const card = document.createElement('article');
   card.className = 'card';
+  // photo slot: a dark tile with this entry's symbol until it has an image (thumb.js)
+  if (window.thumb) card.insertAdjacentHTML('afterbegin', window.thumb(entry, 'explore'));
 
   const title = document.createElement('h3');
   title.textContent = entry.title;

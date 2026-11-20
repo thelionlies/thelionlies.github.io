@@ -1,6 +1,7 @@
 [
   {
     "title": "Tanawpamana: Benchmarking Vision-Language Models on Philippine Cultural Heritage Sites",
+    "symbol": "landmark",
     "type": "research",
     "tags": ["ai-safety", "filipino-nlp", "featured"],
     "coauthors": "H. Ouchi, S. Sakti",
@@ -11,6 +12,7 @@
   },
   {
     "title": "TDR: Tagalog Diacritic Restoration Dataset",
+    "symbol": "accent",
     "type": "research",
     "tags": ["filipino-nlp", "featured"],
     "coauthors": "L.R. Fermin, Z.A. Africa, R.I. Flores",
@@ -21,6 +23,7 @@
   },
   {
     "title": "PACUTE: Phonology-, Affix-, and Character-level Understanding of Tokens for Filipino",
+    "symbol": "tokens",
     "type": "research",
     "tags": ["ai-safety", "filipino-nlp", "featured"],
     "coauthors": "J.R. Montalan, D.D. Africa, J.P. Layacan, R.I. Flores, L.C. Gamboa",
@@ -31,16 +34,18 @@
   },
   {
     "title": "FilSwitch: A Filipino-English Code-Switched Speech Dataset",
+    "symbol": "waveform",
     "type": "research",
     "tags": ["filipino-nlp", "featured"],
     "coauthors": "S. Angeles, E. Panugayan, C. Cheng, T. Tiam-Lee",
     "summary": "A read-speech dataset for evaluating and adapting ASR systems to Filipino-English code-switching. Accepted to O-COCOSDA 2026.",
     "description": "Filipino-English code-switching (Taglish) is widespread in the Philippines but largely absent from ASR training data. FilSwitch is a read-speech dataset of 3,513 utterances (8.9 hours) recorded by 152 speakers. News-derived sentences were filtered for code-switching, readability, and appropriateness, then manually validated and transcript-normalized. Among tested models, fine-tuning Whisper on the dataset reduced word error rate from 13.62% to 9.24%, demonstrating the value of domain-matched data for Taglish ASR.",
     "thought": "Worked with Sherwynn, whom I met during my internship at NAIST.",
-    "links": { "huggingface": "https://huggingface.co/datasets/qwerttyuiiop/FilSwitch", "paper": "https://drive.google.com/file/d/1uZfjSsS3U5Ngnpb86Kfh_-t7Hi2GxZdI/view?usp=sharing", "link": "filswitch" }
+    "links": { "repo": "https://huggingface.co/datasets/qwerttyuiiop/FilSwitch", "paper": "https://drive.google.com/file/d/1uZfjSsS3U5Ngnpb86Kfh_-t7Hi2GxZdI/view?usp=sharing", "link": "filswitch" }
   },
   {
     "title": "Last Translation Benchmark",
+    "symbol": "translate",
     "type": "research",
     "tags": ["ai-safety"],
     "coauthors": "V. Zouhar, N. Bafna, M. Choudhary, M. Züfle, S. Rajaee, P. Chen, J. Vamvas, et al.",
@@ -51,6 +56,7 @@
   },
   {
     "title": "We Are Convinced That Persuasion is Linear and Bilingual in LLMs",
+    "symbol": "vector",
     "type": "research",
     "tags": ["ai-safety", "filipino-nlp", "featured"],
     "summary": "Tests whether persuasion is represented as a single linear direction inside LLMs, and whether this transfers cross-lingually between English and Tagalog.",
@@ -60,6 +66,7 @@
   },
   {
     "title": "Graph-Based Analysis of Customer-Merchant Payment Networks",
+    "symbol": "graph",
     "type": "professional",
     "tags": ["ai-engineering"],
     "summary": "Models customer-merchant payment data as a bipartite graph and introduces the Merchant Importance Score to capture distinctive customer preferences.",
@@ -69,6 +76,7 @@
   },
   {
     "title": "BEA: Blue Eagle Assistant",
+    "symbol": "chat",
     "type": "software",
     "tags": [],
     "summary": "A multi-agent AI chatbot that answers student questions using Ateneo handbook references and university policies.",
@@ -78,6 +86,7 @@
   },
   {
     "title": "SIMS: Social Impact Mapping Simulation",
+    "symbol": "network",
     "type": "software",
     "tags": [],
     "summary": "Simulates two-party elections where voters shift stance over time based on social influence.",

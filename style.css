@@ -39,13 +39,13 @@ html { scrollbar-gutter: stable; }
   --u: 28px;
   --label-size: 0.72rem;  /* small sans capitals: section labels, filters, links */
   --small-size: 0.85rem;  /* small serif text: notes, meta, footer */
-  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --sans: "Be Vietnam Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: "Newsreader", Georgia, "Times New Roman", serif;
   max-width: 784px;
   margin: 0 auto;
   line-height: 1.75;
@@ -53,29 +53,44 @@ body {
   transition: background 0.2s ease, color 0.2s ease;
 }
 
-/* Desktop header: name and role on the left, nav and toggle on the right,
-   sharing a baseline. Identical for both personas. */
-@media (min-width: 700px) {
-  #header-container {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    column-gap: calc(var(--u) * 2);
-    align-items: end;
-  }
-
-  #header-container .brand { grid-column: 1; grid-row: 1; }
-  #header-container .profile-type { grid-column: 1; grid-row: 2; }
-
-  #header-container #nav-container {
-    grid-column: 2;
-    grid-row: 2;
-  }
-
-  body #header-container nav { margin: 0; flex-wrap: nowrap; }
-  body #header-container .switch { margin-left: 10px; }
+/* Top bar: logo (home) on the left, nav and toggle on the right. Fixed, so it
+   stays on top while the page scrolls; solid, so content passes under it. */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.2s ease;
 }
 
-h1, h2, h3 { font-weight: 600; }
+.topbar-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 14px 24px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--u);
+}
+
+.topbar-logo { display: block; line-height: 0; }
+.topbar nav { margin: 0; flex-wrap: nowrap; }
+.topbar nav a:last-of-type { margin-right: 0; }
+.topbar .switch { margin-left: 18px; }
+
+/* room for the fixed bar */
+body { padding-top: calc(var(--u) * 2 + 56px); }
+
+@media (max-width: 480px) {
+  .topbar nav a { margin-right: 12px; }
+  .topbar .switch { margin-left: 12px; }
+}
+
+h1, h2, h3 { font-weight: 500; letter-spacing: -0.01em; }
 
 .brand {
   display: flex;
@@ -142,9 +157,12 @@ header nav {
 }
 
 nav a {
-  margin-right: 18px;
+  margin-right: 22px;
   color: var(--muted);
   text-decoration: none;
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 500;
   transition: color 0.15s ease;
 }
 
@@ -378,13 +396,7 @@ nav a.active {
   border-radius: 10px;
 }
 
-@keyframes hint-shake {
-  0%, 100% { transform: translateX(0); }
-  20%       { transform: translateX(-4px); }
-  40%       { transform: translateX(4px); }
-  60%       { transform: translateX(-2px); }
-  80%       { transform: translateX(2px); }
-}
+
 
 
 .portrait-switch {
@@ -511,7 +523,7 @@ input:checked + .slider:before {
   border-radius: var(--radius-sm);
   color: var(--accent);
   margin-right: 3px;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: "Newsreader", Georgia, "Times New Roman", serif;
 }
 
 /* Filters: plain text toggles, the active one underlined */
@@ -538,15 +550,19 @@ input:checked + .slider:before {
   border-bottom-color: var(--accent);
 }
 
-/* Filters sit on their own divider; the Highlights list starts right under
-   it, so its first entry drops its own line rather than doubling it */
+/* Filters sit right above the list; the first entry drops its own line */
 #tag-filters {
-  margin: 0 0 var(--u);
-  padding-bottom: calc(var(--u) / 2);
-  border-bottom: 1px solid var(--border);
+  margin: 0 0 calc(var(--u) / 2);
 }
 
 #tag-filters + #portfolio-list > .featured-group:first-child > .card:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+/* No line between a section title and its first entry */
+.category-label + .card,
+h2.page-tab + #explore-list > .card:first-child {
   border-top: none;
   padding-top: 0;
 }
@@ -604,16 +620,21 @@ h2.page-tab {
   color: var(--accent);
 }
 
-/* Work: group headings read as quiet chapter titles (italic serif), so
-   only the Highlights / All filters look like uppercase controls */
-.portfolio-group > .category-label {
-  font-family: inherit;
-  font-size: 1rem;
-  font-weight: 400;
-  font-style: italic;
-  letter-spacing: 0;
+/* Work: group headings (All view) outrank the Highlights / All filters:
+   a serif heading in ink */
+.group-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: calc(var(--u) * 1.5) 0 calc(var(--u) / 2);
+  font-family: "Newsreader", Georgia, "Times New Roman", serif;
+  font-size: 1.45rem;
+  font-weight: 500;
+  font-style: normal;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
   text-transform: none;
-  color: var(--muted);
+  color: var(--text);
 }
 
 #portfolio-list > .portfolio-group:first-child > .category-label {
@@ -645,36 +666,40 @@ h2.page-tab {
   margin-top: calc(var(--u) / 2);
 }
 
-/* Entries: numbered notebook rows on hairlines */
+/* Entries: rows on hairlines, with a photo slot on the right */
 .portfolio-group,
 #explore-list {
-  counter-reset: entry;
   margin-bottom: calc(var(--u) * 2);
 }
 
 .card {
-  counter-increment: entry;
   display: grid;
-  grid-template-columns: calc(var(--u) * 2) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) 200px;
+  column-gap: var(--u);
+  align-content: start;
   padding: var(--u) 0;
   border-top: 1px solid var(--border);
 }
 
-.card::before {
-  content: counter(entry, upper-roman);
-  grid-column: 1;
-  grid-row: 1 / span 20;
-  padding-top: 0.1em;
-  font-size: 0.95rem;
-  letter-spacing: 0.04em;
-  color: var(--accent);
-}
-
-.card > * { grid-column: 2; }
+.card > * { grid-column: 1; }
+.card > .thumb { grid-column: 2; grid-row: 1 / span 20; align-self: start; }
 
 @media (max-width: 700px) {
-  .card { grid-template-columns: calc(var(--u) * 1.25) minmax(0, 1fr); }
+  .card { grid-template-columns: minmax(0, 1fr); }
+  .card > .thumb { grid-column: 1; grid-row: auto; margin-bottom: calc(var(--u) / 2); aspect-ratio: 2 / 1; }
 }
+
+/* photo slot: a photo, or a dark tile with a line symbol for the entry (thumb.js) */
+.thumb { aspect-ratio: 4 / 3; overflow: hidden; border-radius: var(--radius-sm); background: var(--accent-soft); }
+.thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.thumb-empty { display: grid; place-items: center; background: var(--text); }
+.thumb-empty svg { width: 34%; max-width: 72px; height: auto; fill: none; stroke: var(--bg); stroke-width: 1.6;
+  stroke-linecap: round; stroke-linejoin: round; overflow: visible; }
+.thumb-empty .f, .thumb-empty .hole { fill: var(--bg); stroke: none; }
+.thumb-empty .glyph { font: 400 34px/1 "Newsreader", Georgia, serif; fill: var(--bg); stroke: none; }
+body.layon .thumb-empty { background: #1c1e29; }
+body.layon .thumb-empty svg { stroke: var(--text); }
+body.layon .thumb-empty .f, body.layon .thumb-empty .hole, body.layon .thumb-empty .glyph { fill: var(--text); }
 
 .card h3 {
   margin: 0 0 0.3rem;
@@ -687,8 +712,14 @@ h2.page-tab {
   margin: 0 0 0.5rem;
 }
 
-.card > p.card-summary {
+.card > p.card-summary,
+.card > div > p.card-summary {
   color: var(--text);
+}
+
+/* the paragraphs "More" opens are spaced exactly like the summary above them */
+.card > div > p.card-summary {
+  margin: 0 0 0.5rem;
 }
 
 .card-coauthors {
@@ -721,8 +752,18 @@ h2.page-tab {
   vertical-align: baseline;
   cursor: pointer;
   margin: 0;
-  text-decoration: underline;
+  text-decoration: none;
 }
+
+.card > .more-btn,
+.card .more-btn {
+  display: block;
+  justify-self: start;
+  margin: 0 0 0.5rem;
+}
+
+.more-btn[hidden] { display: none; }
+.more-btn:hover { color: var(--text); }
 
 .more-btn:focus-visible {
   outline: 1px solid var(--accent);
@@ -811,6 +852,677 @@ h2.page-tab {
 
 
 
-body.shaking {
-  animation: hint-shake 0.45s ease 1;
+
+
+/* ---------- Home: a full-screen hero, wider than the other pages ---------- */
+/* home sections share the top bar's content width, centered with margins
+   (not a transform) */
+body.home { --home-w: min(1132px, calc(100vw - 48px)); }
+.hero, .home-about { width: var(--home-w); margin-left: calc((100% - var(--home-w)) / 2); }
+/* the name and role live in the hero here, so the page header hides them */
+body.home #header-container .brand,
+body.home #header-container .profile-type { display: none; }
+
+.hero {
+  width: var(--home-w);
+  min-height: calc(100svh - var(--u) * 2 - 56px);
+  margin-top: calc(var(--u) * -1);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 400px);
+  grid-template-rows: 1fr auto;
+  column-gap: calc(var(--u) * 3);
+  align-items: center;
 }
+
+.hero-eyebrow {
+  margin: 0 0 18px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+h2.hero-name {
+  margin: 0 0 calc(var(--u) * 1.25);
+  font-size: clamp(40px, min(6.4vw, 9.5svh), 84px);
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.hero .roles { margin-bottom: var(--u); }
+.role-tabs { display: flex; gap: 18px; margin-bottom: calc(var(--u) / 3); }
+.roles-panel[hidden] { display: none; }
+.roles-panel:not([hidden]) { animation: roles-in 0.25s ease; }
+@keyframes roles-in { from { opacity: 0; transform: translateY(4px); } }
+.roles-panel .timeline li { padding-bottom: calc(var(--u) * 0.3); grid-template-columns: 110px minmax(0, 1fr); }
+.roles-panel .timeline li::before { height: 18px; }
+.roles-panel .timeline li:first-child::before { height: 24px; }
+.roles-panel .tl-when { font-size: 13px; }
+.roles-panel .tl-also { font-size: 0.9rem; margin-top: 4px; }
+
+.hero-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 22px;
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.hero-links a {
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-links a:hover { color: var(--text); border-color: var(--text); }
+
+.portrait-switch.hero-photo {
+  /* never taller than the screen allows, so the first screen always fits */
+  width: min(100%, calc((100svh - 190px) * 0.8));
+  height: auto;
+  aspect-ratio: 4 / 5;
+  margin: 0;
+  justify-self: end;
+}
+
+.scroll-cue {
+  grid-column: 1 / -1;
+  justify-self: start;
+  margin: var(--u) 0 calc(var(--u) / 2);
+  font-family: var(--sans);
+  font-size: var(--label-size);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.scroll-cue:hover { color: var(--text); }
+.scroll-cue span { display: inline-block; margin-left: 4px; animation: cue 2.2s ease-in-out infinite; }
+@keyframes cue { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
+
+.home-about {
+  padding-top: calc(var(--u) * 2);
+  scroll-margin-top: 72px;
+}
+
+@media (max-width: 760px) {
+  .hero, .home-about { width: auto; margin-left: 0; }
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+    min-height: 0;
+    margin-top: 0;
+  }
+  .portrait-switch.hero-photo { order: -1; width: min(100%, 300px); margin-bottom: calc(var(--u) * 1.25); }
+  .scroll-cue { display: none; }
+  .home-about { padding-top: var(--u); }
+}
+
+@media (prefers-reduced-motion: reduce) { .scroll-cue span { animation: none; } }
+
+/* ---------- Home: summary with the day clock beside it ---------- */
+.home-about {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  column-gap: calc(var(--u) * 2);
+  align-items: start;
+}
+
+.day-clock {
+  position: sticky; top: 88px;
+  /* a solid ink tile: the clock and its controls are drawn in paper color */
+  background: var(--text); color: var(--bg);
+  padding: 22px 22px 20px;
+}
+
+.clock-days { display: flex; gap: 4px; justify-content: space-between; }
+.clock-day {
+  flex: 1; padding: 6px 0; cursor: pointer;
+  font-family: var(--sans); font-size: 12px; font-weight: 700; letter-spacing: 0.04em;
+  color: var(--bg); background: none; border: 1.5px solid color-mix(in srgb, var(--bg) 35%, transparent); border-radius: 999px;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+.clock-day:hover { border-color: var(--bg); }
+.clock-day[aria-pressed="true"] { background: var(--bg); border-color: var(--bg); color: var(--text); }
+.clock-day:focus-visible { outline: 2px solid var(--bg); outline-offset: 2px; }
+
+.clock-face { display: block; width: 100%; height: auto; margin: 12px 0 6px; touch-action: none; cursor: grab; user-select: none; }
+.clock-face:active { cursor: grabbing; }
+.clock-face .ring-outer { fill: none; stroke: var(--bg); stroke-width: 3; }
+.clock-face .night { fill: var(--bg); }
+.clock-face .tick { stroke: var(--bg); stroke-width: 1; opacity: 0.45; }
+.clock-face .rod { stroke: var(--bg); stroke-width: 4; stroke-linecap: butt; }
+.clock-face .rod.quarter { stroke-width: 6; }
+.clock-face .numeral { font: 500 10.5px "Newsreader", Georgia, serif; fill: var(--bg); opacity: 0.75; text-anchor: middle; dominant-baseline: central; }
+.clock-face .numeral.quarter { font-size: 21px; font-weight: 600; opacity: 1; }
+.clock-face .hand-hour { stroke: var(--bg); stroke-width: 5; stroke-linecap: butt; }
+.clock-face .hand-tail { stroke: var(--bg); stroke-width: 5; stroke-linecap: butt; }
+.clock-face .hand-knob { fill: var(--text); stroke: var(--bg); stroke-width: 2.4; }
+.clock-face .hand:focus { outline: none; }
+.clock-face .hand:focus-visible .hand-knob { fill: var(--bg); }
+.clock-face .hub { fill: var(--bg); }
+
+.clock-status { margin: 14px 0 0; font-size: 1rem; line-height: 1.5; min-height: 4.5em; color: var(--bg); }
+.clock-when {
+  display: block; margin-bottom: 4px;
+  font-family: var(--sans); font-size: var(--label-size); font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--bg); opacity: 0.65;
+}
+.clock-now {
+  margin-top: 6px; padding: 0; background: none; border: 0; cursor: pointer;
+  font-family: var(--sans); font-size: 13px; font-weight: 700; color: var(--bg); opacity: 0.75;
+  border-bottom: 1px solid color-mix(in srgb, var(--bg) 40%, transparent);
+}
+.clock-now:hover { opacity: 1; }
+.clock-now[hidden] { display: none; }
+
+/* ---------- Home: previous roles as a timeline ---------- */
+.timeline { list-style: none; margin: 0; padding: 0; }
+/* each role is marked by a rod, like ai2040's year rods: the latest solid
+   and taller, the rest lighter */
+.timeline li { position: relative; display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: 0 var(--u);
+  align-items: baseline; padding: 0 0 calc(var(--u) * 0.55) 26px; }
+.timeline li::before {
+  content: ''; position: absolute; left: 0; top: 0.3em;
+  width: 4px; height: 22px; background: var(--text); opacity: 0.25;
+}
+.timeline li:first-child::before { height: 30px; top: 0.05em; opacity: 1; width: 5px; }
+.tl-when { font-family: var(--sans); font-size: 14px; font-weight: 600; color: var(--text); letter-spacing: 0.02em; }
+.timeline .role, .tl-also .role { color: var(--text); font-weight: 500; }
+.tl-also { margin: calc(var(--u) * 0.4) 0 0 26px; color: var(--muted); font-size: 0.95rem; }
+
+@media (max-width: 760px) {
+  .home-about { grid-template-columns: minmax(0, 1fr); }
+  .day-clock { position: static; max-width: 320px; margin: var(--u) auto 0; }
+  .timeline li { grid-template-columns: minmax(0, 1fr); }
+  .tl-when { font-size: 13px; }
+}
+
+/* ---------- Home: three sections, each one screen tall ---------- */
+@media (min-width: 761px) {
+  html:has(body.home) { scroll-snap-type: y proximity; }
+  .hero, .home-about { scroll-snap-align: start; scroll-margin-top: 57px; }
+  .home-about {
+    min-height: calc(100svh - 57px);
+    padding: calc(var(--u) * 1.5) 0;
+    box-sizing: border-box;
+  }
+  .home-about { align-content: center; }
+  .home-about > .about-text, .home-about > .day-clock { align-self: center; }
+  .home-about > .scroll-cue { grid-column: 1 / -1; }
+  .day-clock { position: static; }
+}
+
+/* ---------- Home: the summary is a full-width ink band ---------- */
+/* swapping the palette inside the band turns everything over: paper text on
+   ink, and the clock tile (ink on paper elsewhere) becomes a paper tile */
+.home-about {
+  --bg: #0f1b2d;
+  --text: #f6f4ee;
+  --muted: rgba(246, 244, 238, 0.68);
+  --border: rgba(246, 244, 238, 0.18);
+  --link: #f6f4ee;
+  --accent: #a9b8d4;
+  position: relative;
+  color: var(--text);
+  background: var(--bg);
+  box-shadow: 0 0 0 100vmax var(--bg);
+  clip-path: inset(0 -100vmax);
+  padding-top: calc(var(--u) * 2.5);
+  padding-bottom: calc(var(--u) * 2.5);
+}
+.home-about .about-text p { color: var(--muted); }
+.home-about .about-text p.about-lead {
+  margin: 0 0 calc(var(--u) * 1.25);
+  font-size: clamp(30px, 3.4vw, 46px);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  font-weight: 500;
+  color: var(--text);
+}
+.home-about .category-label { color: var(--accent); }
+.home-about a { color: var(--text); }
+.home-about .clock-face { margin-bottom: 4px; }
+
+/* the cue to scroll sits at the bottom of the first screen, always in view */
+@media (min-width: 761px) {
+  .hero { position: relative; padding-bottom: calc(var(--u) * 2); box-sizing: border-box; }
+  .hero > .scroll-cue { position: absolute; left: 0; bottom: 14px; margin: 0; }
+}
+
+/* ---------- Home, revised: no scroll cue; one scroll snaps to the summary ---------- */
+@media (min-width: 761px) {
+  html:has(body.home) { scroll-snap-type: y proximity; }
+  body.home > footer, body.home .site-footer, body.home > p:last-child { scroll-snap-align: end; }
+  .hero { padding-bottom: 0; }
+}
+.hero .quick-summary { margin-bottom: var(--u); }
+
+/* the clock drawn straight onto the ink band, no tile */
+.home-about { grid-template-columns: minmax(0, 1fr) minmax(280px, 340px) !important; column-gap: calc(var(--u) * 3); }
+.home-about .day-clock {
+  --bg: #f6f4ee;          /* the clock's strokes: paper */
+  --text: #0f1b2d;        /* fills behind paper marks: ink, same as the band */
+  background: transparent;
+  padding: 0;
+  position: static;
+}
+.home-about .clock-face { margin: 16px auto 10px; max-width: min(300px, max(220px, calc(100svh - 340px))); }
+.home-about .clock-days { max-width: 340px; }
+
+/* ---------- Láyon's home: the band turns to paper, with the Doomsday Clock ---------- */
+body.layon .home-about {
+  --bg: #f6f4ee;
+  --text: #0f1b2d;
+  --muted: #545e6c;
+  --border: #e2ded3;
+  --link: #0f1b2d;
+  --accent: #2e4a6b;
+}
+.hero .quick-summary + .quick-summary { margin-top: calc(var(--u) * -0.5); }
+
+.doom-clock { align-self: center; }
+.doom-face { display: block; width: 100%; max-width: 300px; height: auto; margin: 0 auto; }
+.doom-face .arc { fill: none; stroke: var(--text); stroke-width: 3; }
+.doom-face .edge { fill: none; stroke: var(--text); stroke-width: 1; opacity: 0.35; }
+.doom-face .rod { stroke: var(--text); stroke-width: 3; }
+.doom-face .rod.quarter { stroke-width: 6; }
+.doom-face .numeral { font: 500 15px "Newsreader", Georgia, serif; fill: var(--muted); text-anchor: middle; dominant-baseline: central; }
+.doom-face .numeral.midnight { font-size: 26px; font-weight: 600; fill: var(--text); }
+.doom-face .hand { stroke: var(--text); stroke-width: 5; }
+.doom-face .hub { fill: var(--text); }
+.doom-figure { margin: 18px auto 0; max-width: 300px; font-size: 1.05rem; line-height: 1.4; color: var(--text); }
+.doom-percent { display: block; font-size: clamp(44px, 5vw, 64px); font-weight: 500; line-height: 1; letter-spacing: -0.02em; margin-bottom: 6px; }
+
+.read-me-in { margin: 0 0 var(--u); max-width: 46ch; color: var(--muted); }
+.read-me-in a { color: var(--text); }
+
+/* Lion's day clock in the Doomsday Clock's look */
+.clock-face.doom-style .ring-outer { stroke-width: 3; }
+.clock-face.doom-style .guide { fill: none; stroke: var(--bg); stroke-width: 1; opacity: 0.35; }
+.clock-face.doom-style .rod { stroke-width: 3; opacity: 1; }
+.clock-face.doom-style .rod.quarter { stroke-width: 6; }
+.clock-face.doom-style .numeral.quarter { font-size: 24px; font-weight: 600; }
+.clock-face.doom-style .hand-hour, .clock-face.doom-style .hand-tail { stroke-width: 5; stroke-linecap: butt; }
+.clock-face.doom-style .hand-knob { fill: var(--bg); stroke: none; }
+.doom-source { margin: 10px auto 0; max-width: 300px; font-size: 0.8rem; line-height: 1.45; color: var(--muted); }
+.doom-source a { color: var(--muted); }
+
+/* Láyon's hourglass: ink frame and sand on the paper band; the stream keeps running */
+.hourglass { display: block; width: 100%; max-width: 220px; height: auto; margin: 0 auto; }
+.hourglass .frame { fill: var(--text); }
+.hourglass .post { stroke: var(--text); stroke-width: 3; }
+.hourglass .glass { fill: none; stroke: var(--text); stroke-width: 2; stroke-linejoin: round; }
+.hourglass .sand { fill: var(--text); }
+.hourglass .stream { stroke: var(--text); stroke-width: 1.6; stroke-dasharray: 3 5; animation: sand-fall 0.9s linear infinite; }
+@keyframes sand-fall { to { stroke-dashoffset: -8; } }
+@media (prefers-reduced-motion: reduce) { .hourglass .stream { animation: none; } }
+
+/* Lion's clock controls: two day choices; "Back to now" keeps its space */
+.home-about .clock-days { justify-content: flex-start; gap: 8px; }
+.home-about .clock-days .clock-day { flex: 0 0 auto; padding: 7px 16px; }
+.clock-now { visibility: hidden; opacity: 0; transition: opacity 0.2s; }
+.clock-now.show { visibility: visible; opacity: 0.75; }
+.clock-now.show:hover { opacity: 1; }
+
+/* the hourglass turns over while held */
+.hourglass { cursor: pointer; touch-action: none; user-select: none; -webkit-user-select: none; }
+.hourglass:focus { outline: none; }
+.hourglass:focus-visible .frame { fill: var(--accent); }
+.hourglass-body { transform-box: view-box; transform-origin: 50% 50%; transition: transform 0.4s cubic-bezier(.5,0,.2,1); }
+.hourglass-body.turning { transform: rotate(180deg); }
+.doom-hint { margin: 8px auto 0; max-width: 300px; font-family: var(--sans); font-size: 12px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { .hourglass-body { transition: none; } }
+
+/* ---------- Home bands: one centered axis for the instrument column ---------- */
+.home-about .day-clock,
+.home-about .doom-clock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  align-self: center;
+}
+.home-about .clock-days { justify-content: center; margin: 0 0 4px; max-width: none; }
+.home-about .clock-face { width: min(100%, 300px); margin: 14px auto 0; }
+.hourglass { overflow: visible; width: min(100%, 250px); max-width: none; margin: 0 auto; }
+
+/* a thin rule between the instrument and what it says */
+.home-about .clock-status,
+.home-about .doom-figure {
+  width: min(100%, 300px);
+  margin: 18px auto 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.home-about .clock-status { min-height: 5.2em; font-size: 1.02rem; }
+.home-about .clock-when { margin-bottom: 6px; }
+.home-about .doom-figure { font-size: 1.02rem; line-height: 1.45; }
+.home-about .doom-percent { margin-bottom: 8px; }
+.home-about .doom-hint { margin-top: 12px; }
+
+/* =====================================================================
+   Motion
+   ===================================================================== */
+
+/* The top bar never moves: it keeps its own snapshot through every change */
+.topbar { view-transition-name: topbar; }
+::view-transition-group(topbar) { animation-duration: 0s; }
+
+/* --- a persona switch: a soft cross-fade while the text decodes in place --- */
+html:active-view-transition-type(persona)::view-transition-old(root),
+html:active-view-transition-type(persona)::view-transition-new(root) {
+  animation-duration: 0.9s;
+  animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+/* --- moving between pages: the old page lifts away, the new one rises in --- */
+html:active-view-transition-type(page)::view-transition-old(root) {
+  animation: page-out 0.26s cubic-bezier(0.4, 0, 1, 1) both;
+}
+html:active-view-transition-type(page)::view-transition-new(root) {
+  animation: page-in 0.42s cubic-bezier(0, 0, 0.2, 1) 0.06s both;
+}
+@keyframes page-out { to { opacity: 0; transform: translateY(-10px); } }
+@keyframes page-in { from { opacity: 0; transform: translateY(14px); } }
+
+/* --- scrolling into the summary: the band is always there; its headline
+       arrives word by word and the instrument draws itself --- */
+.about-lead .word, .about-text > p:not(.about-lead), .about-text > .category-label {
+  display: inline-block;
+}
+.about-text > p:not(.about-lead), .about-text > .category-label { display: block; }
+.home-about.band-wait .about-lead .word,
+.home-about.band-wait .about-text > p:not(.about-lead),
+.home-about.band-wait .about-text > .category-label,
+.home-about.band-wait .day-clock,
+.home-about.band-wait .doom-clock { opacity: 0; transform: translateY(16px); }
+.home-about.band-in .about-lead .word,
+.home-about.band-in .about-text > p:not(.about-lead),
+.home-about.band-in .about-text > .category-label,
+.home-about.band-in .day-clock,
+.home-about.band-in .doom-clock {
+  opacity: 1; transform: none;
+  transition: opacity 0.6s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--d, 0s);
+}
+.home-about.band-in .clock-face .rod { animation: rod-on 0.5s ease both; animation-delay: calc(0.5s + var(--i, 0) * 28ms); }
+@keyframes rod-on { from { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .home-about.band-wait * { opacity: 1 !important; transform: none !important; }
+  html:active-view-transition-type(page)::view-transition-old(root),
+  html:active-view-transition-type(page)::view-transition-new(root) { animation: none; }
+}
+
+/* Inner pages: no name block under the top bar (the logo already says who) */
+body:not(.home) #header-container .brand,
+body:not(.home) #header-container .profile-type,
+body:not(.home) #header-container + hr { display: none; }
+body:not(.home) { padding-top: calc(var(--u) * 1.5 + 56px); }
+
+/* the band is truly full width (not a spread shadow), so clips stay inside it */
+html:has(body.home) { overflow-x: clip; }
+body.home .home-about {
+  width: 100vw !important;
+  margin-left: calc(50% - 50vw) !important;
+  padding-left: calc((100vw - var(--home-w)) / 2);
+  padding-right: calc((100vw - var(--home-w)) / 2);
+  box-sizing: border-box;
+  box-shadow: none;
+  clip-path: none;
+}
+@media (max-width: 760px) {
+  body.home .home-about { padding-left: var(--u); padding-right: var(--u); }
+}
+
+/* ---------- Home: the band slides up over the first screen like a card ---------- */
+@media (min-width: 761px) {
+  body.home .hero { position: sticky; top: 56px; z-index: 0; }
+  body.home .home-about { position: relative; z-index: 1; }
+}
+/* where scroll-driven animation is supported, the first screen recedes under
+   the band, and the band's top-left corner starts as a quarter circle and
+   flattens as it settles */
+@supports (animation-timeline: view()) {
+  @media (min-width: 761px) and (prefers-reduced-motion: no-preference) {
+    body.home .hero {
+      animation: hero-recede linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100svh;
+    }
+    @keyframes hero-recede { to { transform: scale(0.92); opacity: 0.25; filter: blur(2px); } }
+    body.home .home-about {
+      animation: band-arrive linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 100%;
+    }
+    @keyframes band-arrive {
+      from { border-top-left-radius: 70vw 100%; }
+      to   { border-top-left-radius: 0 0; }
+    }
+  }
+}
+
+/* =====================================================================
+   Home, split: the photo stays on the right while the left side turns
+   from the introduction into the summary as you scroll
+   ===================================================================== */
+body.home .home-split {
+  width: var(--home-w);
+  margin-left: calc((100% - var(--home-w)) / 2);
+  margin-top: calc(var(--u) * -1);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+  column-gap: calc(var(--u) * 3);
+}
+.home-right {
+  position: sticky; top: 56px; align-self: start;
+  height: calc(100svh - 56px);
+  display: flex; align-items: center; justify-content: flex-end;
+}
+.home-right .hero-photo { width: min(100%, calc((100svh - 150px) * 0.8)); justify-self: auto; }
+.home-panel {
+  min-height: calc(100svh - 56px);
+  display: flex; flex-direction: column; justify-content: center;
+  padding: var(--u) 0; box-sizing: border-box;
+  scroll-snap-align: start; scroll-margin-top: 56px;
+}
+.panel-about .about-text p { margin-bottom: calc(var(--u) * 0.6); }
+
+/* the instrument under the summary, drawn in ink, no tile */
+.panel-third .day-clock {
+  --bg: #0f1b2d;            /* strokes and selected chips: ink */
+  --text: #f6f4ee;          /* text on selected chips: paper */
+  background: transparent; padding: 0; position: static;
+  margin-top: calc(var(--u) * 0.8);
+  display: grid; grid-template-columns: 200px minmax(0, 1fr); grid-template-rows: auto 1fr;
+  column-gap: calc(var(--u) * 1.25); align-items: center;
+}
+.panel-third .day-clock .clock-days { grid-column: 1 / -1; justify-content: flex-start; gap: 8px; margin-bottom: 10px; }
+.panel-third .day-clock .clock-days .clock-day { flex: 0 0 auto; padding: 7px 16px; }
+.panel-third .day-clock .clock-face { grid-column: 1; width: 200px; margin: 0; }
+.panel-third .day-clock .clock-status { grid-column: 2; margin: 0; padding: 0 0 0 calc(var(--u) * 0.75); border-left: 1px solid var(--border); min-height: 0; color: var(--bg); }
+/* the left side crossfades between its two panels as you scroll */
+@supports (animation-timeline: view()) {
+  @media (min-width: 761px) and (prefers-reduced-motion: no-preference) {
+    .home-panel { animation: panel-swap linear both; animation-timeline: view(); animation-range: cover 0% cover 100%; }
+    @keyframes panel-swap {
+      0%   { opacity: 0; transform: translateY(60px); }
+      32%, 68% { opacity: 1; transform: none; }
+      100% { opacity: 0; transform: translateY(-60px); }
+    }
+  }
+}
+
+@media (max-width: 760px) {
+  body.home .home-split { width: auto; margin-left: 0; margin-top: 0; display: flex; flex-direction: column; }
+  .home-right { position: static; height: auto; order: -1; justify-content: flex-start; margin-bottom: calc(var(--u) * 1.25); }
+  .home-right .hero-photo { width: min(100%, 300px); }
+  .home-panel { min-height: 0; padding: 0 0 var(--u); }
+  .panel-third .day-clock { grid-template-columns: 1fr; }
+  .panel-third .day-clock .clock-status { grid-column: 1; border-left: 0; padding-left: 0; margin-top: 12px; }
+}
+
+/* scene three: Lion's clock, larger, on its own */
+.panel-third .day-clock { grid-template-columns: 280px minmax(0, 1fr); margin-top: calc(var(--u) * 0.4); }
+.panel-third .day-clock .clock-face { width: 280px; }
+.panel-third .day-clock .clock-status { font-size: 1.1rem; }
+
+/* scene three: Láyon's tagline, set large */
+.layon-tagline {
+  margin: 0;
+  max-width: 22ch;
+  font-size: clamp(30px, 3.4vw, 46px);
+  line-height: 1.22;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+@media (max-width: 760px) { .layon-tagline { font-size: 28px; } }
+
+/* the 12-hour clock: minute hand thin, hour hand heavy (the one you drag) */
+.clock-face.doom-style .hand-minute { stroke: var(--bg); stroke-width: 2; stroke-linecap: butt; }
+.clock-face.doom-style .hand-hour { stroke-width: 7; }
+.clock-face.doom-style .numeral { font: 500 14px "Newsreader", Georgia, serif; fill: var(--bg); opacity: 0.7; text-anchor: middle; dominant-baseline: central; }
+.clock-face.doom-style .numeral.quarter { font-size: 24px; font-weight: 600; opacity: 1; }
+.clock-face.doom-style .meridiem { font: 700 10px var(--sans); letter-spacing: 0.2em; fill: var(--bg); opacity: 0.55; text-anchor: middle; }
+.clock-face.doom-style .tick { stroke: var(--bg); stroke-width: 1; opacity: 0.4; }
+
+/* scene one: proper spacing between the blocks */
+.panel-intro .hero-eyebrow { margin-bottom: 14px; }
+.panel-intro .hero-name { margin-bottom: calc(var(--u) * 1.5); }
+.panel-intro .quick-summary { margin-bottom: calc(var(--u) * 1.5); }
+.panel-intro .read-me-in { margin-bottom: calc(var(--u) * 1.5); }
+
+/* the text and the photo sit together as one centered composition */
+body.home { --home-w: min(1040px, calc(100vw - 48px)); }
+body.home .home-split { grid-template-columns: minmax(0, 470px) minmax(280px, 390px); column-gap: 64px; justify-content: center; }
+.home-right { justify-content: flex-start; }
+
+/* scene three: Weekday / Weekend centred over the clock face; the caption beside the face */
+.panel-third .day-clock .clock-days { grid-column: 1; grid-row: 1; justify-content: center; margin-bottom: 14px; }
+.panel-third .day-clock .clock-face { grid-column: 1; grid-row: 2; }
+.panel-third .day-clock .clock-status { grid-column: 2; grid-row: 2; align-self: center; }
+@media (max-width: 760px) {
+  .panel-third .day-clock .clock-days, .panel-third .day-clock .clock-face { justify-self: start; }
+  .panel-third .day-clock .clock-status { grid-column: 1; grid-row: 3; }
+}
+.panel-third .day-clock { grid-template-columns: 250px minmax(0, 1fr); }
+.panel-third .day-clock .clock-face { width: 250px; }
+.panel-third .day-clock .clock-when { white-space: nowrap; }
+
+/* ---------- Home, scene three: its own full-width scene ---------- */
+body.home .home-scene {
+  width: var(--home-w);
+  margin-left: calc((100% - var(--home-w)) / 2);
+  min-height: calc(100svh - 56px);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: calc(var(--u) * 2) 0; box-sizing: border-box;
+  scroll-snap-align: start; scroll-margin-top: 56px;
+}
+
+/* Lion: the clock alone, large and centred */
+.scene-clock .day-clock {
+  --bg: #0f1b2d; --text: #f6f4ee;          /* ink strokes on the page */
+  background: transparent; padding: 0; position: static;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+}
+.scene-clock .clock-days { justify-content: center; gap: 8px; margin-bottom: 18px; }
+.scene-clock .clock-days .clock-day { flex: 0 0 auto; padding: 8px 18px; }
+.scene-clock .clock-face { width: min(80vw, 360px, calc(100svh - 300px)); margin: 0; }
+.scene-clock .clock-status { margin: 22px 0 0; padding: 16px 0 0; border-top: 1px solid var(--border); width: min(100%, 360px); min-height: 4.4em; color: var(--bg); font-size: 1.1rem; }
+.scene-clock .clock-when { white-space: nowrap; }
+
+/* Láyon: stars that gather into the tagline (constellation.js draws them) */
+body.home .scene-stars { position: relative; color: var(--text); padding: 0; }
+.scene-stars canvas { position: absolute; inset: 0; display: block; }
+
+/* the photo alone gives a little shake on hover or tap (nav.js adds .jiggle) */
+.portrait-switch.jiggle { animation: jiggle 0.4s ease 1; }
+@keyframes jiggle {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  20% { transform: translateX(-4px) rotate(-0.6deg); }
+  45% { transform: translateX(4px) rotate(0.5deg); }
+  70% { transform: translateX(-2px) rotate(-0.2deg); }
+}
+@media (prefers-reduced-motion: reduce) { .portrait-switch.jiggle { animation: none; } }
+
+/* scene three fades in on scroll like the others */
+@supports (animation-timeline: view()) {
+  @media (min-width: 761px) and (prefers-reduced-motion: no-preference) {
+    body.home .home-scene > * { animation: panel-swap linear both; animation-timeline: view(); animation-range: cover 0% cover 100%; }
+  }
+}
+
+/* Láyon's clock: cream on the dark page */
+body.layon .scene-clock .day-clock { --bg: #ece6d8; --text: #0e0f15; }
+
+/* Láyon's hours (late night writing): the clock turns over to night, and a
+   small crescent moon rises in the face */
+.day-clock .clock-face .face-fill { fill: transparent; }
+.day-clock .moon { opacity: 0; transform: translateY(10px); transition: opacity 0.6s, transform 0.8s cubic-bezier(.2,.7,.2,1); }
+.day-clock .moon-disc { fill: var(--bg); }
+.day-clock.awake .moon { opacity: 1; transform: none; }
+.day-clock .clock-face .ring-outer { transition: fill 0.6s; }
+.day-clock.awake .clock-face .ring-outer { fill: var(--bg); }
+.day-clock.awake .clock-face .rod, .day-clock.awake .clock-face .tick,
+.day-clock.awake .clock-face .hand-hour, .day-clock.awake .clock-face .hand-minute { stroke: var(--text); }
+.day-clock.awake .clock-face .numeral, .day-clock.awake .clock-face .meridiem { fill: var(--text); }
+.day-clock.awake .clock-face .hub, .day-clock.awake .clock-face .hand-knob { fill: var(--text); }
+.day-clock.awake .moon-disc { fill: var(--text); }
+.day-clock .clock-face .rod, .day-clock .clock-face .tick, .day-clock .clock-face .numeral,
+.day-clock .clock-face .hand-hour, .day-clock .clock-face .hand-minute { transition: stroke 0.6s, fill 0.6s; }
+.scene-clock .clock-status { white-space: nowrap; }
+
+/* Lion's scene two: the same eyebrow and name; past roles in place of now */
+.panel-previously .hero-eyebrow { margin-bottom: 14px; }
+.panel-previously .hero-name { margin-bottom: calc(var(--u) * 1.25); }
+.panel-previously .timeline li { padding-bottom: calc(var(--u) * 0.32); grid-template-columns: 112px minmax(0, 1fr); }
+.panel-previously .timeline li::before { height: 18px; }
+.panel-previously .timeline li:first-child::before { height: 24px; }
+.panel-previously .tl-when { font-size: 13px; }
+
+.panel-previously .timeline li { grid-template-columns: 104px minmax(0, 1fr); padding-bottom: 6px; white-space: nowrap; }
+.panel-previously .tl-what { font-size: 0.98rem; }
+.panel-previously .hero-name { margin-bottom: var(--u); }
+
+/* Lion, scenes one and two: the introduction pins for a stretch of scrolling;
+   "Currently" + links and "Previously" share one spot and swap (intro-stack.js) */
+@media (min-width: 761px) {
+  .intro-stack { height: 200svh; }
+  .intro-sticky {
+    position: sticky; top: 56px;
+    height: calc(100svh - 56px);
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .intro-head .hero-eyebrow { margin-bottom: 14px; }
+  .intro-head .hero-name { margin-bottom: calc(var(--u) * 1.25); }
+  .intro-swap { display: grid; }
+  .intro-swap > .intro-block { grid-area: 1 / 1; }
+  .intro-block .quick-summary { margin-bottom: calc(var(--u) * 1.25); }
+}
+@media (max-width: 760px) {
+  .intro-head .hero-eyebrow { margin-bottom: 12px; }
+  .intro-block + .intro-block { margin-top: var(--u); }
+}
+
+
+/* on a persona switch the top bar changes together with the page (it keeps its
+   own still snapshot only when moving between pages of the same persona) */
+html:active-view-transition-type(persona) .topbar { view-transition-name: none; }
+
+/* the top bar: clear at the very top, solid once the page scrolls */
+.topbar { background: transparent; border-bottom-color: transparent; transition: background 0.25s ease, border-color 0.25s ease; }
+html.scrolled .topbar { background: var(--bg); border-bottom-color: var(--border); }

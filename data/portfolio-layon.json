@@ -1,6 +1,7 @@
 [
   {
     "title": "Inference on Panatang Makabayan",
+    "symbol": "sun",
     "type": "online",
     "tags": ["featured", "poetry"],
     "summary": "An experiment in large language model inference. The Panatang Makabayan is cut after each of its words, and four language models are asked to finish it. Selected as a winning entry for Day 9 of the Santelmo Pambansang Hámon sa Pagtula 2026.",
@@ -8,6 +9,7 @@
   },
   {
     "title": "Mga Kuwentong Pambata",
+    "symbol": "book",
     "translation": "Children's Stories",
     "type": "online",
     "tags": ["featured", "poetry"],
@@ -17,6 +19,7 @@
   },
   {
     "title": "Ang Pagtupad ng mga Robot sa Tatlong Batas ng Robotics",
+    "symbol": "robot",
     "translation": "Robots Obeying the Three Laws of Robotics",
     "type": "print",
     "tags": ["poetry", "series"],
@@ -26,6 +29,7 @@
   },
   {
     "title": "René",
+    "symbol": "apple",
     "type": "print",
     "tags": ["poetry", "series"],
     "shortDescription": "This is a short description.",
@@ -34,6 +38,7 @@
   },
   {
     "title": "Ang Hindi Sinasabi ng mga Makina Hinggil sa Hindi Natin Maunawaan",
+    "symbol": "blackhole",
     "translation": "What the Machines Don't Say About What We Cannot Understand",
     "type": "print",
     "tags": ["poetry", "series"],
@@ -43,6 +48,7 @@
   },
   {
     "title": "Mga Talâ Mula sa Klase ng Etika",
+    "symbol": "scales",
     "translation": "Some Notes from Ethics Class",
     "type": "print",
     "tags": ["poetry", "series"],
@@ -52,6 +58,7 @@
   },
   {
     "title": "Ilang Paraan ng Pagkagunaw",
+    "symbol": "glacier",
     "translation": "Some Ways the World Ends",
     "type": "print",
     "tags": ["poetry", "series"],
@@ -61,6 +68,7 @@
   },
   {
     "title": "21st Century Maligno",
+    "symbol": "eye",
     "type": "print",
     "tags": ["poetry", "series"],
     "shortDescription": "This is a short description.",

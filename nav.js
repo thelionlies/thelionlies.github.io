@@ -52,30 +52,58 @@
       return `<a data-page="${page}" href="${href}"${cls}>${label}</a>`;
     }).join('\n    ');
 
-    // The logo also holds the other persona's part (Lion's L and Láyon's
-    // quarter make one whole square), shown only while switching or hinting
+    // A fixed top bar holds the logo (home), the nav and the toggle; the name and
+    // role sit below it as the page heading. The logo also holds the other
+    // persona's part (Lion's L and Láyon's quarter make one whole square),
+    // shown only while switching or hinting.
     headerContainer.innerHTML = `
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="topbar-logo" href="${navBase}index.html" aria-label="Home">
+      <svg class="logo${arrivedBySwitch && !reduceMotion ? ' whole' : ''}" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true">
+        <rect x="2" y="2" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        ${persona.mark}
+        <g class="logo-other">${other.mark}</g>
+      </svg>
+    </a>
+    <div id="nav-container">
+      <nav>
+        ${links}
+        <label class="switch" title="Switch to ${isLayon ? 'Lion' : 'Láyon'}">
+          <input type="checkbox" id="personaToggle"${isLayon ? ' checked' : ''}>
+          <span class="slider round"></span>
+        </label>
+      </nav>
+    </div>
+  </div>
+</div>
 <div class="brand">
-  <svg class="logo${arrivedBySwitch && !reduceMotion ? ' whole' : ''}" viewBox="0 0 24 24" width="32" height="32" aria-hidden="true">
-    <rect x="2" y="2" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"/>
-    ${persona.mark}
-    <g class="logo-other">${other.mark}</g>
-  </svg>
   <h1>${persona.name}</h1>
 </div>
-<p class="profile-type">${persona.role}</p>
-<div id="nav-container">
-  <nav>
-    ${links}
-    <label class="switch" title="Switch to ${isLayon ? 'Lion' : 'Láyon'}">
-      <input type="checkbox" id="personaToggle"${isLayon ? ' checked' : ''}>
-      <span class="slider round"></span>
-    </label>
-  </nav>
-</div>`;
+<p class="profile-type">${persona.role}</p>`;
   }
 
   if (isLayon) document.body.classList.add('layon');
+
+  // Arriving from a switch on the homepage: open at the same scene, same point
+  if (arrivedBySwitch) {
+    let spot = null;
+    try { spot = JSON.parse(sessionStorage.getItem('sceneSpot')); sessionStorage.removeItem('sceneSpot'); } catch {}
+    const scenes = [...document.querySelectorAll('[data-scene]')];
+    if (spot && scenes[spot.i] && !spot.top) {
+      if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+      const el = scenes[spot.i], y = el.getBoundingClientRect().top + scrollY - 60 + spot.f * el.offsetHeight;
+      const html = document.documentElement, snap = html.style.scrollSnapType;
+      html.style.scrollSnapType = 'none';              // don't let snapping pull us elsewhere
+      scrollTo(0, Math.max(0, y));
+      requestAnimationFrame(() => requestAnimationFrame(() => { html.style.scrollSnapType = snap; }));
+    }
+  }
+
+  // The top bar is clear at the very top of the page and turns solid once you scroll
+  const setScrolled = () => document.documentElement.classList.toggle('scrolled', scrollY > 4);
+  setScrolled();
+  addEventListener('scroll', setScrolled, { passive: true });
 
   // Logo: complete the square, or let the other part go again
   const logo = document.querySelector('#header-container .logo');
@@ -113,6 +141,19 @@
     el.style.viewTransitionName = on ? `bio-${i}` : '';
   });
 
+  // Tag each cross-page view transition, so style.css can animate a persona
+  // switch (pairs morph in parallel) differently from moving between pages
+  window.addEventListener('pageswap', e => {
+    if (!e.viewTransition) return;
+    let toggling = false;
+    try { toggling = !!sessionStorage.getItem('personaToggled'); } catch {}
+    e.viewTransition.types.add(toggling ? 'persona' : 'page');
+  });
+  window.addEventListener('pagereveal', e => {
+    if (!e.viewTransition) return;
+    e.viewTransition.types.add(arrivedBySwitch ? 'persona' : 'page');
+  });
+
   const toggle = document.getElementById('personaToggle');
   if (toggle) {
     toggle.addEventListener('change', () => {
@@ -130,6 +171,16 @@
         targetUrl = goingToLayon ? '/layon/writings.html' : '/writings.html';
       } else {
         targetUrl = isLayon ? `../${fileName}` : `layon/${fileName}`;
+      }
+      // Home: remember which scene we're in and how far through it, so the
+      // other side opens at the same point (both homepages share one layout)
+      const scenes = [...document.querySelectorAll('[data-scene]')];
+      if (scenes.length) {
+        let i = 0;
+        scenes.forEach((el, k) => { if (el.getBoundingClientRect().top <= 60) i = k; });
+        const r = scenes[i].getBoundingClientRect();
+        const f = Math.max(0, Math.min(1, (60 - r.top) / Math.max(1, r.height)));
+        try { sessionStorage.setItem('sceneSpot', JSON.stringify({ i, f, top: scrollY < 4 })); } catch {}
       }
 
       if (morphs) {
@@ -151,8 +202,8 @@
   footer.innerHTML = `<p class="layon-hint">© 2026 ${isLayon ? 'Láyon' : 'Ivan Yuri De Leon'}. All rights reserved.</p>`;
   document.body.appendChild(footer);
 
-  // Easter egg: hovering the portrait shakes the page, flashes the other
-  // persona's portrait and nudges the toggle halfway, a hint at the alter ego
+  // Easter egg: hovering the portrait flashes the other persona's portrait
+  // and nudges the toggle halfway, a hint at the alter ego
   const portraitSwitch = document.querySelector('.portrait-switch');
   const switchLabel = document.querySelector('.switch');
   if (portraitSwitch && switchLabel) {
@@ -164,7 +215,6 @@
       if (active) return;
       active = true;
       switchLabel.classList.add('half');
-      document.body.classList.add('shaking');
       setWhole(true);
       setTimeout(() => setWhole(false), 280);
       window.dispatchEvent(new Event('persona-hint'));  // bg.js: brief grid/stars swell
@@ -172,7 +222,8 @@
       const header = document.getElementById('header-container');
       const headerText = header ? [...header.querySelectorAll('h1, .profile-type')].flatMap(el => [...el.childNodes].filter(n => n.nodeType === 3)) : [];
       decode([...headerText, ...contentTextNodes(document.body)], { stagger: 0, base: 320, perChar: 0 });
-      setTimeout(() => document.body.classList.remove('shaking'), 500);
+      portraitSwitch.classList.remove('jiggle'); void portraitSwitch.offsetWidth;
+      portraitSwitch.classList.add('jiggle');            // the photo alone gives a little shake
       reveal.style.opacity = 1;
       cover.style.opacity = 0;
       setTimeout(() => { cover.style.opacity = 1; }, 140);

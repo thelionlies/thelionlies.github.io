@@ -117,3 +117,13 @@ Each live page has a meta description, Open Graph and Twitter tags (for link pre
 ### PDF files
 
 Stored in `/cv/`. Referenced with a cache-busting query string (`?v=YYYYMMDD`). Update the version string in the HTML when replacing a PDF.
+
+### Homepage (both personas)
+
+The homepage is a set of scenes beside a photo that stays put. The two homepages share one layout, so a persona switch lands on the same scene, at the same point, and the text decodes into its twin in place.
+
+1. A pinned heading (eyebrow and name). Under it, "Currently" and the links fade out and "Previously" (Lion) or "Read me in" (Láyon) fades into the same spot (`intro-stack.js`).
+2. The summary.
+3. A clock (`home-clock.js`): drag the hour hand; passing 12 flips AM/PM. Edit the schedule and the captions at the top of that file. Láyon's clock says "Asleep." except in the writing hours, when it says "Láyon is awake." and turns over to night.
+
+`home-motion.js` sweeps the clock's hands up to the current time when you first scroll to it. `thumb.js` draws the placeholder tile (a symbol per entry, set by `symbol` in `data/*.json`) on Work and Explore entries until they have an `image`.

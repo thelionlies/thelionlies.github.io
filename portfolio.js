@@ -28,6 +28,8 @@ const tags = Array.isArray(entry.tags) ? entry.tags : [];
 const card = document.createElement('article');
 card.className = 'card';
 card.dataset.tags = tags.join(' ');
+// photo slot: a dark tile with this entry's symbol until it has an image (thumb.js)
+if (window.thumb) card.insertAdjacentHTML('afterbegin', window.thumb(entry, entry.type));
 
 if (canonical) {
   const slug = entry.links && entry.links.link ? entry.links.link : entry.title;
@@ -57,7 +59,7 @@ if (entry.translation) {
 if (entry.summary) {
   const summary = document.createElement('p');
   summary.className = 'card-summary';
-  summary.appendChild(document.createTextNode(entry.summary + ' '));
+  summary.textContent = entry.summary;
   card.appendChild(summary);
 
   if (entry.description) {
@@ -65,7 +67,6 @@ if (entry.summary) {
     moreBtn.type = 'button';
     moreBtn.className = 'more-btn';
     moreBtn.textContent = 'More';
-    summary.appendChild(moreBtn);
 
     const expanded = document.createElement('div');
     expanded.hidden = true;
@@ -89,6 +90,7 @@ if (entry.summary) {
     expanded.appendChild(lessBtn);
 
     card.appendChild(expanded);
+    card.appendChild(moreBtn);
 
     moreBtn.addEventListener('click', () => {
       expanded.hidden = false;
@@ -186,8 +188,9 @@ const group = document.createElement('section');
 group.className = 'portfolio-group';
 
 if (type) {
-  const label = document.createElement('p');
-  label.className = 'category-label';
+  // a group heading, set above the filters in the hierarchy
+  const label = document.createElement('h2');
+  label.className = 'category-label group-heading';
   label.textContent = typeLabels[type] || type;
   group.appendChild(label);
 }
