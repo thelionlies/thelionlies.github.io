@@ -65,6 +65,7 @@
         ${persona.mark}
         <g class="logo-other">${other.mark}</g>
       </svg>
+      <span class="topbar-word">${isLayon ? 'Láyon' : 'Lion'}</span>
     </a>
     <div id="nav-container">
       <nav>

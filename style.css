@@ -77,7 +77,9 @@ body {
   gap: var(--u);
 }
 
-.topbar-logo { display: block; line-height: 0; }
+.topbar-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
+.topbar-word { font-family: "Newsreader", Georgia, serif; font-size: 20px; font-weight: 500; line-height: 1; letter-spacing: -0.01em; color: var(--text); }
+.topbar-logo:hover .topbar-word { color: var(--text); }
 .topbar nav { margin: 0; flex-wrap: nowrap; }
 .topbar nav a:last-of-type { margin-right: 0; }
 .topbar .switch { margin-left: 18px; }
@@ -1568,3 +1570,12 @@ html.scrolled .topbar { background: var(--bg); border-bottom-color: var(--border
 
 /* Work and Explore: entry titles in the accent colour, set apart from the description */
 .card h3 { color: var(--accent); }
+
+/* the narrowest phones: a tighter top bar so logo, name, nav and toggle fit */
+@media (max-width: 420px) {
+  .topbar-inner { padding-left: 16px; padding-right: 16px; gap: 10px; }
+  .topbar-logo { gap: 7px; }
+  .topbar-word { font-size: 17px; }
+  .topbar nav a { margin-right: 10px; font-size: 14px; }
+  .topbar .switch { margin-left: 6px; }
+}
