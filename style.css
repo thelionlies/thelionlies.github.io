@@ -323,8 +323,9 @@ nav a.active {
 
 ::view-transition-old(root),
 ::view-transition-new(root) {
-  animation-duration: 0.5s;
-  animation-timing-function: ease;
+  /* Long, gentle light/dark crossfade so the switch doesn't glare */
+  animation-duration: 1.2s;
+  animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
 }
 
 
@@ -800,7 +801,7 @@ h2.page-tab {
   opacity: 0;
   pointer-events: none;
   z-index: 9999;
-  transition: opacity 0.18s ease;
+  transition: opacity 0.5s ease;
 }
 
 #flash.active {

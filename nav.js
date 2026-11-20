@@ -141,7 +141,7 @@
         setWhole(true);
         flash.style.background = goingToLayon ? '#0e0f15' : '#f6f4ee';
         flash.classList.add('active');
-        setTimeout(() => { window.location.href = targetUrl; }, 260);
+        setTimeout(() => { window.location.href = targetUrl; }, 500);
       }
     });
   }
