@@ -22,7 +22,7 @@
   // The two personas are exact counterparts: same fields, same places on the page
   const personas = {
     lion: {
-      name: 'Ivan Yuri De Leon (Lion)', role: 'AI Safety Researcher', accent: '#3d4f66',
+      name: 'Ivan Yuri De Leon', role: 'AI Safety Researcher', accent: '#3d4f66',
       mark: `<path d="M2,2 L12,2 L12,12 L22,12 L22,22 L2,22 Z" fill="currentColor"/>`,
     },
     layon: {
