@@ -34,7 +34,7 @@
   canvas.setAttribute('aria-hidden', 'true');
   document.body.prepend(canvas);
   const ctx = canvas.getContext('2d');
-  const accent = getComputedStyle(document.body).getPropertyValue('--accent').trim() || '#8a9bb8';
+  const accent = getComputedStyle(document.body).getPropertyValue('--accent').trim() || '#a9b8d4';
 
   let w = 0, h = 0, dpr = 1, cols = 0, rows = 0, ox = 0, oy = 0;
   let colL = 0, colR = 0;  // the text column; effects fade out over it

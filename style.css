@@ -1,13 +1,13 @@
-/* Softened palettes: neither extreme is pure, so text doesn't glare and the
-   switch between personas is a smaller jump. Both stay above WCAG AA. */
+/* Palettes: navy-black ink on warm paper with sand lines (Lion), and the
+   same family inverted for the night (Láyon). Both stay above WCAG AA. */
 :root {
-  --bg: #f3efe7;
-  --text: #2b2722;
-  --muted: #6b6358;
-  --border: #dfd9ce;
-  --accent: #3d4f66;
-  --accent-soft: #e1e5ea;
-  --accent-contrast: #f3efe7;
+  --bg: #f6f4ee;
+  --text: #0f1b2d;
+  --muted: #545e6c;
+  --border: #e2ded3;
+  --accent: #2e4a6b;
+  --accent-soft: #e7ecf2;
+  --accent-contrast: #f6f4ee;
   --link: var(--accent);
   /* Shape follows the background: Lion's grid is all right angles, Láyon's
      stars are soft, so small corners and bullets change with the persona
@@ -17,13 +17,13 @@
 }
 
 body.layon {
-  --bg: #1f1e25;
-  --text: #d6d1c8;
-  --muted: #98928a;
-  --border: #36343d;
-  --accent: #8a9bb8;
-  --accent-soft: #232a33;
-  --accent-contrast: #1f1e25;
+  --bg: #0e0f15;
+  --text: #ece6d8;
+  --muted: #9c9aa8;
+  --border: #2a2b36;
+  --accent: #a9b8d4;
+  --accent-soft: #1d2130;
+  --accent-contrast: #0e0f15;
   --link: var(--accent);
   --radius-sm: 3px;
   --bullet-radius: 50%;

@@ -22,11 +22,11 @@
   // The two personas are exact counterparts: same fields, same places on the page
   const personas = {
     lion: {
-      name: 'Ivan Yuri De Leon', role: 'AI Safety Researcher', accent: '#3d4f66',
+      name: 'Ivan Yuri De Leon', role: 'AI Safety Researcher', accent: '#2e4a6b',
       mark: `<path d="M2,2 L12,2 L12,12 L22,12 L22,22 L2,22 Z" fill="currentColor"/>`,
     },
     layon: {
-      name: 'Láyon', role: 'Filipino Poet', accent: '#8a9bb8',
+      name: 'Láyon', role: 'Filipino Poet', accent: '#a9b8d4',
       mark: `<rect x="12" y="2" width="10" height="10" fill="currentColor"/>`,
     },
   };
@@ -126,7 +126,7 @@
         setTimeout(() => { window.location.href = targetUrl; }, 260);
       } else {
         setWhole(true);
-        flash.style.background = goingToLayon ? '#1f1e25' : '#f3efe7';
+        flash.style.background = goingToLayon ? '#0e0f15' : '#f6f4ee';
         flash.classList.add('active');
         setTimeout(() => { window.location.href = targetUrl; }, 260);
       }
