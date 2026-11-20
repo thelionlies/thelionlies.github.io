@@ -302,7 +302,7 @@ nav a.active {
 
 /* small screens: the date drops under the organisation and role,
    left-aligned, instead of hanging off the right edge */
-@media (max-width: 600px) {
+@media (max-width: 760px) {
   /* phones: organisation, then role, then date; no location */
   .cv-entry { display: flex; flex-direction: column; }
   .cv-head, .cv-sub { display: contents; }
@@ -399,6 +399,13 @@ nav a.active {
   .statement p {
     text-align: left;
   }
+  /* phones: no half columns; Lion's voice on the left, Láyon's indented */
+  .statement .lion-voice,
+  .statement .layon-voice { width: 86%; }
+  .statement .layon-voice { margin-left: 14%; }
+  .statement .pair { display: block; }
+  .statement .pair .layon-voice { margin-left: 14%; }
+  .statement .both { width: 100%; margin-left: 0; }
 }
 
 .profile-portrait {
