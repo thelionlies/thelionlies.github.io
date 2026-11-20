@@ -24,80 +24,47 @@
 <script defer blocking="render" src="../bg.js"></script>
 </head>
 
-<body class="layon home">
-
+<body class="layon front">
 
 <header id="header-container">
   <noscript><nav><a href="/layon/index.html">Home</a> <a href="/layon/work.html">Work</a> <a href="/layon/explore.html">Explore</a> <a href="/layon/cv.html">Bio</a></nav></noscript>
 </header>
 
-<!-- Home: a full-screen hero (photo, current roles, contact); the summary below -->
-<!-- Home: the photo stays on the right; as you scroll, the left side
-     turns from the introduction into the summary -->
-<section class="home-split">
-  <div class="home-left">
-    <!-- Scenes one and two share a pinned heading, like Lion's: under it,
-         "Currently" and the links give way to "Read me in" in the same spot -->
-    <div class="intro-stack" data-scene="1">
-     <div class="intro-sticky">
-      <div class="intro-head">
-        <p class="hero-eyebrow">Filipino Poet</p>
-        <h2 class="hero-name">Láyon</h2>
-      </div>
-      <div class="intro-swap">
-      <div class="intro-block">
-        <div class="quick-summary">
-      <p class="category-label">Currently</p>
-      <ul>
-      <li><span class="role">Paranoid</span>, reading about <a href="https://airisk.mit.edu/existential-risks" target="_blank" rel="noopener noreferrer">x-risks</a></li>
-      </ul>
-    </div>
-        <p class="hero-links">
-      <a href="mailto:layon.connect@gmail.com">Email</a>
-      <a href="https://tldtd.org/poet/layon/" target="_blank" rel="noopener noreferrer">TLDTD</a>
-    </p>
-      </div>
-      <div class="intro-block">
-        <div class="quick-summary">
-          <p class="category-label">Read me in</p>
-          <ul>
-            <li>TLDTD Journal</li>
-            <li>HEIGHTS</li>
-            <li>Bente-Bente Zine</li>
-            <li>Pambansang Hamon ng Pagtula Anthology (2023, 2024, 2026)</li>
-          </ul>
-        </div>
-      </div>
-      </div>
-     </div>
-    </div>
-    <div class="home-panel panel-about" id="about" data-scene="2">
-      <div class="about-text">
+<hr>
 
-    <p class="category-label">Summary</p>
-    <p>Láyon is a poet who writes in Filipino. They hold a Master’s degree in Data Science from Ateneo de Manila University. Upon graduation, they received the Mulry Award for Literary Excellence and the Ateneo College Awards of the Arts in Poetry. They are also a recipient of the National Youth Achievement in Literary Arts from the Philippine National Committee on Literary Arts.</p>
-
-    <p>Their poems regularly appear in HEIGHTS, Ateneo&#8217;s literary publication, where they served as managing editor. They are also a member of Linangan sa Imahen, Retorika, at Anyo (LIRA).</p>
-
-    <p>They like writing about AI, science, city life, and the posthuman. One of their most random (but on-brand) moments was winning the Philippine Space Agency&#8217;s Space Week poetry <a href="https://philsa.gov.ph/news/tula-para-sa-mga-buntabay-ng-pilipinas-top-ten-entries/" target="_blank" rel="noopener noreferrer">competition</a> in 2025.</p>
-      </div>
-    </div>
-  </div>
-  <div class="home-right">
-    <div class="portrait-switch hero-photo">
-    <img src="../images/lion.jpg" class="portrait-reveal" alt="Portrait of Ivan Yuri De Leon" decoding="async">
+<section class="summary-layout">
+  <div class="portrait-switch profile-portrait-right">
+    <img src="../images/lion.jpg" class="portrait-reveal" alt="Portrait of Lion De Leon" decoding="async">
     <img src="../images/layon.png" class="portrait-cover" alt="Portrait of Láyon" decoding="async">
   </div>
-  </div>
+
+  <section class="quick-summary">
+    <p class="category-label">Currently</p>
+    <ul>
+      <li><span class="role">Paranoid</span>, reading about <a href="https://airisk.mit.edu/existential-risks" target="_blank" rel="noopener noreferrer">x-risks</a></li>
+    </ul>
+
+    <p class="category-label">Read me in</p>
+    <ul>
+      <li><a href="https://tldtd.org/poet/layon/" target="_blank" rel="noopener noreferrer">TLDTD Journal</a></li>
+      <li>HEIGHTS</li>
+      <li>Bente-Bente Zine</li>
+      <li>Pambansang Hamon ng Pagtula Anthology (2023, 2024, 2026)</li>
+    </ul>
+  </section>
 </section>
 
-<!-- Scene three: the clock. Láyon is asleep, except in the writing hours -->
-<section class="home-scene scene-clock" id="clock" data-scene="3">
-  <aside class="day-clock" id="day-clock" data-persona="layon" aria-label="When Láyon is awake"></aside>
-</section>
+<p class="category-label">Summary</p>
+<p>Láyon is a poet who writes in Filipino. They hold a Master’s degree in Data Science from Ateneo de Manila University. Upon graduation, they received the Mulry Award for Literary Excellence and the Ateneo College Awards of the Arts in Poetry. They are also a recipient of the National Youth Achievement in Literary Arts from the Philippine National Committee on Literary Arts.</p>
 
-<script defer src="../home-clock.js"></script>
-<script defer src="../home-motion.js"></script>
-<script defer src="../intro-stack.js"></script>
+<p>Their poems regularly appear in HEIGHTS, Ateneo&#8217;s literary publication, where they served as managing editor. They are also a member of Linangan sa Imahen, Retorika, at Anyo (LIRA).</p>
+
+<p>They like writing about AI, science, city life, and the posthuman. One of their most random (but on-brand) moments was winning the Philippine Space Agency&#8217;s Space Week poetry <a href="https://philsa.gov.ph/news/tula-para-sa-mga-buntabay-ng-pilipinas-top-ten-entries/" target="_blank" rel="noopener noreferrer">competition</a> in 2025.</p>
+
+<p lang="fil"><em>Akala ni Láyon matematika ang mapapangasawa niya. Ngunit nang makilala ang pagtula, hindi na mabuo-buo ang kanyang isip. Hanggang ngayon, hinahanap niya pa rin ang sariling layon.</em></p>
+
+
+<p><a href="mailto:layon.connect@gmail.com">layon.connect@gmail.com</a> · <a href="https://tldtd.org/poet/layon/" target="_blank" rel="noopener noreferrer">TLDTD</a></p>
+
 </body>
 </html>

@@ -41,85 +41,45 @@
 <script defer blocking="render" src="bg.js"></script>
 </head>
 
-<body class="home">
-
+<body class="front">
 
 <header id="header-container">
   <noscript><nav><a href="/index.html">Home</a> <a href="/work.html">Work</a> <a href="/explore.html">Explore</a> <a href="/cv.html">Bio</a></nav></noscript>
 </header>
 
-<!-- Home: a full-screen hero (photo, current roles, contact); the summary below -->
-<!-- Home: the photo stays on the right; as you scroll, the left side
-     turns from the introduction into the summary -->
-<section class="home-split">
-  <div class="home-left">
-    <!-- Scenes one and two share a pinned heading: under it, "Currently" and the
-         links scroll away and "Previously" scrolls into their place -->
-    <div class="intro-stack" data-scene="1">
-     <div class="intro-sticky">
-      <div class="intro-head">
-        <p class="hero-eyebrow">AI Safety Researcher</p>
-        <h2 class="hero-name">Ivan Yuri De Leon</h2>
-      </div>
-      <div class="intro-swap">
-      <div class="intro-block">
-        <div class="quick-summary">
-      <p class="category-label">Currently</p>
-      <ul>
+<hr>
+
+<section class="summary-layout">
+  <div class="portrait-switch profile-portrait-right">
+    <img src="images/layon.png" class="portrait-reveal" alt="Layon" decoding="async">
+    <img src="images/lion.jpg" class="portrait-cover" alt="Portrait of Lion De Leon" decoding="async">
+  </div>
+
+  <section class="quick-summary">
+    <p class="category-label">Currently</p>
+    <ul>
       <li><span class="role">Independent AI Safety Researcher</span></li>
       <li><span class="role">Career Accelerator Head</span> at <a href="https://safeai.ph/" target="_blank" rel="noopener noreferrer">Safe AI Philippines</a></li>
       <li><span class="role">AI Forward Deployed Engineer</span> at Globe Telecom</li>
-      </ul>
-    </div>
-        <p class="hero-links">
-      <a href="mailto:deleon.ivanyuri@gmail.com">Email</a>
-      <a href="https://www.linkedin.com/in/ivan-yuri-de-leon/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-      <a href="https://github.com/thelionlies" target="_blank" rel="noopener noreferrer">GitHub</a>
-      <a href="https://scholar.google.com/citations?user=xjbdGF4AAAAJ&hl=en" target="_blank" rel="noopener noreferrer">Google Scholar</a>
-    </p>
-      </div>
-      <div class="intro-block">
-        <div class="quick-summary">
-          <p class="category-label">Previously</p>
-          <ul>
-            <li><span class="role">Master of Data Science</span> at Ateneo de Manila University</li>
-            <li><span class="role">Visiting Researcher</span> at Gigascale Laboratories</li>
-            <li><span class="role">Research Intern</span> at the <a href="https://napi-naist.github.io/about" target="_blank" rel="noopener noreferrer">Nara Institute of Science and Technology</a></li>
-            <li><span class="role">AI Safety Training</span> at <a href="https://bluedot.org/courses/technical-ai-safety" target="_blank" rel="noopener noreferrer">BlueDot</a>, <a href="https://www.taraprogram.org/" target="_blank" rel="noopener noreferrer">TARA</a>, &amp; <a href="https://www.aisafetydiliman.com/" target="_blank" rel="noopener noreferrer">AI Safety Diliman</a></li>
-          </ul>
-        </div>
-      </div>
-      </div>
-     </div>
-    </div>
-    <div class="home-panel panel-about" id="about" data-scene="2">
-      <div class="about-text">
+    </ul>
 
-    <p class="category-label">Summary</p>
-    <p>My name is Ivan Yuri De Leon. But most people call me Lion. I hold a Master&#8217;s degree in Data Science from Ateneo de Manila University and have a background in Applied Mathematics and Economics. I have built datasets for the Filipino language and evaluated AI on Filipino-language tasks. I am now moving toward AI alignment and interpretability research, with an interest in consumer-facing risks and long-term interactions between AI systems.</p>
-
-    <p>On weekdays, I work as an AI engineer at Globe. On weekends, I head programs at Safe AI Philippines. In the evenings, I do independent technical AI safety research. And when I still can&#8217;t sleep, I fit in some creative writing (toggle the switch above to meet my alter ego). I advocate for AI safety and Filipino intellectualization in the development of emerging technologies.</p>
-      </div>
-    </div>
-  </div>
-  <div class="home-right">
-    <div class="portrait-switch hero-photo">
-    <img src="images/layon.png" class="portrait-reveal" alt="Layon" decoding="async">
-    <img src="images/lion.jpg" class="portrait-cover" alt="Portrait of Ivan Yuri De Leon" decoding="async">
-  </div>
-  </div>
+    <p class="category-label">Previously</p>
+    <ul>
+      <li><span class="role">Master of Data Science</span> at Ateneo de Manila University</li>
+      <li><span class="role">Visiting Researcher</span> at Gigascale Laboratories</li>
+      <li><span class="role">Research Intern</span> at the <a href="https://napi-naist.github.io/about" target="_blank" rel="noopener noreferrer">Nara Institute of Science and Technology</a></li>
+      <li><span class="role">AI Safety Training</span> at <a href="https://bluedot.org/courses/technical-ai-safety" target="_blank" rel="noopener noreferrer">BlueDot</a>, <a href="https://www.taraprogram.org/" target="_blank" rel="noopener noreferrer">TARA</a>, &amp; <a href="https://www.aisafetydiliman.com/" target="_blank" rel="noopener noreferrer">AI Safety Diliman</a></li>
+    </ul>
+  </section>
 </section>
 
-<!-- Scene three: the clock on its own -->
-<section class="home-scene scene-clock" id="clock" data-scene="3">
-  <aside class="day-clock" id="day-clock" aria-label="What Lion is usually doing at a given time">
-    <noscript><p>Weekdays at Globe, weekends at Safe AI Philippines, evenings on AI safety research, late nights writing.</p></noscript>
-  </aside>
-</section>
+<p class="category-label">Summary</p>
 
+<p>Hi, I am Ivan Yuri De Leon, or as most people know me, Lion. I hold a Master&#8217;s degree in Data Science from Ateneo de Manila University and have a background in Applied Mathematics and Economics. I have built datasets for the Filipino language and evaluated AI on Filipino-language tasks. I am now moving toward AI alignment and interpretability research, with an interest in consumer-facing risks and long-term interactions between AI systems.</p>
 
-<script defer src="home-clock.js"></script>
-<script defer src="home-motion.js"></script>
-<script defer src="intro-stack.js"></script>
+<p>On weekdays, I work as an AI engineer at Globe. On weekends, I head programs at Safe AI Philippines. In the evenings, I do independent technical AI safety research. And when I still can&#8217;t sleep, I fit in some creative writing (toggle the switch above to meet my alter ego). I advocate for AI safety and Filipino intellectualization in the development of emerging technologies.</p>
+
+<p><a href="mailto:deleon.ivanyuri@gmail.com">deleon.ivanyuri@gmail.com</a> · <a href="https://www.linkedin.com/in/ivan-yuri-de-leon/" target="_blank" rel="noopener noreferrer">LinkedIn</a> · <a href="https://github.com/thelionlies" target="_blank" rel="noopener noreferrer">GitHub</a> · <a href="https://scholar.google.com/citations?user=xjbdGF4AAAAJ&hl=en" target="_blank" rel="noopener noreferrer">Google Scholar</a></p>
+
 </body>
 </html>
