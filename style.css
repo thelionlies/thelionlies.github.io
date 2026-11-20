@@ -1579,3 +1579,8 @@ html.scrolled .topbar { background: var(--bg); border-bottom-color: var(--border
   .topbar nav a { margin-right: 10px; font-size: 14px; }
   .topbar .switch { margin-left: 6px; }
 }
+
+/* phones: no "Home" in the nav; the logo and name already go home */
+@media (max-width: 480px) {
+  .topbar nav a[data-page="home"] { display: none; }
+}
