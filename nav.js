@@ -101,6 +101,18 @@
   flash.id = 'flash';
   document.body.appendChild(flash);
 
+  // Bio pages: Lion's CV and Láyon's statement have different layouts, so on a
+  // switch their blocks are paired in order (view-transition names) and each
+  // block glides from its old place and size to its new one
+  function bioBlocks() {
+    return currentPage === 'cv' ? [...document.querySelectorAll(
+      'h2.page-tab, .cv-entry, .cv-pubs > li, .cv-section > ul:not(.cv-pubs) > li, .statement p'
+    )] : [];
+  }
+  const nameBioBlocks = on => bioBlocks().forEach((el, i) => {
+    el.style.viewTransitionName = on ? `bio-${i}` : '';
+  });
+
   const toggle = document.getElementById('personaToggle');
   if (toggle) {
     toggle.addEventListener('change', () => {
@@ -123,6 +135,7 @@
       if (morphs) {
         // The logo completes into the whole square, then the page changes
         setWhole(true);
+        nameBioBlocks(true);
         setTimeout(() => { window.location.href = targetUrl; }, 260);
       } else {
         setWhole(true);
@@ -243,6 +256,15 @@
   }
 
   if (toggled) {
+    // Pair the Bio blocks with the page we came from, then let go once moved
+    if (morphs && currentPage === 'cv') {
+      nameBioBlocks(true);
+      window.addEventListener('pagereveal', e => {
+        if (e.viewTransition) e.viewTransition.finished.finally(() => nameBioBlocks(false));
+        else nameBioBlocks(false);
+      }, { once: true });
+    }
+
     const h1 = document.querySelector('#header-container h1');
     const role = document.querySelector('#header-container .profile-type');
     if (h1) transform(h1, other.name, persona.name);
